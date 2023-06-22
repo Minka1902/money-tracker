@@ -19,9 +19,9 @@ function App() {
   const safeDocument = typeof document !== 'undefined' ? document : {};
   const html = safeDocument.documentElement;
   const history = useHistory();
-  const [loggedIn, setLoggedIn] = React.useState(true);
-  // const [currentUser, setCurrentUser] = React.useState(null);
-  const [currentUser, setCurrentUser] = React.useState({ username: 'michael', email: 'kenaa@example.com' });
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState(null);
+  // const [currentUser, setCurrentUser] = React.useState({ username: 'michael', email: 'kenaa@example.com' });
   const [isUserFound, setIsUserFound] = React.useState(true);
   const [cards, setCards] = React.useState([{ company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '549', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '123', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }]);
   const [isSignUpPopupOpen, setIsSignUpPopupOpen] = React.useState(false);
