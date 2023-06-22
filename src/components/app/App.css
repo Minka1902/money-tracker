@@ -2,3 +2,35 @@
     overflow: hidden;
     position: relative;
 }
+
+#my-cards {
+    width: 80%;
+    max-width: 990px;
+    display: grid;
+    grid-template-columns: 240px 240px 240px 240px;
+    grid-template-rows: 154px;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    margin: auto;
+}
+
+@media screen and (max-width: 990px) {
+    #my-cards {
+        grid-template-columns: 240px 240px 240px;
+    }
+}
+
+@media screen and (max-width: 740.5px) {
+    #my-cards {
+        grid-template-columns: 240px 240px;
+    }
+}
+
+@media screen and (max-width: 490.5px) {
+    #my-cards {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
