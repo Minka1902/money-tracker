@@ -10,6 +10,7 @@ import AddCardPopup from "../popup/AddCardPopup";
 import PopupConfirm from "../popup/PopupConfirm";
 import SignUpPopup from "../popup/SignUpPopup";
 import { CreditCard } from "../cards/Cards";
+import Footer from '../footer/Footer'
 
 // ! 0J3IUsnOu2Xk8cEj mongo password
 
@@ -22,7 +23,7 @@ function App() {
   // const [currentUser, setCurrentUser] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({ username: 'michael', email: 'kenaa@example.com' });
   const [isUserFound, setIsUserFound] = React.useState(true);
-  const [cards, setCards] = React.useState([{ company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '123', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }]);
+  const [cards, setCards] = React.useState([{ company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '549', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '123', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }]);
   const [isSignUpPopupOpen, setIsSignUpPopupOpen] = React.useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
   const [isConfirmPopupOpen, setIsConfirmLoginPopupOpen] = React.useState(false);
@@ -174,12 +175,14 @@ function App() {
   const buttons = [
     {
       name: 'Home',
+      isAllowed: true,
       onClick: () => {
         console.log('Home button clicked');
       }
     },
     {
       name: 'My cards',
+      isAllowed: false,
       onClick: () => {
         console.log('My cards button clicked');
       }
@@ -228,15 +231,17 @@ function App() {
           <Header
             noScroll={noScroll}
             scroll={scroll}
-            isLoggedIn={true}
-            navBarButtons={buttons}
+            isLoggedIn={loggedIn}
+            buttons={buttons}
             handleButtonClick={openPopup}
             isHomePage={false}
           />
           <section id="my-cards">
-            {cards.map((card, index, array) => {
-              return <CreditCard card={card} isFlipping={true} key={index} />
-            })}
+            <div className="cards">
+              {cards.map((card, index, array) => {
+                return <CreditCard card={card} isFlipping={true} key={index} />
+              })}
+            </div>
           </section>
         </ProtectedRoute>
 
@@ -244,8 +249,8 @@ function App() {
           <Header
             noScroll={noScroll}
             scroll={scroll}
-            isLoggedIn={false}
-            navBarButtons={buttons}
+            isLoggedIn={loggedIn}
+            buttons={buttons}
             handleButtonClick={openPopup}
             isHomePage={false}
           />
@@ -287,6 +292,7 @@ function App() {
           />
         </Route>
       </Switch>
+      <Footer />
     </CurrentUserContext.Provider >
   );
 };

@@ -16,7 +16,7 @@ export default function Footer(props) {
 	
   	return (
   		<footer className="footer">
-  			<p className="footer__text">&copy; 2021 Supersite, Powered by News API</p>
+  			<p className="footer__text">&copy; Powered by Michael Scharff</p>
 			<div className='footer__container'>
   				<div className="footer__container-links">
     {/* eslint-disable-next-line */}

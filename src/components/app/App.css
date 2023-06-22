@@ -3,31 +3,44 @@
     position: relative;
 }
 
+.none {
+    background-color: transparent;
+    display: none;
+    cursor: default;
+}
+
 #my-cards {
-    width: 80%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cards {
     max-width: 990px;
     display: grid;
     grid-template-columns: 240px 240px 240px 240px;
     grid-template-rows: 154px;
     grid-row-gap: 10px;
     grid-column-gap: 10px;
+    justify-items: center;
     margin: auto;
 }
 
 @media screen and (max-width: 990px) {
-    #my-cards {
+    .cards {
         grid-template-columns: 240px 240px 240px;
     }
 }
 
 @media screen and (max-width: 740.5px) {
-    #my-cards {
+    .cards {
         grid-template-columns: 240px 240px;
     }
 }
 
 @media screen and (max-width: 490.5px) {
-    #my-cards {
+    .cards {
         display: flex;
         flex-direction: column;
         justify-content: center;
