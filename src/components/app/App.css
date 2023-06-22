@@ -9,11 +9,14 @@
     cursor: default;
 }
 
-#my-cards {
-    width: 100%;
+section {
+    width: 100vw;
+    background-color: rgb(246, 251, 255);
+    padding: 64px 10px 10px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .cards {
@@ -27,9 +30,48 @@
     margin: auto;
 }
 
+.add-button__container {
+    position: fixed;
+    top: 74px;
+    right: 10px;
+    z-index: 1;
+    opacity: 0.7;
+    transition: .3s;
+}
+
+.add-button__container:hover {
+    opacity: 1;
+}
+
+.section__title {
+    margin-top: 77px;
+    text-align: center;
+}
+
+#my-cards .section__title {
+    margin-top: 0;
+}
+
 @media screen and (max-width: 990px) {
     .cards {
         grid-template-columns: 240px 240px 240px;
+    }
+}
+
+@media screen and (max-width: 703.5px) {
+    #my-cards {
+        margin-top: 54px;
+    }
+
+    .add-button__container {
+        position: fixed;
+        top: 59px;
+        right: 5px;
+    }
+
+    .section__title {
+        margin-top: 64px;
+        margin-bottom: 20px;
     }
 }
 
@@ -45,5 +87,48 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+}
+
+@media screen and (max-width: 515px) {
+    #my-cards .section__title {
+        margin: 0 auto 20px 0;
+    }
+
+    .section__title {
+        width: calc(100% - 55px);
+        margin: 59px auto 10px 0;
+    }
+}
+
+@media screen and (min-width: 704px) and (max-width: 1149.5px) {
+    .section__title {
+        margin-top: 10px;
+    }
+
+    .add-button__container {
+        position: fixed;
+        top: 73px;
+        right: 10px;
+    }
+}
+
+@media screen and (min-width: 1149px) {
+    .section__title {
+        margin-top: 10px;
+    }
+
+    #my-cards .section__title {
+        margin: 10px 0 20px 0;
+    }
+
+    section {
+        padding: 77px;
+    }
+
+    .add-button__container {
+        position: fixed;
+        top: 87px;
+        right: 10px;
     }
 }

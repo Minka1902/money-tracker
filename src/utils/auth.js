@@ -1,6 +1,16 @@
-export const BASE_URL = 'https://michaelscharff-api.herokuapp.com';
+import { changeStringLength } from "../constants/constants";
 
-export const register = ( password, email ) => {
+const removePort = () => {
+  let url = window.origin;
+  const startIndex = url.indexOf(':');
+  const endIndex = url.length - 1;
+  const newOrigin = changeStringLength(url, endIndex - startIndex);
+  return newOrigin;
+}
+
+export const BASE_URL = `${removePort()}:4000`;
+
+export const register = (password, email) => {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
@@ -9,23 +19,23 @@ export const register = ( password, email ) => {
     },
     body: JSON.stringify({ password, email })
   })
-  .then((res) => {
-    return _handleResponse(res);
-  });
+    .then((res) => {
+      return _handleResponse(res);
+    });
 };
 
-export const authorize = ( password, email ) => {
+export const authorize = (password, email) => {
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({password, email})
+    body: JSON.stringify({ password, email })
   })
-  .then(((res) => {
-    return _handleResponse(res);
-  }))
+    .then(((res) => {
+      return _handleResponse(res);
+    }))
 };
 
 export const checkToken = (token) => {
@@ -37,9 +47,9 @@ export const checkToken = (token) => {
       'Authorization': `Bearer ${token}`,
     }
   })
-  .then((res) => _handleResponse(res));
+    .then((res) => _handleResponse(res));
 }
 
 const _handleResponse = (res) => {
-   return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
+  return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`)
 };

@@ -3,9 +3,9 @@ import NavBar from "../navBar/NavBar";
 import NavMenu from "../navMenu/NavMenu";
 import HeaderButton from './HeaderButton';
 import * as Buttons from '../buttons/Buttons';
+import logo from '../../images/geomage-logo.svg'
 
 export default function Header(props) {
-	let logo = '';
 	const { isLoggedIn, theme = true, scroll, noScroll, handleLogout, handleButtonClick, buttons, children } = props;
 	const [isNavBar, setIsNavBar] = React.useState(window.innerWidth > 520);
 	const [isNavMenuOpen, setIsNavMenuOpen] = React.useState(false);
@@ -21,6 +21,11 @@ export default function Header(props) {
 			setIsNavBar(true);
 		} else {
 			setIsNavBar(false);
+			if (isNavMenuOpen) {
+				noScroll();
+			} else {
+				scroll();
+			}
 		}
 	};
 
@@ -49,7 +54,8 @@ export default function Header(props) {
 	};
 
 	return (
-		<div className={`h-sb__container${theme ? ' h-sb__container_no-background' : ''}`}>
+		<>
+			{/* <div className={`h-sb__container${theme ? ' h-sb__container_no-background' : ''}`}> */}
 			<header className={`header${theme ? ' header_theme_dark' : ''}${isNavMenuOpen ? ' header_darker' : ''}`}>
 				<img className={`header__logo ${theme ? 'header__logo_theme_dark' : ''}${isNavMenuOpen ? '_not' : ''}`} src={logo} alt="Logo" />
 				{isNavBar ?
@@ -67,6 +73,7 @@ export default function Header(props) {
 				}
 			</header>
 			{children}
-		</div>
+			{/* </div> */}
+		</>
 	);
 }

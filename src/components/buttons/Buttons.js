@@ -182,3 +182,19 @@ export function ButtonCheckbox({ todoList }) {
         </>
     );
 };
+
+export function ButtonAdd({ buttonText, onClick, color = "white", title = buttonText }) {
+    return (
+        <>
+            <button className="add-button" onClick={onClick} title={title}>
+                <div className="add-button__sign">
+                    <svg fill={color} stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path d="M12 5.25v13.5"></path>
+                        <path d="M18.75 12H5.25"></path>
+                    </svg>
+                </div>
+                <div className="add-button__text">{buttonText}</div>
+            </button>
+        </>
+    );
+};

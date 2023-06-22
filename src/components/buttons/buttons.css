@@ -1599,3 +1599,82 @@
         box-shadow: 0 -15px 0 0px #4F29F0, 14px -8px 0 0px #4F29F0, 14px 8px 0 0px #4F29F0, 0 15px 0 0px #4F29F0, -14px 8px 0 0px #4F29F0, -14px -8px 0 0px #4F29F0;
     }
 }
+
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!      Add      !!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+
+.add-button {
+    --sign-width: 45px;
+    --text-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: var(--sign-width);
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition-duration: .3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    background-color: #2F71E5;
+}
+
+/* plus sign */
+.add-button__sign {
+    width: 100%;
+    transition-duration: .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-button__sign svg {
+    width: 17px;
+}
+
+.add-button__sign svg path {
+    fill: white;
+}
+
+/* text */
+.add-button__text {
+    position: absolute;
+    right: 0%;
+    width: 0%;
+    height: 1.1em;
+    overflow: hidden;
+    opacity: 0;
+    color: white;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition-duration: .3s;
+}
+
+/* hover effect on button width */
+.add-button:hover {
+    width: calc(var(--sign-width) + var(--text-width));
+    border-radius: 40px;
+    transition-duration: .3s;
+}
+
+.add-button:hover .add-button__sign {
+    width: 30%;
+    transition-duration: .3s;
+    padding-left: 20px;
+}
+
+/* hover effect button's text */
+.add-button:hover .add-button__text {
+    opacity: 1;
+    width: 70%;
+    transition-duration: .3s;
+    padding-right: 10px;
+}
+
+/* button click effect*/
+.add-button:active {
+    transform: translate(2px, 2px);
+}

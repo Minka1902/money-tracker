@@ -26,4 +26,5 @@ export const changeStringLength = (str, desiredLength) => {
 	while (str.length > desiredLength) {
 		str = str.substring(0, str.length - 1);
 	}
+	return str;
 };

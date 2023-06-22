@@ -11,6 +11,7 @@ import PopupConfirm from "../popup/PopupConfirm";
 import SignUpPopup from "../popup/SignUpPopup";
 import { CreditCard } from "../cards/Cards";
 import Footer from '../footer/Footer'
+import { ButtonAdd } from "../buttons/Buttons";
 
 // ! 0J3IUsnOu2Xk8cEj mongo password
 
@@ -19,25 +20,36 @@ function App() {
   const safeDocument = typeof document !== 'undefined' ? document : {};
   const html = safeDocument.documentElement;
   const history = useHistory();
-  const [loggedIn, setLoggedIn] = React.useState(true);
-  // const [currentUser, setCurrentUser] = React.useState(null);
-  const [currentUser, setCurrentUser] = React.useState({ username: 'michael', email: 'kenaa@example.com' });
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState('');
   const [isUserFound, setIsUserFound] = React.useState(true);
   const [cards, setCards] = React.useState([{ company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '549', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '123', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }]);
   const [isSignUpPopupOpen, setIsSignUpPopupOpen] = React.useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
-  const [isConfirmPopupOpen, setIsConfirmLoginPopupOpen] = React.useState(false);
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
 
   const noScroll = () => html.classList.add('no-scroll');
 
   const scroll = () => html.classList.remove('no-scroll');
 
+  const setAddCardOpen = () => setIsAddCardPopupOpen(true);
+
+  const setLoginPopupOpen = () => setIsLoginPopupOpen(true);
+
+  const chooseAddButtonPopup = () => {
+    if (loggedIn) {
+      setAddCardOpen();
+    } else {
+      setLoginPopupOpen();
+    }
+  };
+
   const closeAllPopups = () => {
     setIsSignUpPopupOpen(false);
     setIsLoginPopupOpen(false);
     setIsAddCardPopupOpen(false);
-    setIsConfirmLoginPopupOpen(false);
+    setIsConfirmPopupOpen(false);
     if (window.innerWidth < 520) {
       noScroll();
     } else {
@@ -105,7 +117,7 @@ function App() {
       })
       .finally(() => {
         closeAllPopups();
-        setIsLoginPopupOpen(true);
+        setIsConfirmPopupOpen(true);
       })
   };
 
@@ -245,6 +257,10 @@ function App() {
       <Switch>
         <ProtectedRoute exact path='/my-cards' loggedIn={loggedIn} >
           <section id="my-cards">
+            <h1 className="section__title"><span style={{ "text-transform": "capitalize" }}>{currentUser.username}</span> here you can find your cards</h1>
+            <div className="add-button__container">
+              <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' />
+            </div>
             <div className="cards">
               {cards.map((card, index) => {
                 return <CreditCard card={card} isFlipping={true} key={index} />
@@ -254,48 +270,61 @@ function App() {
         </ProtectedRoute>
 
         <Route path='/about-us'>
-          <h1>about us</h1>
+          <section id='about-us'>
+            <h1 className="section__title">Here you can read about us.</h1>
+            <div className="add-button__container">
+              <ButtonAdd onClick={setLoginPopupOpen} buttonText='Add new' title='Log in to add a new card.' />
+            </div>
+            <p>Meet our team</p>
+            <h2>CEO</h2>
+            <h2>LEAD FRONTEND</h2>
+            <h2>LEAD BACKEND</h2>
+          </section>
         </Route>
 
         <Route path="/">
-          <h1>Home</h1>
-          <SignUpPopup
-            isOpen={isSignUpPopupOpen}
-            onClose={closeAllPopups}
-            handleSignup={handleSignupSubmit}
-            linkText="Sign up"
-            buttonText="Sign up"
-            handleSwitchPopup={switchPopups}
-          />
-
-          <LoginPopup
-            handleLogin={handleLoginSubmit}
-            isOpen={isLoginPopupOpen}
-            isFound={isUserFound}
-            linkText={loggedIn ? 'Add a card' : 'Sign up'}
-            onClose={closeAllPopups}
-            handleSwitchPopup={switchPopups}
-            onSignOut={handleLogout}
-          />
-
-          <PopupConfirm
-            isOpen={isConfirmPopupOpen}
-            isDeleteSource={true}
-            signupSuccessful={signupSuccessful}
-            onClose={closeAllPopups}
-          // handleSubmit={deleteSource}
-          />
-
-          <AddCardPopup
-            isLoggedIn={loggedIn}
-            onSubmit={handleAddCardSubmit}
-            isOpen={isAddCardPopupOpen}
-            linkText='Sign in'
-            handleSwitchPopup={switchPopups}
-            onClose={closeAllPopups}
-          />
+          <section id='home'>
+            <h1 className="section__title">Welcome to the new app</h1>
+            <div className="add-button__container">
+              <ButtonAdd onClick={setLoginPopupOpen} buttonText='Add new' title='Log in to add a new card.' />
+            </div>
+          </section>
         </Route>
       </Switch>
+      <SignUpPopup
+        isOpen={isSignUpPopupOpen}
+        onClose={closeAllPopups}
+        handleSignup={handleSignupSubmit}
+        buttonText="Sign up"
+        handleSwitchPopup={switchPopups}
+      />
+
+      <LoginPopup
+        handleLogin={handleLoginSubmit}
+        isOpen={isLoginPopupOpen}
+        isFound={isUserFound}
+        linkText={loggedIn ? 'Add a card' : 'Sign up'}
+        onClose={closeAllPopups}
+        handleSwitchPopup={switchPopups}
+        onSignOut={handleLogout}
+      />
+
+      <PopupConfirm
+        isOpen={isConfirmPopupOpen}
+        isDeleteSource={true}
+        signupSuccessful={signupSuccessful}
+        onClose={closeAllPopups}
+      // handleSubmit={deleteSource}
+      />
+
+      <AddCardPopup
+        isLoggedIn={loggedIn}
+        onSubmit={handleAddCardSubmit}
+        isOpen={isAddCardPopupOpen}
+        linkText='Sign in'
+        handleSwitchPopup={switchPopups}
+        onClose={closeAllPopups}
+      />
       <Footer />
     </CurrentUserContext.Provider >
   );

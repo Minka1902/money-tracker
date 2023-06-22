@@ -34,8 +34,8 @@ export default function NavBar(props) {
     return (
         <nav className="navigation-bar">
             <ul className="navigation-bar__list">
-                {buttons.map((button, index) => (
-                    <li className="navigation-bar__item" key={index}>
+                {buttons.map((button, index) => {
+                    return <li className="navigation-bar__item" key={index}>
                         <button
                             className={determineButtonClass(button)}
                             onClick={() => buttonClick(button)}
@@ -44,7 +44,7 @@ export default function NavBar(props) {
                             {button.name}
                         </button>
                     </li>
-                ))}
+                })}
             </ul>
         </nav>
     );
