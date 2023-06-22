@@ -1,5 +1,7 @@
 import PopupWithForm from './PopupWithForm';
 import React from 'react';
+import Eye from '../../images/svg-files/Eye';
+import NotEye from '../../images/svg-files/NotEye';
 
 export default function SignUpPopup(props) {
   const { isOpen, onClose, handleSwitchPopup, handleSignup, buttonText } = props;
@@ -11,13 +13,14 @@ export default function SignUpPopup(props) {
   const [isPasswordCorrect, setIsPasswordCorrect] = React.useState(true);
   const [shouldAddSSign, setShouldAddSSign] = React.useState(false);
   const [passwordErrorText, setPasswordErrorText] = React.useState('Password incorrect');
-  const [isUsernameCorrect, setisUsernameCorrect] = React.useState(true);
+  const [isUsernameCorrect, setIsUsernameCorrect] = React.useState(true);
+  const [isTypePassword, setIsTypePassword] = React.useState(true);
 
   // ! Reseting the popup when closing
   React.useEffect(() => {
     setIsEmailCorrect(true);
     setIsPasswordCorrect(true);
-    setisUsernameCorrect(true);
+    setIsUsernameCorrect(true);
     setEmail('');
     setPassword('');
     setUsername('');
@@ -77,12 +80,12 @@ export default function SignUpPopup(props) {
   const checkUsernameValid = () => {
     const usernameRegExp = /^[a-zA-Z0-9 ]{2,40}$/;
     if (usernameRegExp.test(username)) {
-      setisUsernameCorrect(true);
+      setIsUsernameCorrect(true);
     } else {
       if (username === '') {
-        setisUsernameCorrect(true);
+        setIsUsernameCorrect(true);
       } else {
-        setisUsernameCorrect(false);
+        setIsUsernameCorrect(false);
       }
     }
   };
@@ -94,6 +97,11 @@ export default function SignUpPopup(props) {
       handleSignup(email, password, username);
       setIsValid(false);
     }
+  };
+
+  const handleTogglePasswordVisibility = (evt) => {
+    evt.preventDefault();
+    setIsTypePassword(!isTypePassword);
   };
 
   // ! Validating the form
@@ -131,19 +139,23 @@ export default function SignUpPopup(props) {
       />
       <p className={`popup__error-massage${isEmailCorrect ? '' : '_visible'}`}>Email incorrect.</p>
       <h3 className='popup__input-title'>Password</h3>
-      <input
-        className="popup__input"
-        value={password}
-        onChange={(evt) => setPassword(evt.currentTarget.value)}
-        placeholder="Enter password"
-        id="signup-password-input"
-        type="password"
-        name="passwordInput"
-        required
-        minLength="2"
-        maxLength="200"
-        autoComplete="off"
-      />
+      <div className='popup__input_password-container'>
+        <input
+          className="popup__input"
+          placeholder="Enter password"
+          id="login-password-input"
+          type={isTypePassword ? 'password' : 'text'}
+          name="passwordInput"
+          required
+          minLength="8"
+          maxLength="200"
+          value={password}
+          onChange={(evt) => setPassword(evt.currentTarget.value)}
+        />
+        <button className='popup__input_show-password-button' onClick={handleTogglePasswordVisibility}>
+          {isTypePassword ? <Eye /> : <NotEye />}
+        </button>
+      </div>
       <p className={`popup__error-massage${isPasswordCorrect ? '' : '_visible'}${shouldAddSSign ? '_visible' : ''}`}>{passwordErrorText}</p>
       <h3 className='popup__input-title'>Username</h3>
       <input

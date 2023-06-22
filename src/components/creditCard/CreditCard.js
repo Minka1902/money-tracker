@@ -1,58 +1,7 @@
 import React, { useState } from 'react';
 import './creditCard.css';
 
-function CreditCard() {
-    const [cardNumber, setCardNumber] = useState('');
-    const [expiryDate, setExpiryDate] = useState('');
-    const [cvv, setCvv] = useState('');
-
-    return (
-        <div className="CreditCard">
-            <div className="CreditCard__front">
-                <div className="CreditCard__logo"></div>
-                <div className="CreditCard__number">{cardNumber}</div>
-                <div className="CreditCard__name">John Doe</div>
-                <div className="CreditCard__expiry-cvv">
-                    <div className="CreditCard__expiry">{expiryDate}</div>
-                    <div className="CreditCard__cvv">{cvv}</div>
-                </div>
-            </div>
-            <div className="CreditCard__back">
-                <div className="CreditCard__stripe"></div>
-                <div className="CreditCard__cvv-back">{cvv}</div>
-            </div>
-            <form className="CreditCard__form">
-                <label className="CreditCard__label" htmlFor="cardNumber">Card Number</label>
-                <input
-                    className="CreditCard__input"
-                    type="text"
-                    id="cardNumber"
-                    value={cardNumber}
-                    onChange={(evt) => setCardNumber(evt.currentTarget.value)} />
-
-                <label className="CreditCard__label" htmlFor="expiryDate">Expiry Date</label>
-                <input
-                    className="CreditCard__input"
-                    type="text"
-                    id="expiryDate"
-                    value={expiryDate}
-                    onChange={(evt) => setExpiryDate(evt.currentTarget.value)} />
-
-                <label className="CreditCard__label" htmlFor="cvv">CVV</label>
-                <input
-                    className="CreditCard__input"
-                    type="text"
-                    id="cvv"
-                    value={cvv}
-                    onChange={(evt) => setCvv(evt.currentTarget.value)} />
-
-                <button className="CreditCard__button">Charge Card</button>
-            </form>
-        </div>
-    );
-}
-
-export default function CreditCardForm() {
+export default function CreditCardForm2() {
     const [cardNumber, setCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
@@ -110,4 +59,4 @@ export default function CreditCardForm() {
             </div>
         </form>
     );
-}
+};

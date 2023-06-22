@@ -77,7 +77,7 @@ export function CreditCard({ card = defCard, onClick, isFlipping }) {
                         <div className="credit__strip"></div>
                         <div className="mstrip"></div>
                         <div className="sstrip">
-                            <p className="credit__code">***</p>
+                            <p className="credit__code">{card.cvv ? card.cvv : '***'}</p>
                         </div>
                     </div> : <></>}
                 </div>

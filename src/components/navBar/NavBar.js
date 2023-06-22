@@ -1,18 +1,17 @@
 import React from 'react';
-import './navBar.css';
 
 // ! buttons example
-// const buttons = [
-//     {
-//         name: 'About',
-//         onClick: () => {
-//             // Function to handle about button click
-//             console.log('About button clicked');
-//         },
-//     }
-// ];
+const defButtons = [
+    {
+        name: 'About',
+        onClick: () => {
+            // Function to handle about button click
+            console.log('About button clicked');
+        },
+    }
+];
 
-export default function NavBar({ buttons }) {
+export default function NavBar({ buttons = defButtons }) {
     return (
         <nav className="navigation-bar">
             <ul className="navigation-bar__list">

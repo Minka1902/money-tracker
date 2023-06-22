@@ -19,7 +19,7 @@
 	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
-	background-image: url('../../images/search-bar-image.png');
+	/* background-image: url('../../images/search-bar-image.png'); */
 	background-repeat: no-repeat;
 	background-position: center;
 }

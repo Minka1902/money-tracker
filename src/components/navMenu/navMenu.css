@@ -1,4 +1,4 @@
-.nav-menu{
+.nav-menu {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -9,20 +9,20 @@
 	align-items: center;
 	margin-top: 56px;
 	z-index: 3;
-	border-radius: 10px;
+	border-radius: 0 0 15px 15px;
 }
 
-.nav-menu_opened{
+.nav-menu_opened {
 	display: flex;
 }
 
-.nav-menu__container{
+.nav-menu__container {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 }
 
-.nav-menu__button{
+.nav-menu__button {
 	font-family: 'Roboto', Arial, sans-serif;
 	font-style: normal;
 	font-weight: 500;
@@ -35,11 +35,11 @@
 	text-align: left;
 }
 
-.nav-menu__button:hover{
+.nav-menu__button:hover {
 	cursor: pointer;
 }
 
-.overlay{
+.overlay {
 	position: fixed;
 	top: 56px;
 	left: 0;
@@ -51,6 +51,6 @@
 	z-index: -1;
 }
 
-.overlay_opened{
+.overlay_opened {
 	display: flex;
 }

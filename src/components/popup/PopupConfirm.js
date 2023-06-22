@@ -1,6 +1,6 @@
 import PopupWithForm from './PopupWithForm';
 
-export default function ConfirmPopup(props) {
+export default function PopupConfirm(props) {
     const { isOpen, onClose, handleSubmit, isDeleteSource = false, signupSuccessful } = props;
 
     const onSubmit = (evt) => {
