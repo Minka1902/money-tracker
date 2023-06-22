@@ -237,8 +237,9 @@
 }
 
 .credit__wifi {
+    width: 24px;
     position: absolute;
-    top: 3.5em;
+    top: 2em;
     left: 12.4em;
     margin-top: 1em;
     margin-left: -.5em;
