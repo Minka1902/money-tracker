@@ -1,42 +1,49 @@
 import React from 'react';
 
-// ! buttons example
-const defButtons = [
-    {
-        name: 'Home',
-        isAllowed: true,
-        onClick: () => {
-            console.log('Home button clicked');
-        },
-    }
-];
-
 export default function NavBar(props) {
-    const { buttons = defButtons, isLoggedIn } = props;
+    const { buttons, isLoggedIn } = props;
+    const [buttonCheckedName, setButtonCheckedName] = React.useState('Home');
 
-    const determineButton = (button) => {
-        if (isLoggedIn) {
-            return true;
-        } else {
-            if (button.isAllowed) {
+    const determineButtonClass = (button) => {
+        const determineButton = () => {
+            if (isLoggedIn) {
                 return true;
+            } else {
+                if (button.isAllowed) {
+                    return true;
+                }
             }
+            return false;
+        };
+
+        let classes = 'navigation-bar__button';
+        if (!determineButton(button)) {
+            classes += ' none';
         }
-        return false;
+        if (buttonCheckedName === button.name) {
+            classes += ' checked';
+        }
+        return classes;
     };
+
+    const buttonClick = (button) => {
+        setButtonCheckedName(button.name);
+        button.onClick();
+    }
 
     return (
         <nav className="navigation-bar">
             <ul className="navigation-bar__list">
                 {buttons.map((button, index) => (
-                    determineButton(button) ?
-                        <li className="navigation-bar__item" key={index}>
-                            <button className={`navigation-bar__button ${determineButton(button) ? '' : 'none'}`} onClick={button.onClick} >
-                                {button.name}
-                            </button>
-                        </li>
-                        :
-                        <></>
+                    <li className="navigation-bar__item" key={index}>
+                        <button
+                            className={determineButtonClass(button)}
+                            onClick={() => buttonClick(button)}
+                            key={index}
+                        >
+                            {button.name}
+                        </button>
+                    </li>
                 ))}
             </ul>
         </nav>

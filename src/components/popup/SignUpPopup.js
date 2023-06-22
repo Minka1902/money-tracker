@@ -143,7 +143,7 @@ export default function SignUpPopup(props) {
         <input
           className="popup__input"
           placeholder="Enter password"
-          id="login-password-input"
+          id="signup-password-input"
           type={isTypePassword ? 'password' : 'text'}
           name="passwordInput"
           required

@@ -19,9 +19,9 @@ function App() {
   const safeDocument = typeof document !== 'undefined' ? document : {};
   const html = safeDocument.documentElement;
   const history = useHistory();
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState(null);
-  // const [currentUser, setCurrentUser] = React.useState({ username: 'michael', email: 'kenaa@example.com' });
+  const [loggedIn, setLoggedIn] = React.useState(true);
+  // const [currentUser, setCurrentUser] = React.useState(null);
+  const [currentUser, setCurrentUser] = React.useState({ username: 'michael', email: 'kenaa@example.com' });
   const [isUserFound, setIsUserFound] = React.useState(true);
   const [cards, setCards] = React.useState([{ company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '549', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '123', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }]);
   const [isSignUpPopupOpen, setIsSignUpPopupOpen] = React.useState(false);
@@ -167,6 +167,7 @@ function App() {
   // * Handling the logout click
   const handleLogout = () => {
     setLoggedIn(false);
+    setCurrentUser(null);
     // setIsHomePage(true);
     localStorage.removeItem('jwt');
     history.push("/");
@@ -177,14 +178,21 @@ function App() {
       name: 'Home',
       isAllowed: true,
       onClick: () => {
-        console.log('Home button clicked');
+        history.push("/");
       }
     },
     {
       name: 'My cards',
       isAllowed: false,
       onClick: () => {
-        console.log('My cards button clicked');
+        history.push("/my-cards");
+      }
+    },
+    {
+      name: 'About us',
+      isAllowed: true,
+      onClick: () => {
+        history.push("/about-us");
       }
     },
   ];
@@ -226,35 +234,31 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
+      <Header
+        noScroll={noScroll}
+        scroll={scroll}
+        isLoggedIn={loggedIn}
+        buttons={buttons}
+        handleLogout={handleLogout}
+        handleButtonClick={openPopup}
+      />
       <Switch>
         <ProtectedRoute exact path='/my-cards' loggedIn={loggedIn} >
-          <Header
-            noScroll={noScroll}
-            scroll={scroll}
-            isLoggedIn={loggedIn}
-            buttons={buttons}
-            handleButtonClick={openPopup}
-            isHomePage={false}
-          />
           <section id="my-cards">
             <div className="cards">
-              {cards.map((card, index, array) => {
+              {cards.map((card, index) => {
                 return <CreditCard card={card} isFlipping={true} key={index} />
               })}
             </div>
           </section>
         </ProtectedRoute>
 
-        <Route path="/">
-          <Header
-            noScroll={noScroll}
-            scroll={scroll}
-            isLoggedIn={loggedIn}
-            buttons={buttons}
-            handleButtonClick={openPopup}
-            isHomePage={false}
-          />
+        <Route path='/about-us'>
+          <h1>about us</h1>
+        </Route>
 
+        <Route path="/">
+          <h1>Home</h1>
           <SignUpPopup
             isOpen={isSignUpPopupOpen}
             onClose={closeAllPopups}

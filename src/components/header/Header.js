@@ -6,10 +6,15 @@ import * as Buttons from '../buttons/Buttons';
 
 export default function Header(props) {
 	let logo = '';
-	const { isLoggedIn, isHomePage, theme = true, scroll, noScroll, handleLogout, buttons, handleButtonClick, children } = props;
+	const { isLoggedIn, theme = true, scroll, noScroll, handleLogout, handleButtonClick, buttons, children } = props;
 	const [isNavBar, setIsNavBar] = React.useState(window.innerWidth > 520);
 	const [isNavMenuOpen, setIsNavMenuOpen] = React.useState(false);
 	const [isFirstRender, setIsFirstRender] = React.useState(true);
+
+	const handleNavMenuClick = () => {
+		setIsNavMenuOpen(false);
+		scroll();
+	};
 
 	const checkWindowDimensions = () => {
 		if (window.innerWidth > 520) {
@@ -18,13 +23,6 @@ export default function Header(props) {
 			setIsNavBar(false);
 		}
 	};
-
-	React.useEffect(() => {
-		window.addEventListener('resize', checkWindowDimensions);
-		window.removeEventListener('resize', checkWindowDimensions);
-
-		checkWindowDimensions();
-	}, [isHomePage]);
 
 	React.useEffect(() => {
 		window.addEventListener('resize', checkWindowDimensions);
@@ -61,10 +59,10 @@ export default function Header(props) {
 					</>
 					:
 					<>
-						<NavMenu isOpen={isNavMenuOpen} isLoggedIn={isLoggedIn} buttons={buttons}>
+						<NavMenu isOpen={isNavMenuOpen} isLoggedIn={isLoggedIn} buttons={buttons} navMenuClick={handleNavMenuClick}>
 							<HeaderButton isNavMenu={true} toggleNavMenu={toggleNavMenu} isLoggedIn={isLoggedIn} handleLogout={handleLogout} handleButtonClick={handleButtonClick} theme={theme} />
 						</NavMenu>
-						<Buttons.ButtonHamburger onClick={toggleNavMenu} theme={isNavMenuOpen} />
+						<Buttons.ButtonHamburger onClick={toggleNavMenu} theme={isNavMenuOpen} isChecked={isNavMenuOpen} />
 					</>
 				}
 			</header>

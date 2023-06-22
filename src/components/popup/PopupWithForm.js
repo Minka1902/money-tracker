@@ -8,7 +8,7 @@ export default function PopupWithForm(props) {
 	const handleLinkClick = (evt) => {
 		onClose();
 		handleSwitchPopup(evt);
-	}
+	};
 
 	return (
 		<div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}>
@@ -20,9 +20,9 @@ export default function PopupWithForm(props) {
 					<button type="submit" className={`popup__button${isValid ? '' : '_invalid'}`}>
 						{buttonText}
 					</button>
-					<h3 className="popup__link-text">or <Link onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3>
+					<h3 className="popup__link-text">or <Link to='/' onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3>
 				</form> : children}
-				{isForm ? <></> : <h3 className="popup__link-text">or <Link onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3>}
+				{isForm ? <></> : <h3 className="popup__link-text">or <Link to='/' onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3>}
 			</div>
 		</div >
 	);
