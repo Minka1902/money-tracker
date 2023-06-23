@@ -4,6 +4,7 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
 import Header from "../header/Header";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import usersApiOBJ from '../../utils/usersApi';
+import cardsApiObj from "../../utils/cardsApi";
 import * as auth from '../../utils/auth';
 import LoginPopup from '../popup/LoginPopup';
 import AddCardPopup from "../popup/AddCardPopup";
@@ -23,7 +24,7 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState('');
   const [isUserFound, setIsUserFound] = React.useState(true);
-  const [cards, setCards] = React.useState([{ company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '549', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', cvv: '123', name: 'michael scharff', expirationDate: '12/12' }, { company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }]);
+  const [cards, setCards] = React.useState();
   const [isSignUpPopupOpen, setIsSignUpPopupOpen] = React.useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
@@ -141,8 +142,37 @@ function App() {
     }
   };
 
-  const handleAddCardSubmit = (evt) => {
-    evt.preventDefault();
+  const handleAddCardSubmit = (card) => {
+    card.ownerId = currentUser.id;
+
+    cardsApiObj.createCard(card)
+      .then((data) => {
+        if (data) {
+          setCards([...cards, data]);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(`Error type: ${err.message}`);
+        }
+      })
+      .finally(() => {
+        setIsAddCardPopupOpen(false);
+      });
+  };
+
+  const getCards = () => {
+    cardsApiObj.getCards()
+      .then((data) => {
+        if (data) {
+          setCards(data);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(`Error type: ${err.message}`);
+        }
+      });
   };
 
   const switchPopups = (evt) => {
@@ -209,7 +239,7 @@ function App() {
     },
   ];
 
-  // * running the 'isAutoLogin' function in the beginning
+  // * running the 'isAutoLogin' and 'getCards'
   React.useEffect(() => {
     isAutoLogin();            // eslint-disable-next-line
   }, []);
@@ -257,14 +287,15 @@ function App() {
       <Switch>
         <ProtectedRoute exact path='/my-cards' loggedIn={loggedIn} >
           <section id="my-cards">
-            <h1 className="section__title"><span style={{ "text-transform": "capitalize" }}>{currentUser.username}</span> here you can find your cards</h1>
+            {getCards()}
+            <h1 className="section__title"><span style={{ "textTransform": "capitalize" }}>{currentUser.username}</span> here you can find your cards</h1>
             <div className="add-button__container">
               <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' />
             </div>
             <div className="cards">
-              {cards.map((card, index) => {
+              {cards ? cards.map((card, index) => {
                 return <CreditCard card={card} isFlipping={true} key={index} />
-              })}
+              }) : <p>You have no cards.<br /> Add some</p>}
             </div>
           </section>
         </ProtectedRoute>
@@ -273,7 +304,7 @@ function App() {
           <section id='about-us'>
             <h1 className="section__title">Here you can read about us.</h1>
             <div className="add-button__container">
-              <ButtonAdd onClick={setLoginPopupOpen} buttonText='Add new' title='Log in to add a new card.' />
+              <ButtonAdd onClick={loggedIn ? setAddCardOpen : setLoginPopupOpen} buttonText='Add new' title='Log in to add a new card.' />
             </div>
             <p>Meet our team</p>
             <h2>CEO</h2>
@@ -286,7 +317,7 @@ function App() {
           <section id='home'>
             <h1 className="section__title">Welcome to the new app</h1>
             <div className="add-button__container">
-              <ButtonAdd onClick={setLoginPopupOpen} buttonText='Add new' title='Log in to add a new card.' />
+              <ButtonAdd onClick={loggedIn ? setAddCardOpen : setLoginPopupOpen} buttonText='Add new' title='Log in to add a new card.' />
             </div>
           </section>
         </Route>

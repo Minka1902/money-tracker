@@ -4,16 +4,25 @@ export function CreditCardForm({ onSubmit, isOpen, displayCvv = true }) {
     const [name, setName] = React.useState('');
     const [cardNumber, setCardNumber] = React.useState(true);
     const [cardDate, setCardDate] = React.useState('');
-    const [isValid, setIsValid] = React.useState(false);
+    const [cvv, setCvv] = React.useState();
+
     // ! Resetting the popup when closing
     React.useEffect(() => {
         setName('');
+        setCardDate('');
+        setCardNumber(0);
+        setCvv(0);
     }, [isOpen]);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        onSubmit({ ownerName: name, cardNumber: cardNumber, expiry: cardDate, cvv: cvv });
+    }
 
     return (
         <>
             <div className="modal">
-                <form className="form" onSubmit={onSubmit}>
+                <form className="form" onSubmit={handleSubmit}>
                     <div className="credit-card-info--form">
                         <div className="input_container">
                             <label className="input_label">Card holder full name</label>
@@ -57,6 +66,8 @@ export function CreditCardForm({ onSubmit, isOpen, displayCvv = true }) {
                                     name="cvv"
                                     title="CVV"
                                     placeholder="CVV"
+                                    value={cvv}
+                                    onChange={(event) => setCvv(event.target.value)}
                                 />
                             </div>
                         </div>

@@ -22,14 +22,11 @@ class cardsApi {
 
     _handleResponse = (res) => (res.ok ? res.json() : Promise.reject(`Error: ${res.status}`));
 
-    createCard = ({ ownerName, cardNumber, expiry, cvv }) => this._fetch({ method: "POST", url: "/add-card", data: { ownerName, cardNumber, expiry, cvv } });
+    createCard = ({ ownerName, ownerId, cardNumber, expiry, cvv }) => this._fetch({ method: "POST", url: "/add-card", data: { ownerName, ownerId, cardNumber, expiry, cvv } });
 
-    getCards = () => this._fetch({ method: "GET", url: "/cards" });
+    getCards = () => this._fetch({ method: "GET", url: "/cards/all" });
 
     signUp = ({ email, password, username }) => this._fetch({ method: "POST", url: "/signup", data: { email, password, username } })
 }
-// ! DEBUG API
-// const usersApiOBJ = new usersApi({ auth: '4den6CaDRe58L5Jx85R7E38xpVcn8TZcyqznqZVpKFAjeqqG80eZQc1WCtRNM1Aq', rootUrl: 'http://localhost:3001' });
-// ! REAL API
-const cardsApi = new usersApi({ auth: '4den6CaDRe58L5Jx85R7E38xpVcn8TZcyqznqZVpKFAjeqqG80eZQc1WCtRNM1Aq', rootUrl: BASE_URL });
-export default cardsApi;
+const cardsApiObj = new cardsApi({ auth: '4den6CaDRe58L5Jx85R7E38xpVcn8TZcyqznqZVpKFAjeqqG80eZQc1WCtRNM1Aq', rootUrl: BASE_URL });
+export default cardsApiObj;
