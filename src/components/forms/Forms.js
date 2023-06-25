@@ -2,16 +2,16 @@ import React from "react";
 
 export function CreditCardForm({ onSubmit, isOpen, displayCvv = true }) {
     const [name, setName] = React.useState('');
-    const [cardNumber, setCardNumber] = React.useState(true);
+    const [cardNumber, setCardNumber] = React.useState('');
     const [cardDate, setCardDate] = React.useState('');
-    const [cvv, setCvv] = React.useState();
+    const [cvv, setCvv] = React.useState('');
 
     // ! Resetting the popup when closing
     React.useEffect(() => {
         setName('');
         setCardDate('');
-        setCardNumber(0);
-        setCvv(0);
+        setCardNumber('');
+        setCvv('');
     }, [isOpen]);
 
     const handleSubmit = (event) => {

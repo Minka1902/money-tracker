@@ -2,6 +2,7 @@ import './cards.css';
 import React from 'react';
 import photo from './michaelScharff.jpeg';
 import SvgWIFI from './WIFI.js';
+import { formatCreditCardNumber } from '../../constants/functions';
 
 const defProduct = { title: 'Product title', price: 123, description: 'Product description. Lorem ipsum dolor sit amet, consectetur adipisicing elit.', image: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRWifkO7X_yy9ojqDlG3YheD-iNku776zxxwlWzHPxYLwkIhSuLvjBZhq9uo5D5Af6nlMlqw-BKOxMTD4r5vp2uYaBXGKHuW-NldNMRIrKMVSedq0CSIRg0IACV7OKGCaC9eH8&usqp=CAc' }
 export function CardProduct1({ product = defProduct, onClick }) {
@@ -68,7 +69,7 @@ export function CreditCard({ card = defCard, onClick, isFlipping }) {
                         <div className='credit__wifi'>
                             <SvgWIFI color={'white'} is4={true} />
                         </div>
-                        <p className="credit__number">{card.cardNumber}</p>
+                        <p className="credit__number">{formatCreditCardNumber(card.cardNumber)}</p>
                         <p className="credit__valid_thru">VALID THRU</p>
                         <p className="credit__date">{card.expiry}</p>
                         <p className="credit__name">{card.ownerName}</p>

@@ -9,6 +9,10 @@
     cursor: default;
 }
 
+.capitalized {
+    text-transform: capitalize;
+}
+
 section {
     width: 100vw;
     background-color: rgb(246, 251, 255);

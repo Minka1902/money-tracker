@@ -169,8 +169,10 @@ function App() {
         }
       })
       .catch((err) => {
-        if (err) {
+        if (err.message) {
           console.log(`Error type: ${err.message}`);
+        } else {
+          console.log(`Error type: ${err}`);
         }
       });
   };
@@ -216,7 +218,7 @@ function App() {
     setCurrentUser(null);
     // setIsHomePage(true);
     localStorage.removeItem('jwt');
-    // history.push("/");
+    history.push("/");
   };
 
   const navButtons = [
@@ -294,8 +296,8 @@ function App() {
       <Switch>
         <ProtectedRoute exact path='/my-cards' loggedIn={loggedIn} >
           <section id="my-cards">
-            {getCards()}
-            <h1 className="section__title"><span style={{ "textTransform": "capitalize" }}>{currentUser.username}</span> here you can find your cards</h1>
+            {loggedIn ? getCards() : <></>}
+            {loggedIn ? <h1 className="section__title"><span className="capitalized">{currentUser.username}</span> here you can find your cards</h1> : <></>}
             <div className="add-button__container">
               <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' />
             </div>
@@ -363,7 +365,10 @@ function App() {
         handleSwitchPopup={switchPopups}
         onClose={closeAllPopups}
       />
-      <Footer />
+      <Footer>
+        <a className="footer__link" href='/about-us'>About</a>
+        <a className="footer__link" href='/'>Home</a>
+      </Footer>
     </CurrentUserContext.Provider >
   );
 };

@@ -66,71 +66,9 @@ export const removeDuplicates = (nums) => {
     return nums;
 };
 
-// ! 	
-// TODO 
-// ?  	
-export const minCostTickets = (days, costs) => {
-    const [_1day, _7day, _30day] = [0, 1, 2];
-    let travelDays = new Set(days);
-    let lastTravelDay = days[days.length - 1];
-    dpCost = new Array(lastTravelDay + 1).fill(0);
-    for (let day_i = 1; day_i <= lastTravelDay; day_i++) {
-        if (travelDays.has(day_i) == false) {
-            dpCost[day_i] = dpCost[day_i - 1];
-        } else {
-            dpCost[day_i] = Math.min(
-                dpCost[day_i - 1] + costs[_1day],
-                dpCost[Math.max(day_i - 7, 0)] + costs[_7day],
-                dpCost[Math.max(day_i - 30, 0)] + costs[_30day]
-            );
-        }
-    }
-    return dpCost[lastTravelDay];
-};
-
-// ! 	
-// TODO 
-// ?  	
-export const partitionString = (str) => {
-    const n = str.length;
-    const dp = new Array(n + 1).fill(Infinity);
-    dp[0] = 0;
-    for (let i = 1; i <= n; i++) {
-        const seen = new Set();
-        for (let j = i - 1; j >= 0; j--) {
-            if (seen.has(str[j])) break;
-            seen.add(str[j]);
-            dp[i] = Math.min(dp[i], dp[j] + 1);
-        }
-    }
-    return dp[n];
-};
-
-// ! 	
-// TODO 
-// ?  	
-export const numRescueBoats = (people, limit) => {
-    people.sort((a, b) => a - b);
-    let left = 0, rides = 0;
-    let right = people.length - 1;
-
-    while (left <= right) {
-        if (people[left] + people[right] <= limit) {
-            left++;
-            right--;
-            rides++;
-        } else {
-            right--;
-            rides++;
-        }
-    }
-
-    return rides;
-};
-
-// ! 	
-// TODO 
-// ?  	
+// ! 	gets an array of strings and sorts them by frequency.
+// TODO sortArrayByFrequency(['hi','hi','html','hi','html','israel','html','hi','css','hello','css','css','html','hello','html','hi','hello','hi'])
+// ?  	[hi, html, hello, css, israel]
 export const sortArrayByFrequency = (articles) => {
     const keywordCounts = {};
     for (let i = 0; i < articles.length; i++) {
@@ -148,11 +86,11 @@ export const sortArrayByFrequency = (articles) => {
     });
 
     return sortedKeywords;
-}
+};
 
 // ! 	gets an array of keywords and creates a string formatted like this: "Keyword 1, Keyword 2, Keyword 3, and N others".
-// TODO 
-// ?  	
+// TODO formatKeywordsString([hi, html, hello, css, israel])
+// ?  	'hi, html, hello, and 2 others'
 export const formatKeywordsString = (keywordsArray) => {
     const MAX_DISPLAY_COUNT = 3;
     let displayCount = 0;
@@ -177,14 +115,14 @@ export const formatKeywordsString = (keywordsArray) => {
     }
 
     return outputString;
-}
+};
 
 // ! 	gets a string and returns it with the first word capitalized
 // TODO capitalizeFirstWord('hello world.')
 // ?  	Hello world.
 export const capitalizeFirstWord = (str) => {
     return str.toLowerCase().replace(/^\w/, (c) => c.toUpperCase());
-}
+};
 
 // ! 	gets a string path and returns the simplest path possible
 // TODO simplifyPath('/home//foo/')
@@ -215,7 +153,7 @@ export const shortenString = (str) => {
         shortStr += " ...";
     }
     return shortStr;
-}
+};
 
 // ! 	gets 2 locations and calculates distance between them (lat, lng)
 // TODO calcDistance({ lat1: 31.89286, lon1: 35.03255, lat2: 31.88159, lon2: 34.99352 })
@@ -231,14 +169,14 @@ export const calcDistance = ({ lat1, lon1, lat2, lon2 }) => {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c; // Distance in km
     return (distance.toFixed(3));
-}
+};
 
 // ! 	gets a numeric degree and converts it to radians
 // TODO deg2rad(31.88159 - 31.89286)
 // ?  	-0.00019669860669975517
 const deg2rad = (deg) => {
     return deg * (Math.PI / 180);
-}
+};
 
 // ! 	gets a string and removes the first letter
 // TODO removeFirstLetter('ABCD')
@@ -249,11 +187,11 @@ export const removeFirstLetter = (str) => {
         tempStr += str[i];
     }
     return tempStr;
-}
+};
 
 // ! 	gets a string and index and removes the letter in the index
-// TODO removeIndexedLetter('ABCD', 1)
-// ?  	BCD
+// TODO removeIndexedLetter('ABCD', 1), removeIndexedLetter('ABCD', 4)
+// ?  	BCD, ABC
 export const removeIndexedLetter = (str, index) => {
     let tempStr = '';
     for (let i = 0; i < str.length; i++) {
@@ -262,7 +200,7 @@ export const removeIndexedLetter = (str, index) => {
         }
     }
     return tempStr;
-}
+};
 
 // ! 	gets a number and returns 1 if its positive -1 if its negative 0 if its 0 or null
 // TODO signFunc(Number)
@@ -275,4 +213,24 @@ export const signFunc = (num) => {
     } else if (num === 0 || !num) {
         return 0;
     }
-}
+};
+
+// ! 	gets a credit card number and returns a string XXXX XXXX XXXX XXXX 
+// TODO formatCreditCardNumber(1111222233334444)
+// ?  	1111 2222 3333 4444
+export const formatCreditCardNumber = (number) => {
+    const str = number.toString();
+    let formattedText = '';
+    for (let i = 0; i < str.length; i++) {
+        if ((i + 1) % 4 === 0) {
+            if (i < 15) {
+                formattedText += `${str[i]} `;
+            } else {
+                formattedText += str[i];
+            }
+        } else {
+            formattedText += str[i];
+        }
+    }
+    return formattedText;
+};
