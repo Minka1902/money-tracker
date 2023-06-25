@@ -216,7 +216,7 @@ function App() {
     setCurrentUser(null);
     // setIsHomePage(true);
     localStorage.removeItem('jwt');
-    history.push("/");
+    // history.push("/");
   };
 
   const navButtons = [
