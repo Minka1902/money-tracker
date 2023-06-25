@@ -3,19 +3,29 @@ import './rightClickMenu.css';
 
 let rightMenuOptions = [{ buttonText: 'log class list.', buttonClicked: (target) => console.log(`Logout: ${target}`) },];
 
-export default function RightClickMenu({ items = rightMenuOptions, whatToReturn = 'classList' }) {
+export default function RightClickMenu({ items = rightMenuOptions }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const [evt, setEvt] = React.useState(undefined);
     const [menuItems, setMenuItems] = React.useState(items);
 
     const handleItemClick = (item) => {
-        if (evt.target[whatToReturn]) {
-            item.buttonClicked(evt.target[whatToReturn]);
+        if (handleFilter(evt.target, item.filter).found) {
+            item.buttonClicked(handleFilter(evt.target, item.filter));
         } else {
             item.buttonClicked(evt.target.classList);
         }
         setIsOpen(false);
+    };
+
+    const handleFilter = (element, filter) => {
+        if (element.classList.contains(filter)) {
+            return { found: true, id: element.id };
+        }
+        if (element.nodeName === 'BODY') {
+            return { found: false };
+        }
+        return handleFilter(element.parentElement, filter);
     };
 
     const isLinks = (evt) => {

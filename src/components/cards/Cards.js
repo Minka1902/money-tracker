@@ -53,11 +53,11 @@ export function CardPerson({ person = defPerson, onClick }) {
     );
 };
 
-const defCard = { company: 'Mastercard', number: '1111 2222 3333 4444', name: 'michael scharff', expirationDate: '12/12' }
+const defCard = { company: 'Mastercard', cardNumber: '1111 2222 3333 4444', ownerName: 'michael scharff', expiry: '12/12', cvv: '123' }
 export function CreditCard({ card = defCard, onClick, isFlipping }) {
     return (
         <>
-            <div className="flip-card" onClick={onClick}>
+            <div className="flip-card" id={`${card.cardNumber}`} onClick={onClick}>
                 <div className={`flip-card-inner ${isFlipping ? 'flipping' : ''}`}>
                     <div className="flip-card-front">
                         <p className="credit__heading">{card.company ? card.company : 'Mastercard'}</p>

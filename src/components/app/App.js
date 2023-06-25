@@ -13,6 +13,7 @@ import SignUpPopup from "../popup/SignUpPopup";
 import { CreditCard } from "../cards/Cards";
 import Footer from '../footer/Footer'
 import { ButtonAdd } from "../buttons/Buttons";
+import RightClickMenu from "../rightClickMenu/RightClickMenu";
 
 // ! 0J3IUsnOu2Xk8cEj mongo password
 
@@ -118,7 +119,6 @@ function App() {
       })
       .finally(() => {
         closeAllPopups();
-        setIsConfirmPopupOpen(true);
       })
   };
 
@@ -175,6 +175,10 @@ function App() {
       });
   };
 
+  const deleteCard = (cardId) => {
+    console.log(`Deleting ${cardId.id}`);
+  };
+
   const switchPopups = (evt) => {
     closeAllPopups();
     if (evt.target.parentElement.parentElement.parentElement.parentElement.classList.contains(`popup_type_add-card`)) {
@@ -215,7 +219,7 @@ function App() {
     history.push("/");
   };
 
-  const buttons = [
+  const navButtons = [
     {
       name: 'Home',
       isAllowed: true,
@@ -238,6 +242,8 @@ function App() {
       }
     },
   ];
+
+  const rightClickItems = [{ buttonText: 'Delete card', buttonClicked: deleteCard, filter: 'flip-card' }];
 
   // * running the 'isAutoLogin' and 'getCards'
   React.useEffect(() => {
@@ -276,11 +282,12 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
+      <RightClickMenu items={rightClickItems} />
       <Header
         noScroll={noScroll}
         scroll={scroll}
         isLoggedIn={loggedIn}
-        buttons={buttons}
+        buttons={navButtons}
         handleLogout={handleLogout}
         handleButtonClick={openPopup}
       />
