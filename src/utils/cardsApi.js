@@ -25,8 +25,8 @@ class cardsApi {
     createCard = ({ ownerName, ownerId, cardNumber, expiry, cvv }) => this._fetch({ method: "POST", url: "/add-card", data: { ownerName, ownerId, cardNumber, expiry, cvv } });
 
     getCards = () => this._fetch({ method: "GET", url: "/cards/all" });
-
-    signUp = ({ email, password, username }) => this._fetch({ method: "POST", url: "/signup", data: { email, password, username } })
+    
+    deleteCard = (cardId) => this._fetch({ method: "DELETE", url: `/cards/delete/${cardId}` });
 }
 const cardsApiObj = new cardsApi({ auth: '4den6CaDRe58L5Jx85R7E38xpVcn8TZcyqznqZVpKFAjeqqG80eZQc1WCtRNM1Aq', rootUrl: BASE_URL });
 export default cardsApiObj;

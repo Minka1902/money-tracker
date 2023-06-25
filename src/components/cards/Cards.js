@@ -57,7 +57,7 @@ const defCard = { company: 'Mastercard', cardNumber: '1111 2222 3333 4444', owne
 export function CreditCard({ card = defCard, onClick, isFlipping }) {
     return (
         <>
-            <div className="flip-card" id={`${card.cardNumber}`} onClick={onClick}>
+            <div className="flip-card" id={`${card._id}`} onClick={onClick}>
                 <div className={`flip-card-inner ${isFlipping ? 'flipping' : ''}`}>
                     <div className="flip-card-front">
                         <p className="credit__heading">{card.company ? card.company : 'Mastercard'}</p>
