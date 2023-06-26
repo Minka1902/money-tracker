@@ -29,6 +29,7 @@ function App() {
   const [isSignUpPopupOpen, setIsSignUpPopupOpen] = React.useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
+  const [isDeleteCard, setIsDeleteCard] = React.useState(true);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
   const [cardIdToWatch, setCardIdToWatch] = React.useState('');
 
@@ -60,6 +61,7 @@ function App() {
     setIsLoginPopupOpen(false);
     setIsAddCardPopupOpen(false);
     setIsConfirmPopupOpen(false);
+    setIsDeleteCard(true);
     if (window.innerWidth < 520) {
       scroll();
     } else {
@@ -69,7 +71,8 @@ function App() {
 
   const signupSuccessful = () => {
     closeAllPopups();
-    setIsLoginPopupOpen(true);
+    setIsDeleteCard(false);
+    setConfirmPopupOpen();
   };
 
   // * Handling login form submit
@@ -92,7 +95,6 @@ function App() {
         setLoggedIn(false);
       })
       .finally(() => {
-        // gettingSavedArticles();
       })
   };
 
@@ -124,10 +126,7 @@ function App() {
       .signUp({ email, password, username })
       .catch((err) => {
         console.log(`Error type: ${err.message}`)
-      })
-      .finally(() => {
-        closeAllPopups();
-      })
+      });
   };
 
   // * checking if should auto-login
@@ -186,7 +185,6 @@ function App() {
   };
 
   const deleteCard = (cardId) => {
-    // console.log(`Deleting ${cardId.id}`);
     closeAllPopups();
   };
 
@@ -257,7 +255,9 @@ function App() {
     },
   ];
 
-  const rightClickItems = [{ buttonText: 'Delete card', buttonClicked: setConfirmPopupOpen, filter: 'flip-card' }];
+  const rightClickItems = [{ buttonText: 'delete card', buttonClicked: setConfirmPopupOpen, filter: 'flip-card' },
+  { buttonText: 'sign out', buttonClicked: handleLogout, filter: 'header' },
+  { buttonText: 'add card', buttonClicked: setAddCardOpen, filter: 'my_cards' },];
 
   // * running the 'isAutoLogin' and 'getCards'
   React.useEffect(() => {
@@ -313,7 +313,7 @@ function App() {
         </ProtectedRoute>
 
         <ProtectedRoute path='/my-cards' exact loggedIn={loggedIn} >
-          <section id="my-cards">
+          <section id="my-cards" className="my_cards">
             {loggedIn ? getCards() : <></>}
             {loggedIn ? <h1 className="section__title"><span className="capitalized">{currentUser.username}</span> here you can find your cards</h1> : <></>}
             <div className="add-button__container">
@@ -369,7 +369,7 @@ function App() {
 
       <PopupConfirm
         isOpen={isConfirmPopupOpen}
-        isDeleteSource={true}
+        isDeleteCard={isDeleteCard}
         signupSuccessful={signupSuccessful}
         onClose={closeAllPopups}
         handleSubmit={deleteCard}
@@ -384,7 +384,7 @@ function App() {
         onClose={closeAllPopups}
       />
       <Footer>
-        <a className="footer__link" href='/'>Home</a>
+        <a className="footer__link" href='http://127.0.0.1:3000'>Home</a>
       </Footer>
     </CurrentUserContext.Provider >
   );

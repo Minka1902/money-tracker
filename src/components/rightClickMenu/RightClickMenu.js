@@ -12,7 +12,7 @@ export default function RightClickMenu({ items = rightMenuOptions }) {
     const handleItemClick = (item) => {
         if (handleFilter(evt.target, item.filter).found) {
             item.buttonClicked(handleFilter(evt.target, item.filter));
-        } 
+        }
         setIsOpen(false);
     };
 
@@ -25,6 +25,7 @@ export default function RightClickMenu({ items = rightMenuOptions }) {
                 return { found: false };
             }
             return handleFilter(element.parentElement, filter);
+
         }
         return { found: false };
     };
@@ -42,14 +43,14 @@ export default function RightClickMenu({ items = rightMenuOptions }) {
     // ! setting the position of the right click menu to the mouse position, opening the menu, and checking what menu should be opened
     React.useEffect(() => {
         const handleContextMenu = (event) => {
+            setIsOpen(false);
             event.preventDefault();
-            if (isLinks(event)) {
-                setMenuItems([{ buttonText: 'Open link in new tab', buttonClicked: () => window.open(event.target.href, "_blank") }]);
-            } else {
-                setMenuItems(items);
-            }
             setEvt(event);
-            setIsOpen(true);
+            for (let i = 0; i < items.length; i++) {
+                if (handleFilter(event.target, items[i].filter).found) {
+                    setIsOpen(true);
+                }
+            }
             setPosition({ x: event.clientX, y: event.clientY });
         };
 
@@ -86,7 +87,7 @@ export default function RightClickMenu({ items = rightMenuOptions }) {
             {menuItems.map((item, index) => (
                 <button
                     key={index}
-                    className="menu-item"
+                    className={`menu-item${handleFilter(evt ? evt.target : undefined, item.filter).found ? '' : ' none'}`}
                     onClick={() => handleItemClick(item)}
                 >
                     {item.buttonText.toLowerCase().replace(/^\w/, (c) => c.toUpperCase())}

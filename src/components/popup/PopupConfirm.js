@@ -1,12 +1,12 @@
 import PopupWithForm from './PopupWithForm';
 
 export default function PopupConfirm(props) {
-    const { isOpen, onClose, handleSubmit, isDeleteSource = false, signupSuccessful } = props;
+    const { isOpen, onClose, handleSubmit, isDeleteCard = false, signupSuccessful } = props;
 
     const onSubmit = (evt) => {
         evt.preventDefault();
         if (evt.type === 'submit' && evt.target.classList.contains('popup__form')) {
-            if (isDeleteSource) {
+            if (isDeleteCard) {
                 handleSubmit();
             } else {
                 signupSuccessful();
@@ -23,7 +23,7 @@ export default function PopupConfirm(props) {
 
     return (
         <>
-            {isDeleteSource ?
+            {isDeleteCard ?
                 <PopupWithForm linkText='Leave this popup.' onSubmit={onSubmit} isValid={true} name="confirm" title="Sure you want to delete?" isOpen={isOpen} onClose={onClose} buttonText={'Yes, i am sure.'}>
                     <button className='popup__button' onClick={dontDelete}>
                         Don`t delete.
