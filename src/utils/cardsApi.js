@@ -25,7 +25,9 @@ class cardsApi {
     createCard = ({ ownerName, ownerId, cardNumber, expiry, cvv }) => this._fetch({ method: "POST", url: "/add-card", data: { ownerName, ownerId, cardNumber, expiry, cvv } });
 
     getCards = () => this._fetch({ method: "GET", url: "/cards/all" });
-    
+
+    getCard = (cardId) => this._fetch({ method: "GET", url: `/cards/${cardId}` });
+
     deleteCard = (cardId) => this._fetch({ method: "DELETE", url: `/cards/delete/${cardId}` });
 }
 const cardsApiObj = new cardsApi({ auth: '4den6CaDRe58L5Jx85R7E38xpVcn8TZcyqznqZVpKFAjeqqG80eZQc1WCtRNM1Aq', rootUrl: BASE_URL });

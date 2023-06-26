@@ -216,20 +216,26 @@ export const signFunc = (num) => {
 };
 
 // ! 	gets a credit card number and returns a string XXXX XXXX XXXX XXXX 
-// TODO formatCreditCardNumber(1111222233334444)
-// ?  	1111 2222 3333 4444
-export const formatCreditCardNumber = (number) => {
+// TODO formatCreditCardNumber(1111222233334444, true, 8), formatCreditCardNumber(1111222233334444, true, 12), formatCreditCardNumber(1111222233334444, false, 13)
+// ?  	XXXX XXXX 3333 4444, XXXX XXXX XXXX 4444, 1111 2222 3333 4444
+export const formatCreditCardNumber = (number, isHidden, howMuch) => {
     const str = number.toString();
     let formattedText = '';
     for (let i = 0; i < str.length; i++) {
         if ((i + 1) % 4 === 0) {
-            if (i < 15) {
-                formattedText += `${str[i]} `;
+            if (i < 16) {
+                if (isHidden && i < howMuch) {
+                    formattedText += `X `;
+                } else {
+                    formattedText += `${str[i]} `;
+                }
+            }
+        } else {
+            if (isHidden && i < howMuch) {
+                formattedText += 'X';
             } else {
                 formattedText += str[i];
             }
-        } else {
-            formattedText += str[i];
         }
     }
     return formattedText;

@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch, withRouter, useHistory } from 'react-router-dom';
+import { formatCreditCardNumber } from "../../constants/functions";
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import Header from "../header/Header";
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
@@ -32,6 +33,7 @@ function App() {
   const [isDeleteCard, setIsDeleteCard] = React.useState(true);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
   const [cardIdToWatch, setCardIdToWatch] = React.useState('');
+  const [card, setCard] = React.useState();
 
   const noScroll = () => html.classList.add('no-scroll');
 
@@ -46,6 +48,7 @@ function App() {
   const handleCardClick = (cardId) => {
     setCardIdToWatch(cardId);
     history.push(`/card/${cardId}`);
+    getCard(cardId);
   }
 
   const chooseAddButtonPopup = () => {
@@ -93,9 +96,7 @@ function App() {
           setIsUserFound(false);
         }
         setLoggedIn(false);
-      })
-      .finally(() => {
-      })
+      });
   };
 
   const findUserInfo = () => {
@@ -184,6 +185,20 @@ function App() {
       });
   };
 
+  const getCard = (cardId) => {
+    cardsApiObj.getCard(cardId)
+      .then((data) => {
+        if (data) {
+          setCard(data);
+        }
+      })
+      .catch((err) => {
+        if (err.message) {
+          console.log(`Error type: ${err.message}`);
+        }
+      });
+  };
+
   const deleteCard = (cardId) => {
     closeAllPopups();
   };
@@ -242,6 +257,7 @@ function App() {
       isAllowed: false,
       onClick: () => {
         history.push("/my-cards");
+        getCards();
         setCardIdToWatch(null);
       }
     },
@@ -308,13 +324,12 @@ function App() {
       <Switch>
         <ProtectedRoute path={`/card/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
           <section id="card">
-            <h1 className="section__title">card {cardIdToWatch}</h1>
+            <h1 className="section__title">Card: {card ? formatCreditCardNumber(card.cardNumber, true, 12) : ''}</h1>
           </section>
         </ProtectedRoute>
 
         <ProtectedRoute path='/my-cards' exact loggedIn={loggedIn} >
           <section id="my-cards" className="my_cards">
-            {loggedIn ? getCards() : <></>}
             {loggedIn ? <h1 className="section__title"><span className="capitalized">{currentUser.username}</span> here you can find your cards</h1> : <></>}
             <div className="add-button__container">
               <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' />

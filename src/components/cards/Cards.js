@@ -74,7 +74,7 @@ export function CreditCard({ card = defCard, onClick, isFlipping }) {
                         <div className='credit__wifi'>
                             <SvgWIFI color={'white'} is4={true} />
                         </div>
-                        <p className="credit__number">{formatCreditCardNumber(card.cardNumber)}</p>
+                        <p className="credit__number">{formatCreditCardNumber(card.cardNumber, true, 8)}</p>
                         <p className="credit__valid_thru">VALID THRU</p>
                         <p className="credit__date">{card.expiry}</p>
                         <p className="credit__name">{card.ownerName}</p>
