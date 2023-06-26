@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import * as React from 'react';
+import { useHistory } from 'react-router-dom';
 
 export default function PopupWithForm(props) {
 	const { linkText, name, title, onSubmit, children, isValid, linkClick, buttonText, isOpen, onClose, isForm = true } = props;
+	const history = useHistory();
 
 	// ! Switching between popups
 	const handleLinkClick = (evt) => {
@@ -22,9 +24,9 @@ export default function PopupWithForm(props) {
 					<button type="submit" className={`popup__button${isValid ? '' : '_invalid'}`}>
 						{buttonText}
 					</button>
-					<h3 className="popup__link-text">or <Link to='/' onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3>
+					<h3 className="popup__link-text">or <Link to={history.location.pathname} onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3>
 				</form> : children}
-				{isForm ? <></> : <h3 className="popup__link-text">or <Link to='/' onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3>}
+				{isForm ? <></> : <h3 className="popup__link-text">or <Link to={history.location.pathname} onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3>}
 			</div>
 		</div >
 	);
