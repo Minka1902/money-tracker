@@ -1,5 +1,5 @@
 export default function PopupProject(props) {
-    const { isOpen, onClose, imageSrc, imageDiscription, imageAlt } = props;
+    const { isOpen, onClose, imageSrc, imageDescription, imageAlt } = props;
 
     const closeButton = () => {
         onClose({isProject: true});
@@ -11,7 +11,7 @@ export default function PopupProject(props) {
                 <button className="popup__close-button" type="button" aria-label="close" onClick={closeButton}></button>
                 <h2 className="popup__title_project">{imageAlt}</h2>
                 <img className="popup__image" src={imageSrc} alt={imageAlt} />
-                <h2 className="popup__text">{imageDiscription}</h2>
+                <h2 className="popup__text">{imageDescription}</h2>
             </div>
         </div>
     );

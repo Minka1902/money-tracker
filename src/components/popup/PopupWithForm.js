@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom';
 import * as React from 'react';
 
 export default function PopupWithForm(props) {
-	const { linkText, name, title, onSubmit, children, isValid, handleSwitchPopup, buttonText, isOpen, onClose, isForm = true } = props;
+	const { linkText, name, title, onSubmit, children, isValid, linkClick, buttonText, isOpen, onClose, isForm = true } = props;
 
 	// ! Switching between popups
 	const handleLinkClick = (evt) => {
 		onClose();
-		handleSwitchPopup(evt);
+		if (linkClick) {
+			linkClick(evt);
+		}
 	};
 
 	return (

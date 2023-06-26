@@ -122,7 +122,7 @@ export default function SignUpPopup(props) {
   }, [email, password, username]);
 
   return (
-    <PopupWithForm name="signup" isValid={isValid} title="Sign up" onSubmit={handleSubmit} handleSwitchPopup={handleSwitchPopup} isOpen={isOpen} onClose={onClose} linkText="Sign in" buttonText={buttonText}>
+    <PopupWithForm name="signup" isValid={isValid} title="Sign up" onSubmit={handleSubmit} linkClick={handleSwitchPopup} isOpen={isOpen} onClose={onClose} linkText="Sign in" buttonText={buttonText}>
       <h3 className='popup__input-title'>Email</h3>
       <input
         className="popup__input"

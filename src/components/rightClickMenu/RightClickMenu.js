@@ -12,20 +12,21 @@ export default function RightClickMenu({ items = rightMenuOptions }) {
     const handleItemClick = (item) => {
         if (handleFilter(evt.target, item.filter).found) {
             item.buttonClicked(handleFilter(evt.target, item.filter));
-        } else {
-            item.buttonClicked(evt.target.classList);
-        }
+        } 
         setIsOpen(false);
     };
 
     const handleFilter = (element, filter) => {
-        if (element.classList.contains(filter)) {
-            return { found: true, id: element.id };
+        if (element) {
+            if (element.classList.contains(filter)) {
+                return { found: true, id: element.id };
+            }
+            if (element.nodeName === 'BODY') {
+                return { found: false };
+            }
+            return handleFilter(element.parentElement, filter);
         }
-        if (element.nodeName === 'BODY') {
-            return { found: false };
-        }
-        return handleFilter(element.parentElement, filter);
+        return { found: false };
     };
 
     const isLinks = (evt) => {

@@ -12,7 +12,7 @@ export default function AddCardPopup(props) {
 
     return (
         <>
-            <PopupWithForm isForm={false} handleSwitchPopup={handleSwitchPopup} linkText={isLoggedIn ? 'Sign out' : linkText} name="add-card" title="Add a card" isOpen={isOpen} onClose={onClose}>
+            <PopupWithForm isForm={false} linkClick={handleSwitchPopup} linkText={isLoggedIn ? 'Sign out' : linkText} name="add-card" title="Add a card" isOpen={isOpen} onClose={onClose}>
                 {isLoggedIn ?
                     <CreditCardForm onSubmit={handleSubmit} isOpen={isOpen} />
                     :

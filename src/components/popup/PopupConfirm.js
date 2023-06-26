@@ -24,7 +24,7 @@ export default function PopupConfirm(props) {
     return (
         <>
             {isDeleteSource ?
-                <PopupWithForm onSubmit={onSubmit} isValid={true} name="confirm" title="Sure you want to delete?" isOpen={isOpen} onClose={onClose} buttonText={'Yes, i am sure.'}>
+                <PopupWithForm linkText='Leave this popup.' onSubmit={onSubmit} isValid={true} name="confirm" title="Sure you want to delete?" isOpen={isOpen} onClose={onClose} buttonText={'Yes, i am sure.'}>
                     <button className='popup__button' onClick={dontDelete}>
                         Don`t delete.
                     </button>

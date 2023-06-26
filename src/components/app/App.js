@@ -30,6 +30,7 @@ function App() {
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
+  const [cardIdToWatch, setCardIdToWatch] = React.useState('');
 
   const noScroll = () => html.classList.add('no-scroll');
 
@@ -38,6 +39,13 @@ function App() {
   const setAddCardOpen = () => setIsAddCardPopupOpen(true);
 
   const setLoginPopupOpen = () => setIsLoginPopupOpen(true);
+
+  const setConfirmPopupOpen = () => setIsConfirmPopupOpen(true);
+
+  const handleCardClick = (cardId) => {
+    setCardIdToWatch(cardId);
+    history.push(`/card/${cardId}`);
+  }
 
   const chooseAddButtonPopup = () => {
     if (loggedIn) {
@@ -53,9 +61,9 @@ function App() {
     setIsAddCardPopupOpen(false);
     setIsConfirmPopupOpen(false);
     if (window.innerWidth < 520) {
-      noScroll();
-    } else {
       scroll();
+    } else {
+      noScroll();
     }
   };
 
@@ -178,7 +186,8 @@ function App() {
   };
 
   const deleteCard = (cardId) => {
-    console.log(`Deleting ${cardId.id}`);
+    // console.log(`Deleting ${cardId.id}`);
+    closeAllPopups();
   };
 
   const switchPopups = (evt) => {
@@ -227,6 +236,7 @@ function App() {
       isAllowed: true,
       onClick: () => {
         history.push("/");
+        setCardIdToWatch(null);
       }
     },
     {
@@ -234,6 +244,7 @@ function App() {
       isAllowed: false,
       onClick: () => {
         history.push("/my-cards");
+        setCardIdToWatch(null);
       }
     },
     {
@@ -241,11 +252,12 @@ function App() {
       isAllowed: true,
       onClick: () => {
         history.push("/about-us");
+        setCardIdToWatch(null);
       }
     },
   ];
 
-  const rightClickItems = [{ buttonText: 'Delete card', buttonClicked: deleteCard, filter: 'flip-card' }];
+  const rightClickItems = [{ buttonText: 'Delete card', buttonClicked: setConfirmPopupOpen, filter: 'flip-card' }];
 
   // * running the 'isAutoLogin' and 'getCards'
   React.useEffect(() => {
@@ -294,7 +306,13 @@ function App() {
         handleButtonClick={openPopup}
       />
       <Switch>
-        <ProtectedRoute exact path='/my-cards' loggedIn={loggedIn} >
+        <ProtectedRoute path={`/card/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
+          <section id="card">
+            <h1 className="section__title">card {cardIdToWatch}</h1>
+          </section>
+        </ProtectedRoute>
+
+        <ProtectedRoute path='/my-cards' exact loggedIn={loggedIn} >
           <section id="my-cards">
             {loggedIn ? getCards() : <></>}
             {loggedIn ? <h1 className="section__title"><span className="capitalized">{currentUser.username}</span> here you can find your cards</h1> : <></>}
@@ -303,7 +321,7 @@ function App() {
             </div>
             <div className="cards">
               {cards ? cards.map((card, index) => {
-                return <CreditCard card={card} isFlipping={true} key={index} />
+                return <CreditCard card={card} isFlipping={false} key={index} onClick={handleCardClick} />
               }) : <p>You have no cards.<br /> Add some</p>}
             </div>
           </section>
@@ -354,7 +372,7 @@ function App() {
         isDeleteSource={true}
         signupSuccessful={signupSuccessful}
         onClose={closeAllPopups}
-      // handleSubmit={deleteSource}
+        handleSubmit={deleteCard}
       />
 
       <AddCardPopup
@@ -366,7 +384,6 @@ function App() {
         onClose={closeAllPopups}
       />
       <Footer>
-        <a className="footer__link" href='/about-us'>About</a>
         <a className="footer__link" href='/'>Home</a>
       </Footer>
     </CurrentUserContext.Provider >

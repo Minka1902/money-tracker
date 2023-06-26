@@ -56,9 +56,14 @@ export function CardPerson({ person = defPerson, onClick }) {
 
 const defCard = { company: 'Mastercard', cardNumber: '1111 2222 3333 4444', ownerName: 'michael scharff', expiry: '12/12', cvv: '123' }
 export function CreditCard({ card = defCard, onClick, isFlipping }) {
+    const handleClick = (e) => {
+        e.preventDefault();
+        onClick(card._id);
+    };
+
     return (
         <>
-            <div className="flip-card" id={`${card._id}`} onClick={onClick}>
+            <div className="flip-card" id={`${card._id}`} onClick={handleClick}>
                 <div className={`flip-card-inner ${isFlipping ? 'flipping' : ''}`}>
                     <div className="flip-card-front">
                         <p className="credit__heading">{card.company ? card.company : 'isracard'}</p>

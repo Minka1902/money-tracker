@@ -207,6 +207,12 @@
     width: 240px;
     height: 154px;
     perspective: 1000px;
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+}
+
+.flip-card:hover {
+    transform: scale(1.04, 1.04);
 }
 
 .credit__heading {
