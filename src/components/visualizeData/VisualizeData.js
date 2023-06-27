@@ -31,13 +31,13 @@ export function EntryMessage({ entry }) {
                 <span className="entry-card-owner">{currentUser.username}</span>
             </div>
             <div className="entry-card-body">
-                <div className="entry-card-details">
+                <div className="entry-card-details" title={`${amount} ${currency}`}>
                     <span className="entry-card-amount">{amount}</span>
                     <span className="entry-card-currency">{currency}</span>
                 </div>
                 <div className="entry-card-description">
-                    <span className="entry-card-spent-at">Spent at: {spentAt}</span>
-                    {comment ? <span className="entry-card-comment">Comment: {capitalizeFirstWord(comment)}</span> : <></>}
+                    <span className="entry-card-spent-at" title={spentAt}>Spent at: <span className='capitalize'>{spentAt}</span></span>
+                    {comment ? <span className="entry-card-comment" title={comment}>Comment: {capitalizeFirstWord(comment)}</span> : <></>}
                 </div>
             </div>
         </div>
