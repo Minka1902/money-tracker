@@ -78,6 +78,16 @@ export default function RightClickMenu({ items = rightMenuOptions, setElementId 
         return () => document.removeEventListener('keydown', closeByEscape);
     }, []);
 
+    //! closing the menu when the user start dragging
+    React.useEffect(() => {
+        const closeWhenDrag = () => {
+            setIsOpen(false);
+        };
+
+        document.addEventListener('scroll', closeWhenDrag);
+        return () => document.removeEventListener('scroll', closeWhenDrag);
+    }, []);
+
     return (
         <div className={`right-click-menu ${isOpen ? 'open' : ''}`} style={{ top: position.y, left: position.x }}>
             {items.map((item, index) => (
