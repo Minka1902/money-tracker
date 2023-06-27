@@ -2,7 +2,7 @@ import React from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CreditCardForm } from "../forms/Forms";
 
-export default function AddCardPopup(props) {
+export default function PopupAddCard(props) {
     const { linkText, isOpen, handleSwitchPopup, onSubmit, isLoggedIn, onClose } = props;
 
     // ! submit

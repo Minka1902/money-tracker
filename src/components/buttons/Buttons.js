@@ -209,10 +209,10 @@ export function ButtonSubmit() {
                     Submit
                     <SvgSend />
                 </span>
-                <span>
+                <span className="button-submit__span">
                     Sure ?
                 </span>
-                <span>
+                <span className="button-submit__span">
                     Done
                     <SvgDoubleCheck color='white' />
                 </span>

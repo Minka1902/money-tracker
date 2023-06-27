@@ -1,21 +1,22 @@
 import React from "react";
 import { Route, Switch, withRouter, useHistory } from 'react-router-dom';
 import { formatCreditCardNumber } from "../../constants/functions";
-import CurrentUserContext from '../../contexts/CurrentUserContext';
-import Header from "../header/Header";
-import ProtectedRoute from "../protectedRoute/ProtectedRoute";
+import { CreditCard } from "../cards/Cards";
+import { ButtonAdd } from "../buttons/Buttons";
+import { EntryMessage } from '../visualizeData/VisualizeData';
+import * as auth from '../../utils/auth';
 import usersApiOBJ from '../../utils/usersApi';
 import cardsApiObj from "../../utils/cardsApi";
-import * as auth from '../../utils/auth';
-import LoginPopup from '../popup/LoginPopup';
-import AddCardPopup from "../popup/AddCardPopup";
+import Header from "../header/Header";
+import CurrentUserContext from '../../contexts/CurrentUserContext';
+import ProtectedRoute from "../protectedRoute/ProtectedRoute";
+import PopupAddEntry from "../popup/PopupAddEntry";
+import PopupLogin from '../popup/PopupLogin';
+import PopupAddCard from "../popup/PopupAddCard";
 import PopupConfirm from "../popup/PopupConfirm";
-import SignUpPopup from "../popup/SignUpPopup";
-import { CreditCard } from "../cards/Cards";
+import PopupSignUp from "../popup/PopupSignUp";
 import Footer from '../footer/Footer'
-import { ButtonAdd } from "../buttons/Buttons";
 import RightClickMenu from "../rightClickMenu/RightClickMenu";
-import { EntryMessage } from '../message/Message';
 
 function App() {
   const currentUserContext = React.useContext(CurrentUserContext);
@@ -69,6 +70,7 @@ function App() {
     setIsLoginPopupOpen(false);
     setIsAddCardPopupOpen(false);
     setIsConfirmPopupOpen(false);
+    setIsEntryPopupOpen(false);
     setIsDeleteCard(true);
     if (window.innerWidth < 520) {
       scroll();
@@ -300,6 +302,7 @@ function App() {
     { buttonText: 'delete card', buttonClicked: setConfirmPopupOpen, filter: 'flip-card' },
     { buttonText: 'sign out', buttonClicked: handleLogout, filter: 'header' },
     { buttonText: 'add card', buttonClicked: setAddCardOpen, filter: 'my_cards' },
+    { buttonText: 'add card', buttonClicked: setAddCardOpen, filter: 'my_cards' },
   ];
 
   // * running the 'isAutoLogin' and 'getCards'
@@ -399,7 +402,7 @@ function App() {
           </section>
         </Route>
       </Switch>
-      <SignUpPopup
+      <PopupSignUp
         isOpen={isSignUpPopupOpen}
         onClose={closeAllPopups}
         handleSignup={handleSignupSubmit}
@@ -407,7 +410,7 @@ function App() {
         handleSwitchPopup={switchPopups}
       />
 
-      <LoginPopup
+      <PopupLogin
         handleLogin={handleLoginSubmit}
         isOpen={isLoginPopupOpen}
         isFound={isUserFound}
@@ -425,7 +428,13 @@ function App() {
         handleSubmit={deleteCard}
       />
 
-      <AddCardPopup
+      <PopupAddEntry
+        onSubmit={handleAddCardSubmit}
+        isOpen={isEntryPopupOpen}
+        onClose={closeAllPopups}
+      />
+
+      <PopupAddCard
         isLoggedIn={loggedIn}
         onSubmit={handleAddCardSubmit}
         isOpen={isAddCardPopupOpen}
@@ -433,6 +442,7 @@ function App() {
         handleSwitchPopup={switchPopups}
         onClose={closeAllPopups}
       />
+
       <Footer>
         <a className="footer__link" href='http://127.0.0.1:3000'>Home</a>
       </Footer>

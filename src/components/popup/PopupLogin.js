@@ -4,7 +4,7 @@ import CurrentUserContext from '../../contexts/CurrentUserContext';
 import Eye from '../../images/svg-files/Eye';
 import NotEye from '../../images/svg-files/NotEye';
 
-export default function LoginPopup(props) {
+export default function PopupLogin(props) {
   const currentUser = React.useContext(CurrentUserContext);
   const { linkText, isOpen, handleSwitchPopup, isFound, handleLogin, onClose, buttonText = 'Submit', onSignOut } = props;
   const [email, setEmail] = React.useState('');

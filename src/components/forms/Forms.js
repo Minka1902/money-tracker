@@ -102,7 +102,7 @@ export function EntryForm({ onSubmit, isOpen }) {
                 <input
                     type="number"
                     className="entry-form__input"
-                    placeholder="Amount"
+                    placeholder="How much did you spend?"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     required
@@ -110,14 +110,14 @@ export function EntryForm({ onSubmit, isOpen }) {
                 <input
                     type="text"
                     className="entry-form__input"
-                    placeholder="Spent At"
+                    placeholder="Where did you spend it?"
                     value={spentAt}
                     onChange={(e) => setSpentAt(e.target.value)}
                     required
                 />
                 <textarea
-                    className="entry-form__input"
-                    placeholder="If you want to add a comment"
+                    className="entry-form__textarea"
+                    placeholder="If you want to add a comment, do it here."
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                 ></textarea>

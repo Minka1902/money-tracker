@@ -96,6 +96,11 @@
     cursor: pointer;
 }
 
+.width300 {
+    width: 300px !important;
+    padding-bottom: 36px !important;
+}
+
 .popup__content {
     width: 430px;
     height: min-content;
@@ -206,17 +211,6 @@
     margin: 0;
 }
 
-.popup__text_regestration {
-    font-family: 'Inter', Arial, sans-serif;
-    font-style: normal;
-    font-weight: 900;
-    font-size: 24px;
-    line-height: 29px;
-    text-align: center;
-    color: black;
-    border: 2px solid red;
-}
-
 .popup__title {
     width: 358px;
     text-align: left;
@@ -230,7 +224,7 @@
 }
 
 .popup__title_outer-form {
-    width: 358px;
+    width: calc(100% - 20px);
     text-align: left;
     font-family: 'Roboto', Arial, sans-serif;
     font-style: normal;

@@ -1705,7 +1705,7 @@
     box-shadow: 0 4px 6px -1px #488aec31, 0 2px 4px -1px #488aec17;
 }
 
-.button-submit span {
+.button-submit .button-submit__span {
     height: 100%;
     width: 100%;
     display: flex;

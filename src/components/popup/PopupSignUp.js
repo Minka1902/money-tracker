@@ -3,7 +3,7 @@ import React from 'react';
 import Eye from '../../images/svg-files/Eye';
 import NotEye from '../../images/svg-files/NotEye';
 
-export default function SignUpPopup(props) {
+export default function PopupSignUp(props) {
   const { isOpen, onClose, handleSwitchPopup, handleSignup, buttonText } = props;
   const [isValid, setIsValid] = React.useState(false);
   const [username, setUsername] = React.useState('');

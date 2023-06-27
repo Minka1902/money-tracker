@@ -23,7 +23,7 @@
 @import url('./components/footer/footer.css');
 
 /* ! Entry */
-@import url('./components/message/message.css');
+@import url('./components/visualizeData/visualizeData.css');
 
 body {
   margin: 0;

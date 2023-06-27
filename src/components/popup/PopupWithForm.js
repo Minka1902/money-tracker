@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 
 export default function PopupWithForm(props) {
-	const { linkText, name, title, onSubmit, children, isValid, linkClick, buttonText, isOpen, onClose, isForm = true } = props;
+	const { linkText, name, title, onSubmit, children, isValid, linkClick, buttonText, isOpen, onClose, isForm = true, isSmall } = props;
 	const history = useHistory();
 
 	// ! Switching between popups
@@ -14,9 +14,21 @@ export default function PopupWithForm(props) {
 		}
 	};
 
+	const determineIsLink = () => {
+		if (isSmall) {
+			return false;
+		} else {
+			if (isForm) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	};
+
 	return (
 		<div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}>
-			<div className="popup__content">
+			<div className={`popup__content ${isSmall ? 'width300' : ''}`}>
 				<button className="popup__close-button" type="button" aria-label="close" onClick={onClose}></button>
 				<h2 className={`popup__title${isForm ? '' : '_outer-form'}`}>{title}</h2>
 				{isForm ? <form onSubmit={onSubmit} className={`popup__form form-${name}`} name={name}>
@@ -26,7 +38,7 @@ export default function PopupWithForm(props) {
 					</button>
 					<h3 className="popup__link-text">or <Link to={history.location.pathname} onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3>
 				</form> : children}
-				{isForm ? <></> : <h3 className="popup__link-text">or <Link to={history.location.pathname} onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3>}
+				{determineIsLink() ? <h3 className="popup__link-text">or <Link to={history.location.pathname} onClick={handleLinkClick} className="popup__link">{linkText}</Link> </h3> : <></>}
 			</div>
 		</div >
 	);
