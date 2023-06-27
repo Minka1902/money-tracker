@@ -38,10 +38,16 @@ function App() {
   const [cardIdToDelete, setCardIdToDelete] = React.useState('');
   const [card, setCard] = React.useState();
 
-  const noScroll = () => html.classList.add('no-scroll');
+  // ???????????????????????????????????????????????????
+  // !!!!!!!!!!!!!     SCROLL handling     !!!!!!!!!!!!!
+  // ???????????????????????????????????????????????????
 
+  const noScroll = () => html.classList.add('no-scroll');
   const scroll = () => html.classList.remove('no-scroll');
 
+  // ???????????????????????????????????????????????????
+  // !!!!!!!!!!!!!     POPUP handling     !!!!!!!!!!!!!!
+  // ???????????????????????????????????????????????????
   const setAddCardOpen = () => setIsAddCardPopupOpen(true);
 
   const setLoginPopupOpen = () => setIsLoginPopupOpen(true);
@@ -50,24 +56,6 @@ function App() {
 
   const setCardId = (cardId) => {
     setCardIdToDelete(cardId);
-  };
-
-  const handleCardClick = (cardId) => {
-    setCardIdToWatch(cardId);
-    history.push(`/card/${cardId}`);
-    getCard(cardId);
-  };
-
-  const chooseAddButtonPopup = () => {
-    if (history.location.pathname.indexOf('/card/') !== -1) {
-      setIsEntryPopupOpen(true);
-    } else {
-      if (loggedIn) {
-        setAddCardOpen();
-      } else {
-        setLoginPopupOpen();
-      }
-    }
   };
 
   const closeAllPopups = () => {
@@ -84,13 +72,9 @@ function App() {
     }
   };
 
-  const signupSuccessful = () => {
-    closeAllPopups();
-    setIsDeleteCard(false);
-    setConfirmPopupOpen();
-  };
-
-  // * Handling login form submit
+  // ???????????????????????????????????????????????????
+  // !!!!!!!!!!!!!!     USER handling     !!!!!!!!!!!!!!
+  // ???????????????????????????????????????????????????
   const handleLoginSubmit = (email, password) => {
     usersApiOBJ
       .login({ email, password })
@@ -133,7 +117,6 @@ function App() {
       });
   };
 
-  // * Handling signup form submit
   const handleSignupSubmit = (email, password, username) => {
     usersApiOBJ
       .signUp({ email, password, username })
@@ -142,7 +125,6 @@ function App() {
       });
   };
 
-  // * checking if should auto-login
   const isAutoLogin = () => {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
@@ -162,6 +144,22 @@ function App() {
     }
   };
 
+  const handleLogout = () => {
+    setLoggedIn(false);
+    setCurrentUser(null);
+    localStorage.removeItem('jwt');
+    history.push("/");
+  };
+
+  const signupSuccessful = () => {
+    closeAllPopups();
+    setIsDeleteCard(false);
+    setConfirmPopupOpen();
+  };
+
+  // ???????????????????????????????????????????????????
+  // !!!!!!!!!!!!!!     CARD handling     !!!!!!!!!!!!!!
+  // ???????????????????????????????????????????????????
   const handleAddCardSubmit = (card) => {
     card.ownerId = currentUser.id;
 
@@ -231,6 +229,9 @@ function App() {
     deleteCard();
   };
 
+  // ???????????????????????????????????????????????????
+  // !!!!!!!!!!!!!     ENTRY handling     !!!!!!!!!!!!!!
+  // ???????????????????????????????????????????????????
   const getEntries = (cardId) => {
     cardsApiObj.getEntries(cardId)
       .then((data) => {
@@ -247,6 +248,9 @@ function App() {
       });
   };
 
+  // ???????????????????????????????????????????????????
+  // !!!!!!!!!!!!!     ROUTE handling     !!!!!!!!!!!!!!
+  // ???????????????????????????????????????????????????
   const switchPopups = (evt) => {
     closeAllPopups();
     if (evt.target.parentElement.parentElement.parentElement.parentElement.classList.contains(`popup_type_add-card`)) {
@@ -270,13 +274,22 @@ function App() {
     }
   };
 
-  // * Handling the logout click
-  const handleLogout = () => {
-    setLoggedIn(false);
-    setCurrentUser(null);
-    // setIsHomePage(true);
-    localStorage.removeItem('jwt');
-    history.push("/");
+  const handleCardClick = (cardId) => {
+    setCardIdToWatch(cardId);
+    history.push(`/card/${cardId}`);
+    getCard(cardId);
+  };
+
+  const determinePopupOpen = () => {
+    if (history.location.pathname.indexOf('/card/') !== -1) {
+      setIsEntryPopupOpen(true);
+    } else {
+      if (loggedIn) {
+        setAddCardOpen();
+      } else {
+        setLoginPopupOpen();
+      }
+    }
   };
 
   const navButtons = [
@@ -367,7 +380,7 @@ function App() {
         <ProtectedRoute path={`/card/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
           <section id="card">
             <div className="add-button__container">
-              <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' />
+              <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
             </div>
             <h1 className="section__title">Here you can see the cards entries.</h1>
             <div className="card__entries">
@@ -382,7 +395,7 @@ function App() {
           <section id="my-cards" className="my_cards">
             {loggedIn ? <h1 className="section__title"><span className="capitalized">{currentUser.username}</span> here you can find your cards</h1> : <></>}
             <div className="add-button__container">
-              <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' />
+              <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
             </div>
             <div className="cards">
               {cards ? cards.map((card, index) => {
@@ -396,7 +409,7 @@ function App() {
           <section id='about-us'>
             <h1 className="section__title">Here you can read about us.</h1>
             <div className="add-button__container">
-              <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' title='Log in to add a new card.' />
+              <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
             </div>
             <p>Meet our team</p>
             <h2>CEO</h2>
@@ -409,7 +422,7 @@ function App() {
           <section id='home'>
             <h1 className="section__title">Welcome to the new app</h1>
             <div className="add-button__container">
-              <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' title='Log in to add a new card.' />
+              <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
             </div>
           </section>
         </Route>
