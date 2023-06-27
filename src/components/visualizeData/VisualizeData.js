@@ -1,7 +1,7 @@
 import React from 'react';
 import DefaultGroup from '../../images/default-group.svg';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
-import { formatDate } from '../../constants/functions';
+import { formatDate, capitalizeFirstWord } from '../../constants/functions';
 
 export function WhatsappMessage({ sender, messageBody }) {
     return (
@@ -22,7 +22,7 @@ export function WhatsappMessage({ sender, messageBody }) {
 
 export function EntryMessage({ entry }) {
     const currentUser = React.useContext(CurrentUserContext);
-    const { time, amount, spentAt, comment, currency } = entry;
+    const { time, amount, spentAt, currency, comment } = entry;
 
     return (
         <div className="entry-card">
@@ -37,7 +37,7 @@ export function EntryMessage({ entry }) {
                 </div>
                 <div className="entry-card-description">
                     <span className="entry-card-spent-at">Spent at: {spentAt}</span>
-                    {comment ? <span className="entry-card-comment">Comment: {comment}</span> : <></>}
+                    {comment ? <span className="entry-card-comment">Comment: {capitalizeFirstWord(comment)}</span> : <></>}
                 </div>
             </div>
         </div>

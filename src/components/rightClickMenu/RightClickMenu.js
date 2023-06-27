@@ -2,15 +2,21 @@ import React from 'react';
 import './rightClickMenu.css';
 
 let rightMenuOptions = [{ buttonText: 'log class list.', buttonClicked: (target) => console.log(`Logout: ${target}`) },];
+const findId = (element) => {
+    if (element.id.length === 24) {
+        return element.id;
+    }
+    return findId(element.parentElement);
+};
 
-export default function RightClickMenu({ items = rightMenuOptions }) {
+export default function RightClickMenu({ items = rightMenuOptions, setElementId }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const [evt, setEvt] = React.useState(undefined);
-    const [menuItems, setMenuItems] = React.useState(items);
 
     const handleItemClick = (item) => {
         if (handleFilter(evt.target, item.filter).found) {
+            setElementId(findId(evt.target));
             item.buttonClicked(handleFilter(evt.target, item.filter));
         }
         setIsOpen(false);
@@ -28,16 +34,6 @@ export default function RightClickMenu({ items = rightMenuOptions }) {
 
         }
         return { found: false };
-    };
-
-    const isLinks = (evt) => {
-        const classes = evt.target.classList;
-        for (let i = 0; i < classes.length; i++) {
-            if (classes[i].indexOf('link') !== -1) {
-                return true;
-            }
-        }
-        return false;
     };
 
     // ! setting the position of the right click menu to the mouse position, opening the menu, and checking what menu should be opened
@@ -84,7 +80,7 @@ export default function RightClickMenu({ items = rightMenuOptions }) {
 
     return (
         <div className={`right-click-menu ${isOpen ? 'open' : ''}`} style={{ top: position.y, left: position.x }}>
-            {menuItems.map((item, index) => (
+            {items.map((item, index) => (
                 <button
                     key={index}
                     className={`menu-item${handleFilter(evt ? evt.target : undefined, item.filter).found ? '' : ' none'}`}

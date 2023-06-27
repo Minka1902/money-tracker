@@ -35,6 +35,7 @@ function App() {
   const [isDeleteCard, setIsDeleteCard] = React.useState(true);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
   const [cardIdToWatch, setCardIdToWatch] = React.useState('');
+  const [cardIdToDelete, setCardIdToDelete] = React.useState('');
   const [card, setCard] = React.useState();
 
   const noScroll = () => html.classList.add('no-scroll');
@@ -47,11 +48,15 @@ function App() {
 
   const setConfirmPopupOpen = () => setIsConfirmPopupOpen(true);
 
+  const setCardId = (cardId) => {
+    setCardIdToDelete(cardId);
+  };
+
   const handleCardClick = (cardId) => {
     setCardIdToWatch(cardId);
     history.push(`/card/${cardId}`);
     getCard(cardId);
-  }
+  };
 
   const chooseAddButtonPopup = () => {
     if (history.location.pathname.indexOf('/card/') !== -1) {
@@ -126,7 +131,7 @@ function App() {
       .finally(() => {
         closeAllPopups();
       });
-  }
+  };
 
   // * Handling signup form submit
   const handleSignupSubmit = (email, password, username) => {
@@ -168,7 +173,7 @@ function App() {
       })
       .catch((err) => {
         if (err) {
-          console.log(`Error type: ${err.message}`);
+          console.log(`Error type: ${err}`);
         }
       })
       .finally(() => {
@@ -207,6 +212,25 @@ function App() {
       });
   };
 
+  const deleteCard = () => {
+    let cardId = cardIdToDelete;
+    cardsApiObj.deleteCard(cardId)
+      .catch((err) => {
+        if (err) {
+          console.log(`Error type: ${err}`);
+        }
+      })
+      .finally(() => {
+        setCardIdToDelete('');
+        closeAllPopups();
+        getCards();
+      });
+  };
+
+  const handleDeleteCard = () => {
+    deleteCard();
+  };
+
   const getEntries = (cardId) => {
     cardsApiObj.getEntries(cardId)
       .then((data) => {
@@ -221,10 +245,6 @@ function App() {
           console.log(`Error type: ${err}`);
         }
       });
-  };
-
-  const deleteCard = (cardId) => {
-    closeAllPopups();
   };
 
   const switchPopups = (evt) => {
@@ -247,14 +267,6 @@ function App() {
           }
         }
       }
-    }
-  };
-
-  const openPopup = () => {
-    if (loggedIn) {
-      setIsAddCardPopupOpen(true);
-    } else {
-      setIsLoginPopupOpen(true);
     }
   };
 
@@ -302,7 +314,7 @@ function App() {
     { buttonText: 'delete card', buttonClicked: setConfirmPopupOpen, filter: 'flip-card' },
     { buttonText: 'sign out', buttonClicked: handleLogout, filter: 'header' },
     { buttonText: 'add card', buttonClicked: setAddCardOpen, filter: 'my_cards' },
-    { buttonText: 'add card', buttonClicked: setAddCardOpen, filter: 'my_cards' },
+    { buttonText: 'delete entry', buttonClicked: () => { console.log('delete entry!!!') }, filter: 'entry-card' },
   ];
 
   // * running the 'isAutoLogin' and 'getCards'
@@ -342,14 +354,14 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <RightClickMenu items={rightClickItems} />
+      <RightClickMenu items={rightClickItems} setElementId={setCardId} />
       <Header
         noScroll={noScroll}
         scroll={scroll}
         isLoggedIn={loggedIn}
         buttons={navButtons}
         handleLogout={handleLogout}
-        handleButtonClick={openPopup}
+        handleButtonClick={setLoginPopupOpen}
       />
       <Switch>
         <ProtectedRoute path={`/card/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
@@ -357,7 +369,7 @@ function App() {
             <div className="add-button__container">
               <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' />
             </div>
-            <h1 className="section__title">Card: {card ? formatCreditCardNumber(card.cardNumber, true, 12) : ''}</h1>
+            <h1 className="section__title">Here you can see the cards entries.</h1>
             <div className="card__entries">
               {entries ? entries.map((entry, index) => {
                 return <EntryMessage entry={entry} key={index} />
@@ -425,7 +437,7 @@ function App() {
         isDeleteCard={isDeleteCard}
         signupSuccessful={signupSuccessful}
         onClose={closeAllPopups}
-        handleSubmit={deleteCard}
+        handleSubmit={handleDeleteCard}
       />
 
       <PopupAddEntry

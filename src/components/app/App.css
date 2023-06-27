@@ -101,7 +101,7 @@ section {
     }
 
     .section__title {
-        width: calc(100% - 55px);
+        width: 100%;
         margin: 59px auto 10px 0;
     }
 }
