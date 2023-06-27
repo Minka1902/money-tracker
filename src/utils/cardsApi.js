@@ -29,6 +29,10 @@ class cardsApi {
     getCard = (cardId) => this._fetch({ method: "GET", url: `/cards/${cardId}` });
 
     deleteCard = (cardId) => this._fetch({ method: "DELETE", url: `/cards/delete/${cardId}` });
+
+    createEntry = ({ entry }) => this._fetch({ method: "POST", url: '/entries/add', data: { entry } });
+
+    getEntries = (cardId) => this._fetch({ method: "GET", url: `/entries/get/${cardId}` });
 }
 const cardsApiObj = new cardsApi({ auth: '4den6CaDRe58L5Jx85R7E38xpVcn8TZcyqznqZVpKFAjeqqG80eZQc1WCtRNM1Aq', rootUrl: BASE_URL });
 export default cardsApiObj;

@@ -1,5 +1,7 @@
 import React from "react";
 import './buttons.css';
+import SvgDoubleCheck from "../../images/svg-files/DoubleCheck";
+import SvgSend from '../../images/svg-files/Send';
 
 export function ButtonGlitch({ buttonText = 'Click Me!', onClick }) {
     return (
@@ -195,6 +197,26 @@ export function ButtonAdd({ buttonText, onClick, color = "white", title = button
                 </div>
                 <div className="add-button__text">{buttonText}</div>
             </button>
+        </>
+    );
+};
+
+export function ButtonSubmit() {
+    return (
+        <>
+            <button className="button-submit" type="submit">
+                <span className="button-submit__span">
+                    Submit
+                    <SvgSend />
+                </span>
+                <span>
+                    Sure ?
+                </span>
+                <span>
+                    Done
+                    <SvgDoubleCheck color='white' />
+                </span>
+            </button >
         </>
     );
 };

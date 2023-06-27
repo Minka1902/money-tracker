@@ -22,6 +22,9 @@
 /* ! Footer */
 @import url('./components/footer/footer.css');
 
+/* ! Entry */
+@import url('./components/message/message.css');
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

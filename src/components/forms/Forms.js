@@ -1,4 +1,5 @@
 import React from "react";
+import * as Buttons from '../buttons/Buttons'
 
 export function CreditCardForm({ onSubmit, isOpen, displayCvv = true }) {
     const [name, setName] = React.useState('');
@@ -75,6 +76,53 @@ export function CreditCardForm({ onSubmit, isOpen, displayCvv = true }) {
                     <button className="purchase--button popup__button-purchase">Add card</button>
                 </form>
             </div>
+        </>
+    );
+};
+
+export function EntryForm({ onSubmit, isOpen }) {
+    const [amount, setAmount] = React.useState('');
+    const [spentAt, setSpentAt] = React.useState('');
+    const [comment, setComment] = React.useState('');
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        onSubmit({ amount, spentAt, comment });
+    };
+
+    React.useEffect(() => {
+        setComment('');
+        setSpentAt('');
+        setAmount('');
+    }, [isOpen]);
+
+    return (
+        <>
+            <form className="entry-form" onSubmit={handleSubmit}>
+                <input
+                    type="number"
+                    className="entry-form__input"
+                    placeholder="Amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    className="entry-form__input"
+                    placeholder="Spent At"
+                    value={spentAt}
+                    onChange={(e) => setSpentAt(e.target.value)}
+                    required
+                />
+                <textarea
+                    className="entry-form__input"
+                    placeholder="If you want to add a comment"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                ></textarea>
+                <Buttons.ButtonSubmit />
+            </form>
         </>
     );
 };

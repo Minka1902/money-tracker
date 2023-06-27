@@ -15,8 +15,7 @@ import { CreditCard } from "../cards/Cards";
 import Footer from '../footer/Footer'
 import { ButtonAdd } from "../buttons/Buttons";
 import RightClickMenu from "../rightClickMenu/RightClickMenu";
-
-// ! 0J3IUsnOu2Xk8cEj mongo password
+import { EntryMessage } from '../message/Message';
 
 function App() {
   const currentUserContext = React.useContext(CurrentUserContext);
@@ -27,9 +26,11 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState('');
   const [isUserFound, setIsUserFound] = React.useState(true);
   const [cards, setCards] = React.useState();
+  const [entries, setEntries] = React.useState();
   const [isSignUpPopupOpen, setIsSignUpPopupOpen] = React.useState(false);
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
+  const [isEntryPopupOpen, setIsEntryPopupOpen] = React.useState(false);
   const [isDeleteCard, setIsDeleteCard] = React.useState(true);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
   const [cardIdToWatch, setCardIdToWatch] = React.useState('');
@@ -52,10 +53,14 @@ function App() {
   }
 
   const chooseAddButtonPopup = () => {
-    if (loggedIn) {
-      setAddCardOpen();
+    if (history.location.pathname.indexOf('/card/') !== -1) {
+      setIsEntryPopupOpen(true);
     } else {
-      setLoginPopupOpen();
+      if (loggedIn) {
+        setAddCardOpen();
+      } else {
+        setLoginPopupOpen();
+      }
     }
   };
 
@@ -190,11 +195,28 @@ function App() {
       .then((data) => {
         if (data) {
           setCard(data);
+          getEntries(cardId);
         }
       })
       .catch((err) => {
         if (err.message) {
           console.log(`Error type: ${err.message}`);
+        }
+      });
+  };
+
+  const getEntries = (cardId) => {
+    cardsApiObj.getEntries(cardId)
+      .then((data) => {
+        if (data.length !== 0) {
+          setEntries(data);
+        }
+      })
+      .catch((err) => {
+        if (err.message) {
+          console.log(`Error type: ${err.message}`);
+        } else {
+          console.log(`Error type: ${err}`);
         }
       });
   };
@@ -250,6 +272,7 @@ function App() {
       onClick: () => {
         history.push("/");
         setCardIdToWatch(null);
+        setEntries(null);
       }
     },
     {
@@ -259,6 +282,7 @@ function App() {
         history.push("/my-cards");
         getCards();
         setCardIdToWatch(null);
+        setEntries(null);
       }
     },
     {
@@ -267,13 +291,16 @@ function App() {
       onClick: () => {
         history.push("/about-us");
         setCardIdToWatch(null);
+        setEntries(null);
       }
     },
   ];
 
-  const rightClickItems = [{ buttonText: 'delete card', buttonClicked: setConfirmPopupOpen, filter: 'flip-card' },
-  { buttonText: 'sign out', buttonClicked: handleLogout, filter: 'header' },
-  { buttonText: 'add card', buttonClicked: setAddCardOpen, filter: 'my_cards' },];
+  const rightClickItems = [
+    { buttonText: 'delete card', buttonClicked: setConfirmPopupOpen, filter: 'flip-card' },
+    { buttonText: 'sign out', buttonClicked: handleLogout, filter: 'header' },
+    { buttonText: 'add card', buttonClicked: setAddCardOpen, filter: 'my_cards' },
+  ];
 
   // * running the 'isAutoLogin' and 'getCards'
   React.useEffect(() => {
@@ -324,7 +351,15 @@ function App() {
       <Switch>
         <ProtectedRoute path={`/card/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
           <section id="card">
+            <div className="add-button__container">
+              <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' />
+            </div>
             <h1 className="section__title">Card: {card ? formatCreditCardNumber(card.cardNumber, true, 12) : ''}</h1>
+            <div className="card__entries">
+              {entries ? entries.map((entry, index) => {
+                return <EntryMessage entry={entry} key={index} />
+              }) : <p>You haven`t entered anything yet.</p>}
+            </div>
           </section>
         </ProtectedRoute>
 
@@ -346,7 +381,7 @@ function App() {
           <section id='about-us'>
             <h1 className="section__title">Here you can read about us.</h1>
             <div className="add-button__container">
-              <ButtonAdd onClick={loggedIn ? setAddCardOpen : setLoginPopupOpen} buttonText='Add new' title='Log in to add a new card.' />
+              <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' title='Log in to add a new card.' />
             </div>
             <p>Meet our team</p>
             <h2>CEO</h2>
@@ -359,7 +394,7 @@ function App() {
           <section id='home'>
             <h1 className="section__title">Welcome to the new app</h1>
             <div className="add-button__container">
-              <ButtonAdd onClick={loggedIn ? setAddCardOpen : setLoginPopupOpen} buttonText='Add new' title='Log in to add a new card.' />
+              <ButtonAdd onClick={chooseAddButtonPopup} buttonText='Add new' title='Log in to add a new card.' />
             </div>
           </section>
         </Route>

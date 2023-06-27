@@ -32,6 +32,7 @@ section {
     grid-column-gap: 10px;
     justify-items: center;
     margin: auto;
+    padding-top: 5px;
 }
 
 .add-button__container {

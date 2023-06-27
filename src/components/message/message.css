@@ -1,0 +1,101 @@
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!      MESSAGE      !!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+.message__container {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.sender-info__container {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+}
+
+.avatar__image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.message__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.message__header {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.sender__name {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.message__body {
+    background-color: #e9e6e6;
+    border-radius: 16px;
+    padding: 12px;
+    margin: 0;
+    max-width: 400px;
+}
+
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!      ENTRY      !!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+
+.entry-card {
+    background-color: #f4f4f4;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.entry-card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.entry-card-time {
+    font-size: 12px;
+    color: #999;
+}
+
+.entry-card-owner {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.entry-card-details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.entry-card-amount {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
+.entry-card-currency {
+    font-size: 14px;
+    color: #666;
+}
+
+.entry-card-spent-at {
+    text-transform: capitalize;
+}
+
+.entry-card-spent-at,
+.entry-card-comment {
+    display: block;
+    font-size: 14px;
+    color: #333;
+}
