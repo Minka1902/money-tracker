@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Switch, withRouter, useHistory } from 'react-router-dom';
-// import { formatCreditCardNumber } from "../../constants/functions";
 import { CreditCard } from "../cards/Cards";
 import { ButtonAdd } from "../buttons/Buttons";
 import { EntryMessage } from '../visualizeData/VisualizeData';
@@ -257,7 +256,7 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(`Error type: ${err}`); 
+        console.log(`Error type: ${err}`);
       })
       .finally(() => {
         closeAllPopups();
@@ -311,6 +310,7 @@ function App() {
   const navButtons = [
     {
       name: 'Home',
+      path: '/',
       isAllowed: true,
       onClick: () => {
         history.push("/");
@@ -320,6 +320,7 @@ function App() {
     },
     {
       name: 'My cards',
+      path: '/my-cards',
       isAllowed: false,
       onClick: () => {
         history.push("/my-cards");
@@ -330,6 +331,7 @@ function App() {
     },
     {
       name: 'About us',
+      path: '/about-us',
       isAllowed: true,
       onClick: () => {
         history.push("/about-us");
@@ -376,7 +378,6 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <CurrentCardContext.Provider value={{ currentCard, setCurrentCard }}>
-
         <RightClickMenu items={rightClickItems} />
         <Header
           noScroll={noScroll}
@@ -479,7 +480,11 @@ function App() {
         />
 
         <Footer>
-          <a className="footer__link" href='http://127.0.0.1:3000'>Home</a>
+          {navButtons.map((button, index) => {
+            if (button.isAllowed) {
+              return <a key={index} onClick={button.onClick} className="footer__link">{button.name}</a>
+            }
+          })}
         </Footer>
       </CurrentCardContext.Provider>
     </CurrentUserContext.Provider >

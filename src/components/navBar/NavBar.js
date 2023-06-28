@@ -1,35 +1,38 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 export default function NavBar(props) {
     const { buttons, isLoggedIn } = props;
+    const history = useHistory();
     const [buttonCheckedName, setButtonCheckedName] = React.useState('Home');
 
-    const determineButtonClass = (button) => {
-        const determineButton = () => {
-            if (isLoggedIn) {
+    const determineIsAllowed = (button) => {
+        if (isLoggedIn) {
+            return true;
+        } else {
+            if (button.isAllowed) {
                 return true;
-            } else {
-                if (button.isAllowed) {
-                    return true;
-                }
             }
-            return false;
-        };
-
-        let classes = 'navigation-bar__button';
-        if (!determineButton(button)) {
-            classes += ' none';
         }
-        if (buttonCheckedName === button.name) {
-            classes += ' checked';
-        }
-        return classes;
+        return false;
     };
 
     const buttonClick = (button) => {
         setButtonCheckedName(button.name);
         button.onClick();
-    }
+    };
+
+    React.useEffect(() => {
+        const listen = history.listen((location) => {
+            for (let i = 0; i < buttons.length; i++) {
+                if (location.pathname === buttons[i].path) {
+                    setButtonCheckedName(buttons[i].name);
+                }
+            }
+        });
+
+        return listen;
+    }, []);
 
     return (
         <nav className="navigation-bar">
@@ -37,7 +40,8 @@ export default function NavBar(props) {
                 {buttons.map((button, index) => {
                     return <li className="navigation-bar__item" key={index}>
                         <button
-                            className={determineButtonClass(button)}
+                            className={`navigation-bar__button${buttonCheckedName === button.name ? ' checked' : ''}
+                            ${!determineIsAllowed(button) ? ' none' : ''}`}
                             onClick={() => buttonClick(button)}
                             key={index}
                         >
