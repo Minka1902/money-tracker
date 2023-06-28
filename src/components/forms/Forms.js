@@ -87,7 +87,7 @@ export function EntryForm({ onSubmit, isOpen }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        onSubmit({ amount, spentAt, comment });
+        onSubmit({ time: new Date(), amount, spentAt, currency: 'NIS', comment });
     };
 
     React.useEffect(() => {
