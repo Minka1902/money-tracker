@@ -406,8 +406,8 @@ function App() {
               </div>
               <p>Meet our team</p>
               <h2>CEO</h2>
-              <h2>LEAD FRONTEND</h2>
-              <h2>LEAD BACKEND</h2>
+              <h3>LEAD FRONTEND</h3>
+              <h4>LEAD BACKEND</h4>
             </section>
           </Route>
 
