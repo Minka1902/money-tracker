@@ -70,7 +70,7 @@ export default function RightClickMenu({ items }) {
         return () => document.removeEventListener('keydown', closeByEscape);
     }, []);
 
-    //! closing the menu when the user start dragging
+    //! closing the menu when the user start scrolling
     React.useEffect(() => {
         const closeWhenDrag = () => {
             setIsOpen(false);
