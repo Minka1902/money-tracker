@@ -1,23 +1,15 @@
 import React from 'react';
 import './rightClickMenu.css';
 
-let rightMenuOptions = [{ buttonText: 'log class list.', buttonClicked: (target) => console.log(`Logout: ${target}`) },];
-const findId = (element) => {
-    if (element.id.length === 24) {
-        return element.id;
-    }
-    return findId(element.parentElement);
-};
-
-export default function RightClickMenu({ items = rightMenuOptions, setElementId }) {
+export default function RightClickMenu({ items }) {
     const [isOpen, setIsOpen] = React.useState(false);
     const [position, setPosition] = React.useState({ x: 0, y: 0 });
     const [evt, setEvt] = React.useState(undefined);
 
     const handleItemClick = (item) => {
-        if (handleFilter(evt.target, item.filter).found) {
-            setElementId(findId(evt.target));
-            item.buttonClicked(handleFilter(evt.target, item.filter));
+        const isFound = handleFilter(evt.target, item.filter);
+        if (isFound.found) {
+            item.buttonClicked(isFound);
         }
         setIsOpen(false);
     };

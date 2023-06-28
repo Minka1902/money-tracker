@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch, withRouter, useHistory } from 'react-router-dom';
-import { formatCreditCardNumber } from "../../constants/functions";
+// import { formatCreditCardNumber } from "../../constants/functions";
 import { CreditCard } from "../cards/Cards";
 import { ButtonAdd } from "../buttons/Buttons";
 import { EntryMessage } from '../visualizeData/VisualizeData';
@@ -9,6 +9,7 @@ import usersApiOBJ from '../../utils/usersApi';
 import cardsApiObj from "../../utils/cardsApi";
 import Header from "../header/Header";
 import CurrentUserContext from '../../contexts/CurrentUserContext';
+import CurrentCardContext from '../../contexts/CurrentCardContext';
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import PopupAddEntry from "../popup/PopupAddEntry";
 import PopupLogin from '../popup/PopupLogin';
@@ -20,11 +21,13 @@ import RightClickMenu from "../rightClickMenu/RightClickMenu";
 
 function App() {
   const currentUserContext = React.useContext(CurrentUserContext);
+  const currentCardContext = React.useContext(CurrentCardContext);
   const safeDocument = typeof document !== 'undefined' ? document : {};
   const html = safeDocument.documentElement;
   const history = useHistory();
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState('');
+  const [currentUser, setCurrentUser] = React.useState();
+  const [currentCard, setCurrentCard] = React.useState();
   const [isUserFound, setIsUserFound] = React.useState(true);
   const [cards, setCards] = React.useState();
   const [entries, setEntries] = React.useState();
@@ -35,7 +38,6 @@ function App() {
   const [isDeleteCard, setIsDeleteCard] = React.useState(true);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
   const [cardIdToWatch, setCardIdToWatch] = React.useState('');
-  const [cardIdToDelete, setCardIdToDelete] = React.useState('');
   const [card, setCard] = React.useState();
 
   // ???????????????????????????????????????????????????
@@ -52,10 +54,9 @@ function App() {
 
   const setLoginPopupOpen = () => setIsLoginPopupOpen(true);
 
-  const setConfirmPopupOpen = () => setIsConfirmPopupOpen(true);
-
-  const setCardId = (cardId) => {
-    setCardIdToDelete(cardId);
+  const setConfirmPopupOpen = ({ id }) => {
+    setCurrentCard({ cardIdToDelete: id });
+    setIsConfirmPopupOpen(true);
   };
 
   const closeAllPopups = () => {
@@ -211,23 +212,21 @@ function App() {
   };
 
   const deleteCard = () => {
-    let cardId = cardIdToDelete;
-    cardsApiObj.deleteCard(cardId)
+    cardsApiObj.deleteCard(currentCard.cardIdToDelete)
       .catch((err) => {
         if (err) {
           console.log(`Error type: ${err}`);
         }
       })
       .finally(() => {
-        setCardIdToDelete('');
         closeAllPopups();
         getCards();
       });
   };
 
-  const handleDeleteCard = () => {
-    deleteCard();
-  };
+  React.useEffect(() => {
+    isAutoLogin();            // eslint-disable-next-line
+  }, []);
 
   // ???????????????????????????????????????????????????
   // !!!!!!!!!!!!!     ENTRY handling     !!!!!!!!!!!!!!
@@ -328,14 +327,12 @@ function App() {
     { buttonText: 'sign out', buttonClicked: handleLogout, filter: 'header' },
     { buttonText: 'add card', buttonClicked: setAddCardOpen, filter: 'my_cards' },
     { buttonText: 'delete entry', buttonClicked: () => { console.log('delete entry!!!') }, filter: 'entry-card' },
+    { buttonText: 'add entry', buttonClicked: () => { console.log('add entry!!!') }, filter: 'entry-card' },
   ];
 
-  // * running the 'isAutoLogin' and 'getCards'
-  React.useEffect(() => {
-    isAutoLogin();            // eslint-disable-next-line
-  }, []);
-
-  // * close popup by ESCAPE 
+  // ???????????????????????????????????????????????????
+  // !!!!!!!!!!!!!     EVENT handling     !!!!!!!!!!!!!!
+  // ???????????????????????????????????????????????????
   React.useEffect(() => {
     const closeByEscape = (evt) => {
       if (evt.key === 'Escape') {
@@ -348,16 +345,10 @@ function App() {
     // eslint-disable-next-line
   }, []);
 
-  // ! Adding event listener for the page
-  // ! Mouse event
   React.useEffect(() => {
     const closeByClick = (evt) => {
-      if (evt.target.classList.contains('popup_type_project')) {
+      if (evt.target.classList.contains("popup")) {
         closeAllPopups();
-      } else {
-        if (evt.target.classList.contains("popup")) {
-          closeAllPopups();
-        }
       }
     }
 
@@ -367,110 +358,113 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <RightClickMenu items={rightClickItems} setElementId={setCardId} />
-      <Header
-        noScroll={noScroll}
-        scroll={scroll}
-        isLoggedIn={loggedIn}
-        buttons={navButtons}
-        handleLogout={handleLogout}
-        handleButtonClick={setLoginPopupOpen}
-      />
-      <Switch>
-        <ProtectedRoute path={`/card/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
-          <section id="card">
-            <div className="add-button__container">
-              <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
-            </div>
-            <h1 className="section__title">Here you can see the cards entries.</h1>
-            <div className="card__entries">
-              {entries ? entries.map((entry, index) => {
-                return <EntryMessage entry={entry} key={index} />
-              }) : <p>You haven`t entered anything yet.</p>}
-            </div>
-          </section>
-        </ProtectedRoute>
+      <CurrentCardContext.Provider value={{ currentCard, setCurrentCard }}>
 
-        <ProtectedRoute path='/my-cards' exact loggedIn={loggedIn} >
-          <section id="my-cards" className="my_cards">
-            {loggedIn ? <h1 className="section__title"><span className="capitalized">{currentUser.username}</span> here you can find your cards</h1> : <></>}
-            <div className="add-button__container">
-              <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
-            </div>
-            <div className="cards">
-              {cards ? cards.map((card, index) => {
-                return <CreditCard card={card} isFlipping={false} key={index} onClick={handleCardClick} />
-              }) : <p>You have no cards.<br /> Add some</p>}
-            </div>
-          </section>
-        </ProtectedRoute>
+        <RightClickMenu items={rightClickItems} />
+        <Header
+          noScroll={noScroll}
+          scroll={scroll}
+          isLoggedIn={loggedIn}
+          buttons={navButtons}
+          handleLogout={handleLogout}
+          handleButtonClick={setLoginPopupOpen}
+        />
+        <Switch>
+          <ProtectedRoute path={`/card/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
+            <section id="card">
+              <div className="add-button__container">
+                <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
+              </div>
+              <h1 className="section__title">Here you can see the cards entries.</h1>
+              <div className="card__entries">
+                {entries ? entries.map((entry, index) => {
+                  return <EntryMessage entry={entry} key={index} />
+                }) : <p>You haven`t entered anything yet.</p>}
+              </div>
+            </section>
+          </ProtectedRoute>
 
-        <Route path='/about-us'>
-          <section id='about-us'>
-            <h1 className="section__title">Here you can read about us.</h1>
-            <div className="add-button__container">
-              <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
-            </div>
-            <p>Meet our team</p>
-            <h2>CEO</h2>
-            <h2>LEAD FRONTEND</h2>
-            <h2>LEAD BACKEND</h2>
-          </section>
-        </Route>
+          <ProtectedRoute path='/my-cards' exact loggedIn={loggedIn} >
+            <section id="my-cards" className="my_cards">
+              {loggedIn ? <h1 className="section__title"><span className="capitalized">{currentUser.username}</span> here you can find your cards</h1> : <></>}
+              <div className="add-button__container">
+                <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
+              </div>
+              <div className="cards">
+                {cards ? cards.map((card, index) => {
+                  return <CreditCard card={card} isFlipping={false} key={index} onClick={handleCardClick} />
+                }) : <p>You have no cards.<br /> Add some</p>}
+              </div>
+            </section>
+          </ProtectedRoute>
 
-        <Route path="/">
-          <section id='home'>
-            <h1 className="section__title">Welcome to the new app</h1>
-            <div className="add-button__container">
-              <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
-            </div>
-          </section>
-        </Route>
-      </Switch>
-      <PopupSignUp
-        isOpen={isSignUpPopupOpen}
-        onClose={closeAllPopups}
-        handleSignup={handleSignupSubmit}
-        buttonText="Sign up"
-        handleSwitchPopup={switchPopups}
-      />
+          <Route path='/about-us'>
+            <section id='about-us'>
+              <h1 className="section__title">Here you can read about us.</h1>
+              <div className="add-button__container">
+                <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
+              </div>
+              <p>Meet our team</p>
+              <h2>CEO</h2>
+              <h2>LEAD FRONTEND</h2>
+              <h2>LEAD BACKEND</h2>
+            </section>
+          </Route>
 
-      <PopupLogin
-        handleLogin={handleLoginSubmit}
-        isOpen={isLoginPopupOpen}
-        isFound={isUserFound}
-        linkText={loggedIn ? 'Add a card' : 'Sign up'}
-        onClose={closeAllPopups}
-        handleSwitchPopup={switchPopups}
-        onSignOut={handleLogout}
-      />
+          <Route path="/">
+            <section id='home'>
+              <h1 className="section__title">Welcome to the new app</h1>
+              <div className="add-button__container">
+                <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
+              </div>
+            </section>
+          </Route>
+        </Switch>
+        <PopupSignUp
+          isOpen={isSignUpPopupOpen}
+          onClose={closeAllPopups}
+          handleSignup={handleSignupSubmit}
+          buttonText="Sign up"
+          handleSwitchPopup={switchPopups}
+        />
 
-      <PopupConfirm
-        isOpen={isConfirmPopupOpen}
-        isDeleteCard={isDeleteCard}
-        signupSuccessful={signupSuccessful}
-        onClose={closeAllPopups}
-        handleSubmit={handleDeleteCard}
-      />
+        <PopupLogin
+          handleLogin={handleLoginSubmit}
+          isOpen={isLoginPopupOpen}
+          isFound={isUserFound}
+          linkText={loggedIn ? 'Add a card' : 'Sign up'}
+          onClose={closeAllPopups}
+          handleSwitchPopup={switchPopups}
+          onSignOut={handleLogout}
+        />
 
-      <PopupAddEntry
-        onSubmit={handleAddCardSubmit}
-        isOpen={isEntryPopupOpen}
-        onClose={closeAllPopups}
-      />
+        <PopupConfirm
+          isOpen={isConfirmPopupOpen}
+          isDeleteCard={isDeleteCard}
+          signupSuccessful={signupSuccessful}
+          onClose={closeAllPopups}
+          handleSubmit={deleteCard}
+        />
 
-      <PopupAddCard
-        isLoggedIn={loggedIn}
-        onSubmit={handleAddCardSubmit}
-        isOpen={isAddCardPopupOpen}
-        linkText='Sign in'
-        handleSwitchPopup={switchPopups}
-        onClose={closeAllPopups}
-      />
+        <PopupAddEntry
+          onSubmit={handleAddCardSubmit}
+          isOpen={isEntryPopupOpen}
+          onClose={closeAllPopups}
+        />
 
-      <Footer>
-        <a className="footer__link" href='http://127.0.0.1:3000'>Home</a>
-      </Footer>
+        <PopupAddCard
+          isLoggedIn={loggedIn}
+          onSubmit={handleAddCardSubmit}
+          isOpen={isAddCardPopupOpen}
+          linkText='Sign in'
+          handleSwitchPopup={switchPopups}
+          onClose={closeAllPopups}
+        />
+
+        <Footer>
+          <a className="footer__link" href='http://127.0.0.1:3000'>Home</a>
+        </Footer>
+      </CurrentCardContext.Provider>
     </CurrentUserContext.Provider >
   );
 };
