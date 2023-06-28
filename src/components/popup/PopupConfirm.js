@@ -1,7 +1,7 @@
 import PopupWithForm from './PopupWithForm';
 
 export default function PopupConfirm(props) {
-    const { isOpen, onClose, handleSubmit, isDeleteCard = false, signupSuccessful } = props;
+    const { isOpen, onClose, handleSubmit, isDeleteCard = false, openLogin } = props;
 
     const onSubmit = (evt) => {
         evt.preventDefault();
@@ -9,7 +9,8 @@ export default function PopupConfirm(props) {
             if (isDeleteCard) {
                 handleSubmit();
             } else {
-                signupSuccessful();
+                onClose();
+                openLogin();
             }
         }
     }
@@ -30,9 +31,7 @@ export default function PopupConfirm(props) {
                     </button>
                 </PopupWithForm>
                 :
-                <PopupWithForm onSubmit={onSubmit} isValid={true} name="confirm" title="You signed up successfully, please log in." isOpen={isOpen} onClose={onClose} buttonText={'Login now.'}>
-
-                </PopupWithForm>
+                <PopupWithForm linkText='don`t, your choice.' onSubmit={onSubmit} isValid={true} name="confirm" title="You signed up successfully, please log in." isOpen={isOpen} onClose={onClose} buttonText={'Login now.'} />
             }
         </>
     );

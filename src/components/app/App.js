@@ -9,6 +9,8 @@ import cardsApiObj from "../../utils/cardsApi";
 import Header from "../header/Header";
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import CurrentCardContext from '../../contexts/CurrentCardContext';
+import NotFound from "../notFound/NotFound";
+import * as Loaders from '../loaders/Loaders';
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import PopupAddEntry from "../popup/PopupAddEntry";
 import PopupLogin from '../popup/PopupLogin';
@@ -37,6 +39,7 @@ function App() {
   const [isDeleteCard, setIsDeleteCard] = React.useState(true);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
   const [cardIdToWatch, setCardIdToWatch] = React.useState('');
+  const [isLoader, setIsLoader] = React.useState(false);
   const [card, setCard] = React.useState();
 
   // ???????????????????????????????????????????????????
@@ -122,6 +125,11 @@ function App() {
       .signUp({ email, password, username })
       .catch((err) => {
         console.log(`Error type: ${err.message}`)
+      })
+      .finally(() => {
+        closeAllPopups();
+        setIsDeleteCard(false);
+        setConfirmPopupOpen({ id: null });
       });
   };
 
@@ -151,11 +159,9 @@ function App() {
     history.push("/");
   };
 
-  const signupSuccessful = () => {
-    closeAllPopups();
-    setIsDeleteCard(false);
-    setConfirmPopupOpen();
-  };
+  React.useEffect(() => {
+    isAutoLogin();            // eslint-disable-next-line
+  }, []);
 
   // ???????????????????????????????????????????????????
   // !!!!!!!!!!!!!!     CARD handling     !!!!!!!!!!!!!!
@@ -223,14 +229,11 @@ function App() {
       });
   };
 
-  React.useEffect(() => {
-    isAutoLogin();            // eslint-disable-next-line
-  }, []);
-
   // ???????????????????????????????????????????????????
   // !!!!!!!!!!!!!     ENTRY handling     !!!!!!!!!!!!!!
   // ???????????????????????????????????????????????????
   const getEntries = (cardId) => {
+    setIsLoader(true);
     cardsApiObj.getEntries(cardId)
       .then((data) => {
         if (data.length !== 0) {
@@ -243,6 +246,9 @@ function App() {
         } else {
           console.log(`Error type: ${err}`);
         }
+      })
+      .finally(() => {
+        setIsLoader(false);
       });
   };
 
@@ -261,6 +267,22 @@ function App() {
       .finally(() => {
         closeAllPopups();
       });
+  };
+
+  const renderOtherObjects = () => {
+    if (isLoader) {
+      return <Loaders.LoaderInfinity />
+    } else {
+      if (history.location.pathname === '/my-cards') {
+        return <p>You have no cards. Add some :-)</p>
+      } else {
+        return (
+          <>
+            <p>You haven`t entered anything yet.</p>
+          </>
+        );
+      }
+    }
   };
 
   // ???????????????????????????????????????????????????
@@ -291,7 +313,7 @@ function App() {
 
   const handleCardClick = (cardId) => {
     setCardIdToWatch(cardId);
-    history.push(`/card/${cardId}`);
+    history.push(`/cards/${cardId}`);
     getCard(cardId);
   };
 
@@ -388,7 +410,7 @@ function App() {
           handleButtonClick={setLoginPopupOpen}
         />
         <Switch>
-          <ProtectedRoute path={`/card/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
+          <ProtectedRoute path={`/cards/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
             <section id="card">
               <div className="add-button__container">
                 <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
@@ -397,8 +419,9 @@ function App() {
               <div className="card__entries">
                 {entries ? entries.map((entry, index) => {
                   return <EntryMessage entry={entry} key={index} />
-                }) : <p>You haven`t entered anything yet.</p>}
+                }) : renderOtherObjects()}
               </div>
+              {/* <Loaders.LoaderRock /> */}
             </section>
           </ProtectedRoute>
 
@@ -411,7 +434,7 @@ function App() {
               <div className="cards">
                 {cards ? cards.map((card, index) => {
                   return <CreditCard card={card} isFlipping={false} key={index} onClick={handleCardClick} />
-                }) : <p>You have no cards.<br /> Add some</p>}
+                }) : renderOtherObjects()}
               </div>
             </section>
           </ProtectedRoute>
@@ -432,6 +455,7 @@ function App() {
           <Route path="/">
             <section id='home'>
               <h1 className="section__title">Welcome to the new app</h1>
+              {loggedIn ? <></> : <p>To use this app ypu first need to sign in.</p>}
               <div className="add-button__container">
                 <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
               </div>
@@ -459,7 +483,7 @@ function App() {
         <PopupConfirm
           isOpen={isConfirmPopupOpen}
           isDeleteCard={isDeleteCard}
-          signupSuccessful={signupSuccessful}
+          openLogin={setLoginPopupOpen}
           onClose={closeAllPopups}
           handleSubmit={deleteCard}
         />
