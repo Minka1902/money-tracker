@@ -37,7 +37,7 @@ export function EntryMessage({ entry }) {
                 </div>
                 <div className="entry-card-description">
                     <span className="entry-card-spent-at" title={spentAt}>Spent at: <span className='capitalize'>{spentAt}</span></span>
-                    {comment !== "No comment." ? <span className="entry-card-comment" title={comment}>Comment: {capitalizeFirstWord(comment)}</span> : <></>}
+                    {comment !== "No comment." ? <span className="entry-card-comment" title={comment}>Comment: {capitalizeFirstWord(comment)}.</span> : <></>}
                 </div>
             </div>
         </div>
