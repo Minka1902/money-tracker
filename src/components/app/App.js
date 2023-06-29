@@ -3,6 +3,7 @@ import { Route, Switch, withRouter, useHistory } from 'react-router-dom';
 import { CreditCard } from "../cards/Cards";
 import { ButtonAdd } from "../buttons/Buttons";
 import { EntryMessage } from '../visualizeData/VisualizeData';
+import { CardPerson } from "../cards/Cards";
 import * as auth from '../../utils/auth';
 import usersApiOBJ from '../../utils/usersApi';
 import cardsApiObj from "../../utils/cardsApi";
