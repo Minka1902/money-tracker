@@ -279,6 +279,11 @@ function App() {
       if (cardIdToWatch) {
         const entry = { cardId: cardIdToWatch, cvv: cvv };
         cardsApiObj.deleteEntry(currentEntry.entryIdToDelete, entry)
+          .then((data) => {
+            if (data) {
+              getEntries(data.cardId);
+            }
+          })
           .catch((err) => {
             if (err) {
               console.log(err);
@@ -434,7 +439,7 @@ function App() {
             handleButtonClick={setLoginPopupOpen}
           />
           <Switch>
-            <ProtectedRoute path={`/ cards / ${cardIdToWatch} `} loggedIn={cardIdToWatch ? true : false} >
+            <ProtectedRoute path={`/cards/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
               <section id="card">
                 <div className="add-button__container">
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />

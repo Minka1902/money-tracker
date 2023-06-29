@@ -1,7 +1,7 @@
 import React from 'react';
 import DefaultGroup from '../../images/default-group.svg';
 import CurrentUserContext from '../../contexts/CurrentUserContext';
-import { formatDate, capitalizeFirstWord } from '../../constants/functions';
+import { formatDate, capitalizeFirstWord, formatAmount } from '../../constants/functions';
 
 export function WhatsappMessage({ sender, messageBody }) {
     return (
@@ -32,12 +32,12 @@ export function EntryMessage({ entry }) {
             </div>
             <div className="entry-card-body">
                 <div className="entry-card-details" title={`${amount} ${currency}`}>
-                    <span className="entry-card-amount">{amount}</span>
+                    <span className="entry-card-amount">{formatAmount(amount.toString())}</span>
                     <span className="entry-card-currency">{currency}</span>
                 </div>
                 <div className="entry-card-description">
                     <span className="entry-card-spent-at" title={spentAt}>Spent at: <span className='capitalize'>{spentAt}</span></span>
-                    {comment ? <span className="entry-card-comment" title={comment}>Comment: {capitalizeFirstWord(comment)}</span> : <></>}
+                    {comment !== "No comment." ? <span className="entry-card-comment" title={comment}>Comment: {capitalizeFirstWord(comment)}</span> : <></>}
                 </div>
             </div>
         </div>

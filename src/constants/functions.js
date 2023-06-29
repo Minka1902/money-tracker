@@ -251,3 +251,24 @@ export const formatDate = (dateString) => {
     const [, day, time, month] = formattedDate.match(/(.+), (\d{2}:\d{2}) (.+)/);
     return `${day} ${time} ${month}`;
 };
+
+export const formatAmount = (amount) => {
+    const numberString = amount.toString();
+    const groups = [];
+    let currentGroup = "";
+    let count = 0;
+    for (let i = numberString.length - 1; i >= 0; i--) {
+        currentGroup = numberString.charAt(i) + currentGroup;
+        count++;
+        if (count === 3) {
+            groups.unshift(currentGroup);
+            currentGroup = "";
+            count = 0;
+        }
+    }
+    if (currentGroup !== "") {
+        groups.unshift(currentGroup);
+    }
+    return groups.join(",");
+};
+

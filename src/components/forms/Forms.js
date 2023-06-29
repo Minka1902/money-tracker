@@ -87,7 +87,8 @@ export function EntryForm({ onSubmit, isOpen }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        onSubmit({ time: new Date(), amount, spentAt, currency: 'NIS', comment });
+        onSubmit({ time: new Date(), amount, spentAt, currency: 'NIS', comment: comment.length === 0 ? 'No comment.' : comment });
+        // onSubmit({ time: new Date(), amount, spentAt, currency: 'NIS', comment });
     };
 
     React.useEffect(() => {
