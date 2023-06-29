@@ -22,6 +22,7 @@ export default function PopupLogin(props) {
     if (isValid) {
       handleLogin(email, password);
       setIsValid(false);
+      onClose();
     }
   };
 

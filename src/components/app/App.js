@@ -114,9 +114,6 @@ function App() {
           console.log(`Error type: ${err.message}`);
           setLoggedIn(false);
         }
-      })
-      .finally(() => {
-        closeAllPopups();
       });
   };
 
