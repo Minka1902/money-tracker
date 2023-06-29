@@ -1,7 +1,6 @@
 import PopupWithForm from './PopupWithForm';
 import React from 'react';
-import Eye from '../../images/svg-files/Eye';
-import NotEye from '../../images/svg-files/NotEye';
+import { SvgEye, SvgNotEye } from '../../images/SvgComponents';
 
 export default function PopupSignUp(props) {
   const { isOpen, onClose, handleSwitchPopup, handleSignup, buttonText } = props;
@@ -153,7 +152,7 @@ export default function PopupSignUp(props) {
           onChange={(evt) => setPassword(evt.currentTarget.value)}
         />
         <button className='popup__input_show-password-button' onClick={handleTogglePasswordVisibility}>
-          {isTypePassword ? <Eye /> : <NotEye />}
+          {isTypePassword ? <SvgEye /> : <SvgNotEye />}
         </button>
       </div>
       <p className={`popup__error-massage${isPasswordCorrect ? '' : '_visible'}${shouldAddSSign ? '_visible' : ''}`}>{passwordErrorText}</p>

@@ -25,7 +25,7 @@ export function EntryMessage({ entry }) {
     const { time, amount, spentAt, currency, comment } = entry;
 
     return (
-        <div className="entry-card">
+        <div className="entry-card" id={entry._id}>
             <div className="entry-card-header">
                 <span className="entry-card-time">{formatDate(time)}</span>
                 <span className="entry-card-owner">{currentUser.username}</span>

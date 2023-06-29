@@ -9,12 +9,13 @@ import cardsApiObj from "../../utils/cardsApi";
 import Header from "../header/Header";
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import CurrentCardContext from '../../contexts/CurrentCardContext';
-import NotFound from "../notFound/NotFound";
+import CurrentEntryContext from "../../contexts/CurrentEntryContext";
 import * as Loaders from '../loaders/Loaders';
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
 import PopupAddEntry from "../popup/PopupAddEntry";
 import PopupLogin from '../popup/PopupLogin';
 import PopupAddCard from "../popup/PopupAddCard";
+import PopupCvv from "../popup/PopupCvv";
 import PopupConfirm from "../popup/PopupConfirm";
 import PopupSignUp from "../popup/PopupSignUp";
 import Footer from '../footer/Footer'
@@ -23,12 +24,14 @@ import RightClickMenu from "../rightClickMenu/RightClickMenu";
 function App() {
   const currentUserContext = React.useContext(CurrentUserContext);
   const currentCardContext = React.useContext(CurrentCardContext);
+  const currentEntryContext = React.useContext(CurrentEntryContext);
   const safeDocument = typeof document !== 'undefined' ? document : {};
   const html = safeDocument.documentElement;
   const history = useHistory();
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState();
   const [currentCard, setCurrentCard] = React.useState();
+  const [currentEntry, setCurrentEntry] = React.useState();
   const [isUserFound, setIsUserFound] = React.useState(true);
   const [cards, setCards] = React.useState();
   const [entries, setEntries] = React.useState();
@@ -36,8 +39,9 @@ function App() {
   const [isLoginPopupOpen, setIsLoginPopupOpen] = React.useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = React.useState(false);
   const [isEntryPopupOpen, setIsEntryPopupOpen] = React.useState(false);
-  const [isDeleteCard, setIsDeleteCard] = React.useState(true);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = React.useState(false);
+  const [isCvvPopupOpen, setIsCvvPopupOpen] = React.useState(false);
+  const [isDeleteCard, setIsDeleteCard] = React.useState(true);
   const [cardIdToWatch, setCardIdToWatch] = React.useState('');
   const [isLoader, setIsLoader] = React.useState(false);
   const [card, setCard] = React.useState();
@@ -61,12 +65,18 @@ function App() {
     setIsConfirmPopupOpen(true);
   };
 
+  const setCvvPopupOpen = ({ id }) => {
+    setCurrentEntry({ entryIdToDelete: id });
+    setIsCvvPopupOpen(true);
+  }
+
   const closeAllPopups = () => {
     setIsSignUpPopupOpen(false);
     setIsLoginPopupOpen(false);
     setIsAddCardPopupOpen(false);
     setIsConfirmPopupOpen(false);
     setIsEntryPopupOpen(false);
+    setIsCvvPopupOpen(false);
     setIsDeleteCard(true);
     if (window.innerWidth < 520) {
       scroll();
@@ -167,11 +177,6 @@ function App() {
     card.ownerId = currentUser.id;
 
     cardsApiObj.createCard(card)
-      .then((data) => {
-        if (data) {
-          setCards([...cards, data]);
-        }
-      })
       .catch((err) => {
         if (err) {
           console.log(`Error type: ${err}`);
@@ -179,6 +184,7 @@ function App() {
       })
       .finally(() => {
         setIsAddCardPopupOpen(false);
+        getCards();
       });
   };
 
@@ -266,7 +272,26 @@ function App() {
       });
   };
 
-  const renderOtherObjects = () => {
+  const removeEntrySubmit = (cvv) => {
+    if (cvv && currentEntry) {
+      if (cardIdToWatch) {
+        const entry = { cardId: cardIdToWatch, cvv: cvv };
+        cardsApiObj.deleteEntry(currentEntry.entryIdToDelete, entry)
+          .then((data) => {
+            if (data) {
+
+            }
+          })
+          .catch((err) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+      }
+    }
+  };
+
+  const renderSecondaryObjects = () => {
     if (isLoader) {
       return <Loaders.LoaderInfinity />
     } else {
@@ -315,7 +340,7 @@ function App() {
   };
 
   const determinePopupOpen = () => {
-    if (history.location.pathname.indexOf('/card/') !== -1) {
+    if (history.location.pathname.indexOf('/cards/') !== -1) {
       setIsEntryPopupOpen(true);
     } else {
       if (loggedIn) {
@@ -364,8 +389,8 @@ function App() {
     { buttonText: 'delete card', buttonClicked: setConfirmPopupOpen, filter: 'flip-card' },
     { buttonText: 'sign out', buttonClicked: handleLogout, filter: 'header' },
     { buttonText: 'add card', buttonClicked: setAddCardOpen, filter: 'my_cards' },
-    { buttonText: 'delete entry', buttonClicked: () => { console.log('delete entry!!!') }, filter: 'entry-card' },
-    { buttonText: 'add entry', buttonClicked: () => { console.log('add entry!!!') }, filter: 'entry-card' },
+    { buttonText: 'delete entry', buttonClicked: setCvvPopupOpen, filter: 'entry-card' },
+    { buttonText: 'add entry', buttonClicked: setIsEntryPopupOpen, filter: 'entry-card' },
   ];
 
   // ???????????????????????????????????????????????????
@@ -396,119 +421,127 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <CurrentCardContext.Provider value={{ currentCard, setCurrentCard }}>
-        <RightClickMenu items={rightClickItems} />
-        <Header
-          noScroll={noScroll}
-          scroll={scroll}
-          isLoggedIn={loggedIn}
-          buttons={navButtons}
-          handleLogout={handleLogout}
-          handleButtonClick={setLoginPopupOpen}
-        />
-        <Switch>
-          <ProtectedRoute path={`/cards/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
-            <section id="card">
-              <div className="add-button__container">
-                <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
-              </div>
-              <h1 className="section__title">Here you can see the cards entries.</h1>
-              <div className="card__entries">
-                {entries ? entries.map((entry, index) => {
-                  return <EntryMessage entry={entry} key={index} />
-                }) : renderOtherObjects()}
-              </div>
-              {/* <Loaders.LoaderRock /> */}
-            </section>
-          </ProtectedRoute>
+      <CurrentCardContext.Provider value={{ currentCard }}>
+        <CurrentEntryContext.Provider value={{ currentEntry, setCurrentEntry }}>
+          <RightClickMenu items={rightClickItems} />
+          <Header
+            noScroll={noScroll}
+            scroll={scroll}
+            isLoggedIn={loggedIn}
+            buttons={navButtons}
+            handleLogout={handleLogout}
+            handleButtonClick={setLoginPopupOpen}
+          />
+          <Switch>
+            <ProtectedRoute path={`/cards/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
+              <section id="card">
+                <div className="add-button__container">
+                  <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
+                </div>
+                <h1 className="section__title">Here you can see the cards entries.</h1>
+                <div className="card__entries">
+                  {entries ? entries.map((entry, index) => {
+                    return <EntryMessage entry={entry} key={index} />
+                  }) : renderSecondaryObjects()}
+                </div>
+                {/* <Loaders.LoaderRock /> */}
+              </section>
+            </ProtectedRoute>
 
-          <ProtectedRoute path='/my-cards' exact loggedIn={loggedIn} >
-            <section id="my-cards" className="my_cards">
-              {loggedIn ? <h1 className="section__title"><span className="capitalized">{currentUser.username}</span> here you can find your cards</h1> : <></>}
-              <div className="add-button__container">
-                <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
-              </div>
-              <div className="cards">
-                {cards ? cards.map((card, index) => {
-                  return <CreditCard card={card} isFlipping={false} key={index} onClick={handleCardClick} />
-                }) : renderOtherObjects()}
-              </div>
-            </section>
-          </ProtectedRoute>
+            <ProtectedRoute path='/my-cards' exact loggedIn={loggedIn} >
+              <section id="my-cards" className="my_cards">
+                {loggedIn ? <h1 className="section__title"><span className="capitalized">{currentUser.username}</span> here you can find your cards</h1> : <></>}
+                <div className="add-button__container">
+                  <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
+                </div>
+                <div className="cards">
+                  {cards ? cards.map((card, index) => {
+                    return <CreditCard card={card} isFlipping={false} key={index} onClick={handleCardClick} />
+                  }) : renderSecondaryObjects()}
+                </div>
+              </section>
+            </ProtectedRoute>
 
-          <Route path='/about-us'>
-            <section id='about-us'>
-              <h1 className="section__title">Here you can read about us.</h1>
-              <div className="add-button__container">
-                <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
-              </div>
-              <p>Meet our team</p>
-              <h2>CEO</h2>
-              <h3>LEAD FRONTEND</h3>
-              <h4>LEAD BACKEND</h4>
-            </section>
-          </Route>
+            <Route path='/about-us'>
+              <section id='about-us'>
+                <h1 className="section__title">Here you can read about us.</h1>
+                <div className="add-button__container">
+                  <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
+                </div>
+                <p>Meet our team</p>
+                <h2>CEO</h2>
+                <h3>LEAD FRONTEND</h3>
+                <h4>LEAD BACKEND</h4>
+              </section>
+            </Route>
 
-          <Route path="/">
-            <section id='home'>
-              <h1 className="section__title">Welcome to the new app</h1>
-              {loggedIn ? <></> : <p>To use this app ypu first need to sign in.</p>}
-              <div className="add-button__container">
-                <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
-              </div>
-            </section>
-          </Route>
-        </Switch>
-        <PopupSignUp
-          isOpen={isSignUpPopupOpen}
-          onClose={closeAllPopups}
-          handleSignup={handleSignupSubmit}
-          buttonText="Sign up"
-          handleSwitchPopup={switchPopups}
-        />
+            <Route path="/">
+              <section id='home'>
+                <h1 className="section__title">Welcome to the new app</h1>
+                {loggedIn ? <></> : <p>To use this app ypu first need to sign in.</p>}
+                <div className="add-button__container">
+                  <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
+                </div>
+              </section>
+            </Route>
+          </Switch>
+          <PopupSignUp
+            isOpen={isSignUpPopupOpen}
+            onClose={closeAllPopups}
+            handleSignup={handleSignupSubmit}
+            buttonText="Sign up"
+            handleSwitchPopup={switchPopups}
+          />
 
-        <PopupLogin
-          handleLogin={handleLoginSubmit}
-          isOpen={isLoginPopupOpen}
-          isFound={isUserFound}
-          linkText={loggedIn ? 'Add a card' : 'Sign up'}
-          onClose={closeAllPopups}
-          handleSwitchPopup={switchPopups}
-          onSignOut={handleLogout}
-        />
+          <PopupLogin
+            handleLogin={handleLoginSubmit}
+            isOpen={isLoginPopupOpen}
+            isFound={isUserFound}
+            linkText={loggedIn ? 'Add a card' : 'Sign up'}
+            onClose={closeAllPopups}
+            handleSwitchPopup={switchPopups}
+            onSignOut={handleLogout}
+          />
 
-        <PopupConfirm
-          isOpen={isConfirmPopupOpen}
-          isDeleteCard={isDeleteCard}
-          openLogin={setLoginPopupOpen}
-          onClose={closeAllPopups}
-          handleSubmit={deleteCard}
-        />
+          <PopupConfirm
+            isOpen={isConfirmPopupOpen}
+            isDeleteCard={isDeleteCard}
+            openLogin={setLoginPopupOpen}
+            onClose={closeAllPopups}
+            handleSubmit={deleteCard}
+          />
 
-        <PopupAddEntry
-          onSubmit={addEntrySubmit}
-          isOpen={isEntryPopupOpen}
-          onClose={closeAllPopups}
-        />
+          <PopupAddEntry
+            onSubmit={addEntrySubmit}
+            isOpen={isEntryPopupOpen}
+            onClose={closeAllPopups}
+          />
 
-        <PopupAddCard
-          isLoggedIn={loggedIn}
-          onSubmit={handleAddCardSubmit}
-          isOpen={isAddCardPopupOpen}
-          linkText='Sign in'
-          handleSwitchPopup={switchPopups}
-          onClose={closeAllPopups}
-        />
+          <PopupAddCard
+            isLoggedIn={loggedIn}
+            onSubmit={handleAddCardSubmit}
+            isOpen={isAddCardPopupOpen}
+            linkText='Sign in'
+            handleSwitchPopup={switchPopups}
+            onClose={closeAllPopups}
+          />
 
-        <Footer>
-          {navButtons.map((button, index) => {
-            if (button.isAllowed) {
-              return <a key={index} onClick={button.onClick} className="footer__link">{button.name}</a>
-            }
-          })}
-        </Footer>
+          <PopupCvv
+            onSubmit={removeEntrySubmit}
+            isOpen={isCvvPopupOpen}
+            onClose={closeAllPopups}
+          />
+
+          <Footer>
+            {navButtons.map((button, index) => {
+              if (button.isAllowed) {
+                return <a key={index} onClick={button.onClick} className="footer__link">{button.name}</a>
+              }
+            })}
+          </Footer>
+        </CurrentEntryContext.Provider>
       </CurrentCardContext.Provider>
-    </CurrentUserContext.Provider >
+    </CurrentUserContext.Provider>
   );
 };
 export default withRouter(App);
