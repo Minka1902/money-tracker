@@ -644,7 +644,7 @@
     transition: .2s ease-in-out;
 }
 
-.instagram {
+.follow-instagram {
     margin-top: 1.5em;
     margin-left: 1.2em;
     fill: #cc39a4;
@@ -661,7 +661,7 @@
     transition: .2s ease-in-out;
 }
 
-.twitter {
+.follow-twitter {
     margin-top: 1.5em;
     margin-left: -.9em;
     fill: #03A9F4;
@@ -678,7 +678,7 @@
     transition: .2s ease-in-out;
 }
 
-.github {
+.follow-github {
     margin-top: -.6em;
     margin-left: 1.2em;
 }
@@ -694,7 +694,7 @@
     transition: .2s ease-in-out;
 }
 
-.linkedin {
+.follow-linkedin {
     margin-top: -.9em;
     margin-left: -1.2em;
     fill: #8c9eff;
@@ -706,7 +706,7 @@
     background: linear-gradient(90deg, #ecfd02 0%, #f700ff 100%);
 }
 
-.card1:hover .instagram {
+.card1:hover .follow-instagram {
     fill: white;
 }
 
@@ -716,7 +716,7 @@
     background-color: #03A9F4;
 }
 
-.card2:hover .twitter {
+.card2:hover .follow-twitter {
     fill: white;
 }
 
@@ -726,7 +726,7 @@
     background-color: black;
 }
 
-.card3:hover .github {
+.card3:hover .follow-github {
     fill: white;
 }
 
@@ -736,7 +736,7 @@
     background-color: #8c9eff;
 }
 
-.card4:hover .linkedin {
+.card4:hover .follow-linkedin {
     fill: white;
 }
 

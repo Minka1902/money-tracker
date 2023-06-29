@@ -1,7 +1,7 @@
 import './cards.css';
 import React from 'react';
 import photo from '../../images/michaelScharff.jpeg';
-import { SvgFacebook, SvgWIFI, SvgLinkedIn, SvgGithub } from '../../images/SvgComponents';
+import { SvgInstagram, SvgWIFI, SvgLinkedIn, SvgGithub } from '../../images/SvgComponents';
 import { formatCreditCardNumber } from '../../constants/functions';
 
 const defProduct = { title: 'Product title', price: 123, description: 'Product description. Lorem ipsum dolor sit amet, consectetur adipisicing elit.', image: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRWifkO7X_yy9ojqDlG3YheD-iNku776zxxwlWzHPxYLwkIhSuLvjBZhq9uo5D5Af6nlMlqw-BKOxMTD4r5vp2uYaBXGKHuW-NldNMRIrKMVSedq0CSIRg0IACV7OKGCaC9eH8&usqp=CAc' }
@@ -29,32 +29,32 @@ export function CardProduct1({ product = defProduct, onClick }) {
     );
 };
 
-const defPerson = { name: 'JOHN DOE', title: 'Fullstack dev, UX UI', image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } };
+const defPerson = { name: 'JOHN DOE', title: 'Fullstack dev, UX UI', image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } };
 export function CardPerson({ person = defPerson }) {
     const onButtonClick = (evt) => {
         const buttonClicked = getButton(evt.target);
         if (buttonClicked) {
             const classes = buttonClicked.className;
-            if (classes.indexOf('facebook') !== -1) {
-                person.social.facebook();
+            if (classes.indexOf('instagram') !== -1) {
+                window.open(person.social.instagram, '_blank', 'noopener,noreferrer');
             } else {
                 if (classes.indexOf('linkedin') !== -1) {
-                    person.social.linkedin();
+                    window.open(person.social.linkedin, '_blank', 'noopener,noreferrer');
                 } else {
                     if (classes.indexOf('github') !== -1) {
-                        person.social.github();
+                        window.open(person.social.github, '_blank', 'noopener,noreferrer');
                     }
                 }
             }
         }
-    }
+    };
 
     const getButton = (element) => {
         if (element.nodeName.toLowerCase() === 'button') {
             return element;
         }
         return getButton(element.parentElement);
-    }
+    };
 
     return (
         <>
@@ -64,8 +64,8 @@ export function CardPerson({ person = defPerson }) {
                     <span>{person.title}</span>
                 </div>
                 <div className="card-socials">
-                    <button className="card-socials-btn social-facebook" onClick={onButtonClick}>
-                        <SvgFacebook />
+                    <button className="card-socials-btn social-instagram" onClick={onButtonClick}>
+                        <SvgInstagram />
                     </button>
                     <button className="card-socials-btn social-github" onClick={onButtonClick}>
                         <SvgGithub />

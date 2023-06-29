@@ -391,6 +391,7 @@ function App() {
   ];
 
   const people = [{ name: 'michael scharff', title: 'Fullstack dev, UX UI', image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
+  { name: 'amit glat', title: `PR Manager, Designer`, image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
   { name: 'nathan scharff', title: 'Owner, CEO', image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } }];
 
   // ???????????????????????????????????????????????????
@@ -433,7 +434,7 @@ function App() {
             handleButtonClick={setLoginPopupOpen}
           />
           <Switch>
-            <ProtectedRoute path={`/cards/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
+            <ProtectedRoute path={`/ cards / ${cardIdToWatch} `} loggedIn={cardIdToWatch ? true : false} >
               <section id="card">
                 <div className="add-button__container">
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
