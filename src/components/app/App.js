@@ -422,7 +422,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <CurrentCardContext.Provider value={{ currentCard }}>
-        <CurrentEntryContext.Provider value={{ currentEntry, setCurrentEntry }}>
+        <CurrentEntryContext.Provider value={{ currentEntry }}>
           <RightClickMenu items={rightClickItems} />
           <Header
             noScroll={noScroll}
