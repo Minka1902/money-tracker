@@ -21,6 +21,7 @@ import PopupConfirm from "../popup/PopupConfirm";
 import PopupSignUp from "../popup/PopupSignUp";
 import Footer from '../footer/Footer'
 import RightClickMenu from "../rightClickMenu/RightClickMenu";
+import photo from '../../images/michaelScharff.jpeg';
 
 function App() {
   const currentUserContext = React.useContext(CurrentUserContext);
@@ -278,11 +279,6 @@ function App() {
       if (cardIdToWatch) {
         const entry = { cardId: cardIdToWatch, cvv: cvv };
         cardsApiObj.deleteEntry(currentEntry.entryIdToDelete, entry)
-          .then((data) => {
-            if (data) {
-
-            }
-          })
           .catch((err) => {
             if (err) {
               console.log(err);
@@ -394,6 +390,9 @@ function App() {
     { buttonText: 'add entry', buttonClicked: setIsEntryPopupOpen, filter: 'entry-card' },
   ];
 
+  const people = [{ name: 'michael scharff', title: 'Fullstack dev, UX UI', image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
+  { name: 'nathan scharff', title: 'Owner, CEO', image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } }];
+
   // ???????????????????????????????????????????????????
   // !!!!!!!!!!!!!     EVENT handling     !!!!!!!!!!!!!!
   // ???????????????????????????????????????????????????
@@ -445,7 +444,6 @@ function App() {
                     return <EntryMessage entry={entry} key={index} />
                   }) : renderSecondaryObjects()}
                 </div>
-                {/* <Loaders.LoaderRock /> */}
               </section>
             </ProtectedRoute>
 
@@ -470,9 +468,11 @@ function App() {
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
                 </div>
                 <p>Meet our team</p>
-                <h2>CEO</h2>
-                <h3>LEAD FRONTEND</h3>
-                <h4>LEAD BACKEND</h4>
+                <div className="card__entries">
+                  {people.map((person, index) => {
+                    return <CardPerson person={person} key={index} />
+                  })}
+                </div>
               </section>
             </Route>
 
