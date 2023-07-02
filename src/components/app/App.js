@@ -4,6 +4,7 @@ import { CreditCard } from "../cards/Cards";
 import { ButtonAdd } from "../buttons/Buttons";
 import { EntryMessage } from '../visualizeData/VisualizeData';
 import { CardPerson } from "../cards/Cards";
+import { sortArrayByFrequency } from "../../constants/functions";
 import * as auth from '../../utils/auth';
 import usersApiOBJ from '../../utils/usersApi';
 import cardsApiObj from "../../utils/cardsApi";
@@ -243,6 +244,7 @@ function App() {
       .then((data) => {
         if (data.length !== 0) {
           setEntries(data);
+          calculateSpendingSummary(data);
         }
       })
       .catch((err) => {
@@ -396,8 +398,58 @@ function App() {
   ];
 
   const people = [{ name: 'michael scharff', title: 'Fullstack dev, UX UI', image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
-  { name: 'amit glat', title: `PR Manager, Designer`, image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
+  { name: 'amit glat', title: `HR Manager, Designer`, image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
   { name: 'nathan scharff', title: 'Owner, CEO', image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } }];
+
+  // ???????????????????????????????????????????????????
+  // !!!!!!!!!!!!!     GRAPH handling     !!!!!!!!!!!!!!
+  // ???????????????????????????????????????????????????
+  const calculateSpendingSummary = (data) => {
+    const today = new Date();
+    const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+
+    const summary = { lastWeek: {}, lastMonth: {}, today: {} };
+
+    for (let i = 0; i < data.length; i++) {
+      const transactionDate = new Date(data[i].time);
+
+      if (transactionDate.getDate() === today.getDate() && transactionDate.getMonth() === today.getMonth()) {
+        const spentAt = data[i].spentAt.toLowerCase();
+        const amount = data[i].amount;
+
+        if (!summary.today[spentAt]) {
+          summary.today[spentAt] = { amount };
+        } else {
+          summary.today[spentAt].amount += amount;
+        }
+      }
+
+      if (transactionDate >= lastWeek && transactionDate <= today) {
+        const spentAt = data[i].spentAt.toLowerCase();
+        const amount = data[i].amount;
+
+        if (!summary.lastWeek[spentAt]) {
+          summary.lastWeek[spentAt] = { amount };
+        } else {
+          summary.lastWeek[spentAt].amount += amount;
+        }
+      }
+
+      if (transactionDate >= lastMonth && transactionDate <= today) {
+        const spentAt = data[i].spentAt.toLowerCase();
+        const amount = data[i].amount;
+
+        if (!summary.lastMonth[spentAt]) {
+          summary.lastMonth[spentAt] = { amount };
+        } else {
+          summary.lastMonth[spentAt].amount += amount;
+        }
+      }
+    }
+
+    return summary;
+  }
 
   // ???????????????????????????????????????????????????
   // !!!!!!!!!!!!!     EVENT handling     !!!!!!!!!!!!!!

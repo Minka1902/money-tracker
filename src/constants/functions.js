@@ -69,10 +69,10 @@ export const removeDuplicates = (nums) => {
 // ! 	gets an array of strings and sorts them by frequency.
 // TODO sortArrayByFrequency(['hi','hi','html','hi','html','israel','html','hi','css','hello','css','css','html','hello','html','hi','hello','hi'])
 // ?  	[hi, html, hello, css, israel]
-export const sortArrayByFrequency = (articles) => {
+export const sortArrayByFrequency = (arr) => {
     const keywordCounts = {};
-    for (let i = 0; i < articles.length; i++) {
-        const article = articles[i];
+    for (let i = 0; i < arr.length; i++) {
+        const article = arr[i];
         const keyword = article.keyword;
         if (keyword in keywordCounts) {
             keywordCounts[keyword]++;
