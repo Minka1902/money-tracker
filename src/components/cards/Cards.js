@@ -58,19 +58,19 @@ export function CardPerson({ person = defPerson }) {
 
     return (
         <>
-            <div className="card">
-                <img className="card-photo" src={person.image} />
-                <div className="card-title"><span className='capitalized'>{person.name}</span> <br />
+            <div className="card-person">
+                <img className="card-person__photo" src={person.image} />
+                <div className="card-person__title"><span className='capitalized'>{person.name}</span> <br />
                     <span>{person.title}</span>
                 </div>
-                <div className="card-socials">
-                    <button className="card-socials-btn social-instagram" onClick={onButtonClick}>
+                <div className="card-person__socials">
+                    <button className="card-person__socials_btn social-instagram" onClick={onButtonClick}>
                         <SvgInstagram />
                     </button>
-                    <button className="card-socials-btn social-github" onClick={onButtonClick}>
+                    <button className="card-person__socials_btn social-github" onClick={onButtonClick}>
                         <SvgGithub />
                     </button>
-                    <button className="card-socials-btn social-linkedin" onClick={onButtonClick}>
+                    <button className="card-person__socials_btn social-linkedin" onClick={onButtonClick}>
                         <SvgLinkedIn />
                     </button>
                 </div>

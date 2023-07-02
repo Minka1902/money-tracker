@@ -119,7 +119,7 @@
 /* !!!!!!!!!!!!!!!!      PERSON      !!!!!!!!!!!!!!!!! */
 /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 
-.card {
+.card-person {
     --font-color: #323232;
     --font-color-sub: #666;
     --bg-color: #fff;
@@ -136,7 +136,7 @@
     justify-content: center;
 }
 
-.card-photo {
+.card-person__photo {
     transform: scale(0.5) translate(120px, 110px);
     transition-duration: 0.3s;
     width: 250px;
@@ -147,7 +147,7 @@
     border-radius: 30%;
 }
 
-.card-title {
+.card-person__title {
     text-align: center;
     color: var(--font-color);
     font-size: 20px;
@@ -155,12 +155,12 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.card-title span {
+.card-person__title span {
     font-size: 15px;
     color: var(--font-color-sub);
 }
 
-.card-socials {
+.card-person__socials {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -171,7 +171,7 @@
     transition: 0.5s;
 }
 
-.card-socials-btn {
+.card-person__socials_btn {
     width: 30px;
     height: 30px;
     border: none;
@@ -179,20 +179,19 @@
     cursor: pointer;
 }
 
-.card-socials-btn svg {
+.card-person__socials_btn svg {
     width: 100%;
     height: 100%;
     fill: var(--main-color);
 }
 
-.card:hover>.card-socials {
+.card-person:hover>.card-person__socials {
     opacity: 1;
-    height: 35px;
 }
 
-.card-socials-btn:hover {
-    transform: translateY(-5px);
-    transition: all 0.15s;
+.card-person__socials_btn:hover {
+    transform: translateY(-5px) scale(1.5);
+    transition: all 0.2s;
 }
 
 /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
