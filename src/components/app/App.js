@@ -190,6 +190,7 @@ function App() {
   };
 
   const getCards = () => {
+    setIsLoader(true);
     cardsApiObj.getCards()
       .then((data) => {
         if (data) {
@@ -202,6 +203,9 @@ function App() {
         } else {
           console.log(`Error type: ${err}`);
         }
+      })
+      .finally(() => {
+        setIsLoader(false);
       });
   };
 
@@ -360,6 +364,7 @@ function App() {
       isAllowed: true,
       onClick: () => {
         history.push("/");
+        setCards(null);
         setCardIdToWatch(null);
         setEntries(null);
       }
@@ -382,6 +387,7 @@ function App() {
       onClick: () => {
         history.push("/about-us");
         setCardIdToWatch(null);
+        setCards(null);
         setEntries(null);
       }
     },
@@ -395,9 +401,9 @@ function App() {
     { buttonText: 'add entry', buttonClicked: setIsEntryPopupOpen, filter: 'entry-card' },
   ];
 
-  const people = [{ name: 'michael scharff', title: 'Fullstack dev, UX UI', image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
-  { name: 'amit glat', title: `HR Manager, Designer`, image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
-  { name: 'nathan scharff', title: 'Owner, CEO', image: photo, social: { facebook: () => { console.log('facebook') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } }];
+  const people = [{ name: 'michael scharff', title: 'Fullstack dev, UX UI', image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
+  { name: 'amit glat', title: `HR Manager, Designer`, image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
+  { name: 'nathan scharff', title: 'Owner, CEO', image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } }];
 
   // ???????????????????????????????????????????????????
   // !!!!!!!!!!!!!     GRAPH handling     !!!!!!!!!!!!!!
@@ -446,8 +452,20 @@ function App() {
       }
     }
 
-    return summary;
-  }
+    return processEntries(summary);
+  };
+
+  const processEntries = (summary) => {
+    let first = { amount: 0 };
+    for (const time in summary) {
+      for (const place in summary[time]) {
+        if (place.amount > first.amount) {
+          first.amount = place.amount;
+        }
+      }
+    }
+    return first;
+  };
 
   // ???????????????????????????????????????????????????
   // !!!!!!!!!!!!!     EVENT handling     !!!!!!!!!!!!!!
@@ -490,12 +508,12 @@ function App() {
           />
           <Switch>
             <ProtectedRoute path={`/cards/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
-              <section id="card">
+              <section id='card'>
                 <div className="add-button__container">
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
                 </div>
                 <h1 className="section__title">Here you can see the cards entries.</h1>
-                <div className="card__entries">
+                <div className={entries ? 'card__entries' : 'loading'}>
                   {entries ? entries.map((entry, index) => {
                     return <EntryMessage entry={entry} key={index} />
                   }) : renderSecondaryObjects()}
@@ -509,7 +527,7 @@ function App() {
                 <div className="add-button__container">
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
                 </div>
-                <div className="cards">
+                <div className={cards ? 'cards' : 'loading'}>
                   {cards ? cards.map((card, index) => {
                     return <CreditCard card={card} isFlipping={false} key={index} onClick={handleCardClick} />
                   }) : renderSecondaryObjects()}

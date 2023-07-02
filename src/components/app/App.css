@@ -35,6 +35,13 @@ section {
     padding-top: 5px;
 }
 
+.loading {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .card__entries {
     max-width: 1100px;
     display: grid;
