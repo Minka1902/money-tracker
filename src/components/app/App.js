@@ -1,10 +1,8 @@
 import React from "react";
 import { Route, Switch, withRouter, useHistory } from 'react-router-dom';
-import { CreditCard } from "../cards/Cards";
+import { CreditCard, CardPerson } from "../cards/Cards";
 import { ButtonAdd } from "../buttons/Buttons";
 import { EntryMessage } from '../visualizeData/VisualizeData';
-import { CardPerson } from "../cards/Cards";
-import { sortArrayByFrequency } from "../../constants/functions";
 import * as auth from '../../utils/auth';
 import usersApiOBJ from '../../utils/usersApi';
 import cardsApiObj from "../../utils/cardsApi";
@@ -600,7 +598,7 @@ function App() {
           </Footer>
         </CurrentEntryContext.Provider>
       </CurrentCardContext.Provider>
-    </CurrentUserContext.Provider>
+    </CurrentUserContext.Provider >
   );
 };
 export default withRouter(App);
