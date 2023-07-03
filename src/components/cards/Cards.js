@@ -1,7 +1,7 @@
 import './cards.css';
 import React from 'react';
 import photo from '../../images/michaelScharff.jpeg';
-import { SvgInstagram, SvgWIFI, SvgLinkedIn, SvgGithub } from '../../images/SvgComponents';
+import * as Svg from '../../images/SvgComponents';
 import { formatCreditCardNumber } from '../../constants/functions';
 
 const defProduct = { title: 'Product title', price: 123, description: 'Product description. Lorem ipsum dolor sit amet, consectetur adipisicing elit.', image: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRWifkO7X_yy9ojqDlG3YheD-iNku776zxxwlWzHPxYLwkIhSuLvjBZhq9uo5D5Af6nlMlqw-BKOxMTD4r5vp2uYaBXGKHuW-NldNMRIrKMVSedq0CSIRg0IACV7OKGCaC9eH8&usqp=CAc' }
@@ -30,7 +30,7 @@ export function CardProduct1({ product = defProduct, onClick }) {
 };
 
 const defPerson = { name: 'JOHN DOE', title: 'Fullstack dev, UX UI', image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } };
-export function CardPerson({ person = defPerson }) {
+export function CardPerson({ person = defPerson, isInstagram = true, isLinkedin = true, isGithub = true, isWhatsApp = false }) {
     const onButtonClick = (evt) => {
         const buttonClicked = getButton(evt.target);
         if (buttonClicked) {
@@ -64,15 +64,18 @@ export function CardPerson({ person = defPerson }) {
                     <span>{person.title}</span>
                 </div>
                 <div className="card-person__socials">
-                    <button className="card-person__socials_btn social-instagram" onClick={onButtonClick}>
-                        <SvgInstagram />
-                    </button>
-                    <button className="card-person__socials_btn social-github" onClick={onButtonClick}>
-                        <SvgGithub />
-                    </button>
-                    <button className="card-person__socials_btn social-linkedin" onClick={onButtonClick}>
-                        <SvgLinkedIn />
-                    </button>
+                    {isInstagram ? <button className="card-person__socials_btn social-instagram" onClick={onButtonClick}>
+                        <Svg.SvgInstagram />
+                    </button> : <></>}
+                    {isGithub ? <button className="card-person__socials_btn social-github" onClick={onButtonClick}>
+                        <Svg.SvgGithub />
+                    </button> : <></>}
+                    {isLinkedin ? <button button className="card-person__socials_btn social-linkedin" onClick={onButtonClick}>
+                        <Svg.SvgLinkedIn />
+                    </button> : <></>}
+                    {isWhatsApp ? <button button className="card-person__socials_btn social-whatsapp" onClick={onButtonClick}>
+                        <Svg.SvgWhatsApp />
+                    </button> : <></>}
                 </div>
             </div >
         </>
@@ -97,7 +100,7 @@ export function CreditCard({ card = defCard, onClick, isFlipping }) {
                         </svg>
                         <div className='credit__chip'></div>
                         <div className='credit__wifi'>
-                            <SvgWIFI color={'white'} is4={true} />
+                            <Svg.SvgWIFI color={'white'} is4={true} />
                         </div>
                         <p className="credit__number">{formatCreditCardNumber(card.cardNumber, true, 8)}</p>
                         <p className="credit__valid_thru">VALID THRU</p>

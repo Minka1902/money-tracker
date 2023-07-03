@@ -401,7 +401,7 @@ function App() {
     { buttonText: 'add entry', buttonClicked: setIsEntryPopupOpen, filter: 'entry-card' },
   ];
 
-  const people = [{ name: 'michael scharff', title: 'Fullstack dev, UX UI', image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
+  const people = [{ name: 'michael scharff', title: 'Fullstack dev, UX UI', image: photo, social: { instagram: 'https://www.instagram.com', linkedin: 'https://www.linkedin.com/in/michael-scharff-1525b6235/', github: 'https://github.com/Minka1902' } },
   { name: 'amit glat', title: `HR Manager, Designer`, image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
   { name: 'nathan scharff', title: 'Owner, CEO', image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } }];
 
@@ -495,8 +495,8 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <CurrentCardContext.Provider value={{ currentCard }}>
-        <CurrentEntryContext.Provider value={{ currentEntry }}>
+      <CurrentCardContext.Provider value={currentCard}>
+        <CurrentEntryContext.Provider value={currentEntry}>
           <RightClickMenu items={rightClickItems} />
           <Header
             noScroll={noScroll}
@@ -507,7 +507,7 @@ function App() {
             handleButtonClick={setLoginPopupOpen}
           />
           <Switch>
-            <ProtectedRoute path={`/cards/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false} >
+            <ProtectedRoute path={`/cards/${cardIdToWatch}`} loggedIn={cardIdToWatch ? true : false}>
               <section id='card'>
                 <div className="add-button__container">
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
