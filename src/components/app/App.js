@@ -12,6 +12,7 @@ import CurrentCardContext from '../../contexts/CurrentCardContext';
 import CurrentEntryContext from "../../contexts/CurrentEntryContext";
 import * as Loaders from '../loaders/Loaders';
 import ProtectedRoute from "../protectedRoute/ProtectedRoute";
+import * as Charts from "../chart/Charts";
 import PopupAddEntry from "../popup/PopupAddEntry";
 import PopupLogin from '../popup/PopupLogin';
 import PopupAddCard from "../popup/PopupAddCard";
@@ -21,6 +22,7 @@ import PopupSignUp from "../popup/PopupSignUp";
 import Footer from '../footer/Footer'
 import RightClickMenu from "../rightClickMenu/RightClickMenu";
 import photo from '../../images/michaelScharff.jpeg';
+import Chart from 'chart.js/auto';
 
 function App() {
   const currentUserContext = React.useContext(CurrentUserContext);
@@ -493,8 +495,35 @@ function App() {
     return () => document.removeEventListener('mouseup', closeByClick);
   });
 
+  const Data = [
+    { id: 1, year: 2016, userGain: 80000, userLost: 823 },
+    { id: 2, year: 2017, userGain: 45677, userLost: 345 },
+    { id: 3, year: 2018, userGain: 78888, userLost: 555 },
+    { id: 4, year: 2019, userGain: 90000, userLost: 4555 },
+    { id: 4, year: 2020, userGain: 19000, userLost: 5555 },
+    { id: 5, year: 2021, userGain: 4300, userLost: 234 }
+  ];
+
+  const [chartData, setChartData] = React.useState({
+    labels: Data.map((data) => data.year),
+    datasets: [{
+      label: "Users Gained",
+      data: Data.map((data) => data.userGain),
+      backgroundColor: [
+        "rgba(75,192,192,1)",
+        "#50AF95",
+        "#a31a2f",
+        "#af5a2f",
+        "#f3ba2f",
+        "#000000"
+      ],
+      borderColor: "black",
+      borderWidth: 2
+    }],
+  });
+
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={currentUser} >
       <CurrentCardContext.Provider value={currentCard}>
         <CurrentEntryContext.Provider value={currentEntry}>
           <RightClickMenu items={rightClickItems} />
@@ -513,10 +542,13 @@ function App() {
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
                 </div>
                 <h1 className="section__title">Here you can see the cards entries.</h1>
-                <div className={entries ? 'card__entries' : 'loading'}>
-                  {entries ? entries.map((entry, index) => {
-                    return <EntryMessage entry={entry} key={index} />
-                  }) : renderSecondaryObjects()}
+                <div className="card-and-chart__container">
+                  <div className={entries ? 'card__entries' : 'loading'}>
+                    {entries ? entries.map((entry, index) => {
+                      return <EntryMessage entry={entry} key={index} />
+                    }) : renderSecondaryObjects()}
+                  </div>
+                  <Charts.LineChart chartData={chartData} chartClass="chart__container" title={{text:'Your most expenses go here'}} subtitle={false} />
                 </div>
               </section>
             </ProtectedRoute>
