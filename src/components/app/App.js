@@ -641,7 +641,7 @@ function App() {
 
           <Footer>
             {navButtons.map((button, index) => {
-              return button.isAllowed ? <a href={button.path} key={index} onClick={button.onClick} className="footer__link">{button.name}</a> : <></>
+              return button.isAllowed ? <a href={button.path} key={index} onClick={button.onClick} className="footer__link">{button.name}</a> : ''
             })}
           </Footer>
         </CurrentEntryContext.Provider>
