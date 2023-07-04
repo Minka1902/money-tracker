@@ -63,30 +63,32 @@ export function BarChart({ chartData, title = defTitle, subtitle = defSubtitle, 
 };
 
 export function LineChart({ chartData, title = 'Please pass a title.', subtitle = defSubtitle, chartClass = 'chart-bar-container' }) {
-    return (
-        <div className={chartClass}>
-            <Line
-                data={chartData}
-                options={{
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: title.text,
-                            color: title.color,
-                        },
-                        subtitle: {
-                            display: subtitle.text ? true : false,
-                            text: subtitle.text,
-                            color: subtitle.color,
-                            font: subtitle.font,
-                            padding: subtitle.padding,
-                        },
-                        legend: {
-                            display: false
+    if (chartData !== null) {
+        return (
+            <div className={chartClass}>
+                <Line
+                    data={chartData}
+                    options={{
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: title.text,
+                                color: title.color,
+                            },
+                            subtitle: {
+                                display: subtitle.text ? true : false,
+                                text: subtitle.text,
+                                color: subtitle.color,
+                                font: subtitle.font,
+                                padding: subtitle.padding,
+                            },
+                            legend: {
+                                display: false
+                            }
                         }
-                    }
-                }}
-            />
-        </div>
-    );
+                    }}
+                />
+            </div>
+        );
+    }
 };

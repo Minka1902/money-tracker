@@ -9,7 +9,7 @@ export function CardProduct1({ product = defProduct, onClick }) {
     return (
         <>
             <div className="card-product">
-                <div className="card-product__image"><img className="img" src={product.image} /></div>
+                <div className="card-product__image"><img className="img" src={product.image} alt="" /></div>
                 <div className="card-product__title">{product.title}</div>
                 <div className="card-product__description">{product.description}</div>
                 <hr className="card-product__divider" />
@@ -59,7 +59,7 @@ export function CardPerson({ person = defPerson, isInstagram = true, isLinkedin 
     return (
         <>
             <div className="card-person">
-                <img className="card-person__photo" src={person.image} />
+                <img className="card-person__photo" src={person.image} alt="" />
                 <div className="card-person__title"><span className='capitalized'>{person.name}</span> <br />
                     <span>{person.title}</span>
                 </div>

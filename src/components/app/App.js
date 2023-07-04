@@ -22,12 +22,11 @@ import PopupSignUp from "../popup/PopupSignUp";
 import Footer from '../footer/Footer'
 import RightClickMenu from "../rightClickMenu/RightClickMenu";
 import photo from '../../images/michaelScharff.jpeg';
-import Chart from 'chart.js/auto';
 
 function App() {
-  const currentUserContext = React.useContext(CurrentUserContext);
-  const currentCardContext = React.useContext(CurrentCardContext);
-  const currentEntryContext = React.useContext(CurrentEntryContext);
+  const currentUserContext = React.useContext(CurrentUserContext);    // eslint-disable-line
+  const currentCardContext = React.useContext(CurrentCardContext);    // eslint-disable-line
+  const currentEntryContext = React.useContext(CurrentEntryContext);  // eslint-disable-line
   const safeDocument = typeof document !== 'undefined' ? document : {};
   const html = safeDocument.documentElement;
   const history = useHistory();
@@ -47,12 +46,12 @@ function App() {
   const [isDeleteCard, setIsDeleteCard] = React.useState(true);
   const [cardIdToWatch, setCardIdToWatch] = React.useState('');
   const [isLoader, setIsLoader] = React.useState(false);
-  const [card, setCard] = React.useState();
+  const [card, setCard] = React.useState();   // eslint-disable-line
+  const [chartData, setChartData] = React.useState();
 
   // ???????????????????????????????????????????????????
   // !!!!!!!!!!!!!     SCROLL handling     !!!!!!!!!!!!!
   // ???????????????????????????????????????????????????
-
   const noScroll = () => html.classList.add('no-scroll');
   const scroll = () => html.classList.remove('no-scroll');
 
@@ -454,19 +453,44 @@ function App() {
       }
     }
 
-    return processEntries(summary);
+    const tenBiggest = processEntries(summary.lastMonth);
+
+    const data1 = {
+      labels: tenBiggest.map((data) => data.spentAt),
+      datasets: [{
+        label: "Users Gained",
+        data: tenBiggest.map((data) => data.amount),
+        backgroundColor: [
+          "rgba(75,192,192,1)",
+          "#50AF95",
+          "#a31a2f",
+          "#af5a2f",
+          "#f3ba2f",
+          "#ffffff"
+        ],
+        borderColor: "black",
+        borderWidth: 2
+      }],
+    }
+    setChartData(data1);
+
+    return summary;
   };
 
   const processEntries = (summary) => {
-    let first = { amount: 0 };
-    for (const time in summary) {
-      for (const place in summary[time]) {
-        if (place.amount > first.amount) {
-          first.amount = place.amount;
-        }
+    const transactions = [];
+
+    for (const prop in summary) {
+      if (Object.prototype.hasOwnProperty.call(summary, prop)) {
+        const value = summary[prop].amount;
+        transactions.push({ spentAt: prop, amount: value });
       }
     }
-    return first;
+
+    transactions.sort((a, b) => b.amount - a.amount);
+    const top10Places = transactions.slice(0, 10);
+
+    return top10Places;
   };
 
   // ???????????????????????????????????????????????????
@@ -495,33 +519,6 @@ function App() {
     return () => document.removeEventListener('mouseup', closeByClick);
   });
 
-  const Data = [
-    { id: 1, year: 2016, userGain: 80000, userLost: 823 },
-    { id: 2, year: 2017, userGain: 45677, userLost: 345 },
-    { id: 3, year: 2018, userGain: 78888, userLost: 555 },
-    { id: 4, year: 2019, userGain: 90000, userLost: 4555 },
-    { id: 4, year: 2020, userGain: 19000, userLost: 5555 },
-    { id: 5, year: 2021, userGain: 4300, userLost: 234 }
-  ];
-
-  const [chartData, setChartData] = React.useState({
-    labels: Data.map((data) => data.year),
-    datasets: [{
-      label: "Users Gained",
-      data: Data.map((data) => data.userGain),
-      backgroundColor: [
-        "rgba(75,192,192,1)",
-        "#50AF95",
-        "#a31a2f",
-        "#af5a2f",
-        "#f3ba2f",
-        "#000000"
-      ],
-      borderColor: "black",
-      borderWidth: 2
-    }],
-  });
-
   return (
     <CurrentUserContext.Provider value={currentUser} >
       <CurrentCardContext.Provider value={currentCard}>
@@ -548,7 +545,10 @@ function App() {
                       return <EntryMessage entry={entry} key={index} />
                     }) : renderSecondaryObjects()}
                   </div>
-                  <Charts.LineChart chartData={chartData} chartClass="chart__container" title={{text:'Your most expenses go here'}} subtitle={false} />
+                  {entries ?
+                    <Charts.BarChart chartData={chartData ? chartData : null} chartClass="chart__container" title={{ text: 'Your most expenses go here' }} subtitle={false} />
+                    : <></>
+                  }
                 </div>
               </section>
             </ProtectedRoute>
@@ -641,9 +641,7 @@ function App() {
 
           <Footer>
             {navButtons.map((button, index) => {
-              if (button.isAllowed) {
-                return <a key={index} onClick={button.onClick} className="footer__link">{button.name}</a>
-              }
+              return button.isAllowed ? <a href={button.path} key={index} onClick={button.onClick} className="footer__link">{button.name}</a> : <></>
             })}
           </Footer>
         </CurrentEntryContext.Provider>
