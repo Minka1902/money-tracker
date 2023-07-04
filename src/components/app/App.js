@@ -585,7 +585,7 @@ function App() {
             <Route path="/">
               <section id='home'>
                 <h1 className="section__title">Welcome to the new app</h1>
-                {loggedIn ? <></> : <p>To use this app ypu first need to sign in.</p>}
+                {loggedIn ? <></> : <p>To use this app you first need to sign in.</p>}
                 <div className="add-button__container">
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
                 </div>
