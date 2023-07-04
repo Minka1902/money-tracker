@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Switch, withRouter, useHistory } from 'react-router-dom';
 import { CreditCard, CardPerson } from "../cards/Cards";
 import { ButtonAdd } from "../buttons/Buttons";
+import { capitalizeFirstWord } from '../../constants/functions';
 import { EntryMessage } from '../visualizeData/VisualizeData';
 import * as auth from '../../utils/auth';
 import usersApiOBJ from '../../utils/usersApi';
@@ -80,7 +81,7 @@ function App() {
     setIsEntryPopupOpen(false);
     setIsCvvPopupOpen(false);
     setIsDeleteCard(true);
-    if (window.innerWidth < 520) {
+    if (window.innerWidth > 520) {
       scroll();
     } else {
       noScroll();
@@ -246,7 +247,7 @@ function App() {
     cardsApiObj.getEntries(cardId)
       .then((data) => {
         if (data.length !== 0) {
-          setEntries(data);
+          setEntries(data.reverse());
           calculateSpendingSummary(data);
         }
       })
@@ -454,25 +455,7 @@ function App() {
     }
 
     const tenBiggest = processEntries(summary.lastMonth);
-
-    const data1 = {
-      labels: tenBiggest.map((data) => data.spentAt),
-      datasets: [{
-        label: "Users Gained",
-        data: tenBiggest.map((data) => data.amount),
-        backgroundColor: [
-          "rgba(75,192,192,1)",
-          "#50AF95",
-          "#a31a2f",
-          "#af5a2f",
-          "#f3ba2f",
-          "#ffffff"
-        ],
-        borderColor: "black",
-        borderWidth: 2
-      }],
-    }
-    setChartData(data1);
+    setChartData(tenBiggest);
 
     return summary;
   };
@@ -483,7 +466,7 @@ function App() {
     for (const prop in summary) {
       if (Object.prototype.hasOwnProperty.call(summary, prop)) {
         const value = summary[prop].amount;
-        transactions.push({ spentAt: prop, amount: value });
+        transactions.push({ spentAt: capitalizeFirstWord(prop), amount: value });
       }
     }
 
@@ -546,7 +529,7 @@ function App() {
                     }) : renderSecondaryObjects()}
                   </div>
                   {entries ?
-                    <Charts.BarChart chartData={chartData ? chartData : null} chartClass="chart__container" title={{ text: 'Your most expenses go here' }} subtitle={false} />
+                    <Charts.BarChart chartData={chartData ? chartData : null} label='Spent' chartClass="chart__container" title={{ text: 'Your most expenses go here' }} subtitle={false} />
                     : <></>
                   }
                 </div>

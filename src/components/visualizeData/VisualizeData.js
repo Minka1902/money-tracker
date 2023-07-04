@@ -32,7 +32,7 @@ export function EntryMessage({ entry }) {
             </div>
             <div className="entry-card-body">
                 <div className="entry-card-details" title={`${amount} ${currency}`}>
-                    <span className="entry-card-amount">{formatAmount(amount.toString())}</span>
+                    <span className="entry-card-amount">{formatAmount(amount)}</span>
                     <span className="entry-card-currency">{currency}</span>
                 </div>
                 <div className="entry-card-description">

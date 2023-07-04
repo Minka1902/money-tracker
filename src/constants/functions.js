@@ -252,23 +252,45 @@ export const formatDate = (dateString) => {
     return `${day} ${time} ${month}`;
 };
 
+// ! 	gets a number and returns it after some formatting 
+// TODO formatAmount(1234.567)
+// ?  	1,234.567
 export const formatAmount = (amount) => {
+    let dotIndex;
     const numberString = amount.toString();
     const groups = [];
     let currentGroup = "";
     let count = 0;
-    for (let i = numberString.length - 1; i >= 0; i--) {
-        currentGroup = numberString.charAt(i) + currentGroup;
-        count++;
-        if (count === 3) {
-            groups.unshift(currentGroup);
-            currentGroup = "";
-            count = 0;
+    if (numberString.indexOf('.') === -1) {
+        for (let i = numberString.length - 1; i >= 0; i--) {
+            currentGroup = numberString.charAt(i) + currentGroup;
+            count++;
+            if (count === 3) {
+                groups.unshift(currentGroup);
+                currentGroup = "";
+                count = 0;
+            }
         }
+        if (currentGroup !== "") {
+            groups.unshift(currentGroup);
+        }
+        return groups.join(",");
+    } else {
+        dotIndex = numberString.indexOf('.');
+        const stringAfterDot = numberString.slice(dotIndex + 1, numberString.length);
+        for (let i = dotIndex - 1; i >= 0; i--) {
+            currentGroup = numberString.charAt(i) + currentGroup;
+            count++;
+            if (count === 3) {
+                groups.unshift(currentGroup);
+                currentGroup = "";
+                count = 0;
+            }
+        }
+        if (currentGroup !== "") {
+            groups.unshift(currentGroup);
+        }
+        return `${groups.join(",")}.${stringAfterDot}`;
     }
-    if (currentGroup !== "") {
-        groups.unshift(currentGroup);
-    }
-    return groups.join(",");
 };
 
