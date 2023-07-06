@@ -49,6 +49,7 @@ function App() {
   const [isLoader, setIsLoader] = React.useState(false);
   const [card, setCard] = React.useState();   // eslint-disable-line
   const [chartData, setChartData] = React.useState();
+  const [totalSpending, setTotalSpending] = React.useState(0);
 
   // ???????????????????????????????????????????????????
   // !!!!!!!!!!!!!     SCROLL handling     !!!!!!!!!!!!!
@@ -454,6 +455,7 @@ function App() {
       }
     }
 
+    setTotalSpending(amountSummary(summary.lastMonth));
     const tenBiggest = processEntries(summary.lastMonth);
     setChartData(tenBiggest);
 
@@ -474,6 +476,14 @@ function App() {
     const top10Places = transactions.slice(0, 10);
 
     return top10Places;
+  };
+
+  const amountSummary = (summary) => {
+    let sum = 0;
+    for (const spentAt in summary) {
+      sum += summary[spentAt].amount;
+    }
+    return sum;
   };
 
   // ???????????????????????????????????????????????????
@@ -522,6 +532,7 @@ function App() {
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
                 </div>
                 <h1 className="section__title">Here you can see the cards entries.</h1>
+                <h3>Total spending on this card: {totalSpending} NIS</h3>
                 <div className="card-and-chart__container">
                   <div className={entries ? 'card__entries' : 'loading'}>
                     {entries ? entries.map((entry, index) => {

@@ -51,9 +51,12 @@
 
 .entry-card {
     background-color: #f4f4f4;
+    border: 1px solid #f4f4f4;
     padding: 16px;
     border-radius: 8px;
     overflow: hidden;
+    box-sizing: border-box;
+    transition: .2s ease-in-out;
 }
 
 .entry-card-header {
@@ -100,8 +103,13 @@
     color: #333;
 }
 
+.entry-card:hover {
+    background: #d6d6d6;
+    border: 1px solid #a7a7a7;
+}
+
 @media screen and (max-width: 490.5px) {
-    .entry-card{
+    .entry-card {
         width: 80%;
     }
 }

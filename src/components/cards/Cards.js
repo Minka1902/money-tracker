@@ -70,10 +70,10 @@ export function CardPerson({ person = defPerson, isInstagram = true, isLinkedin 
                     {isGithub ? <button className="card-person__socials_btn social-github" onClick={onButtonClick}>
                         <Svg.SvgGithub />
                     </button> : <></>}
-                    {isLinkedin ? <button button className="card-person__socials_btn social-linkedin" onClick={onButtonClick}>
+                    {isLinkedin ? <button className="card-person__socials_btn social-linkedin" onClick={onButtonClick}>
                         <Svg.SvgLinkedIn />
                     </button> : <></>}
-                    {isWhatsApp ? <button button className="card-person__socials_btn social-whatsapp" onClick={onButtonClick}>
+                    {isWhatsApp ? <button className="card-person__socials_btn social-whatsapp" onClick={onButtonClick}>
                         <Svg.SvgWhatsApp />
                     </button> : <></>}
                 </div>
