@@ -1,5 +1,6 @@
 import React from "react";
 import * as Buttons from '../buttons/Buttons'
+import CurrentEntryContext from "../../contexts/CurrentEntryContext";
 
 export function CreditCardForm({ onSubmit, isOpen, displayCvv = true }) {
     const [name, setName] = React.useState('');
@@ -80,21 +81,43 @@ export function CreditCardForm({ onSubmit, isOpen, displayCvv = true }) {
     );
 };
 
-export function EntryForm({ onSubmit, isOpen }) {
+export function EntryForm({ onSubmit, isOpen, isEdit }) {
+    const currentEntry = React.useContext(CurrentEntryContext);
+    const today = new Date();
     const [amount, setAmount] = React.useState('');
     const [spentAt, setSpentAt] = React.useState('');
+    const [currency, setCurrency] = React.useState('NIS');
+    const [date, setDate] = React.useState(today.toLocaleString('en-GB'));
     const [comment, setComment] = React.useState('');
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        onSubmit({ time: new Date(), amount, spentAt, currency: 'NIS', comment: comment.length === 0 ? 'No comment.' : comment });
-        // onSubmit({ time: new Date(), amount, spentAt, currency: 'NIS', comment });
+        if (isEdit) {
+            const tempEntry = { time: date, amount, spentAt, currency, comment: comment.length === 0 ? 'No comment.' : comment }
+            onSubmit({ id: currentEntry._id, entry: tempEntry });
+        } else {
+            onSubmit({ entry: { time: date, amount, spentAt, currency, comment: comment.length === 0 ? 'No comment.' : comment } });
+        }
     };
 
     React.useEffect(() => {
-        setComment('');
-        setSpentAt('');
-        setAmount('');
+        if (!isOpen) {
+            setComment('');
+            setCurrency('NIS');
+            setSpentAt('');
+            setDate(new Date());
+            setAmount('');
+        } else {
+            if (isEdit) {
+                if (currentEntry) {
+                    setComment(currentEntry.comment === 'No comment.' ? '' : currentEntry.comment);
+                    setCurrency(currentEntry.currency);
+                    setSpentAt(currentEntry.spentAt);
+                    setDate(currentEntry.time.toLocaleString('is-IS'));
+                    setAmount(currentEntry.amount);
+                }
+            }
+        }
     }, [isOpen]);
 
     return (
@@ -106,7 +129,7 @@ export function EntryForm({ onSubmit, isOpen }) {
                     placeholder="How much did you spend?"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    required
+                    required={isEdit ? true : false}
                 />
                 <input
                     type="text"
@@ -114,7 +137,23 @@ export function EntryForm({ onSubmit, isOpen }) {
                     placeholder="Where did you spend it?"
                     value={spentAt}
                     onChange={(e) => setSpentAt(e.target.value)}
-                    required
+                    required={isEdit ? true : false}
+                />
+                <input
+                    type="datetime-local"
+                    className="entry-form__input"
+                    placeholder="1/1/2000 12:00"
+                    value={(date || '').toString().substring(0, 16)}
+                    onChange={(e) => setDate(e.target.value)}
+                    required={isEdit ? true : false}
+                />
+                <input
+                    type="search"
+                    className="entry-form__input"
+                    placeholder="Currency"
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                    required={isEdit ? true : false}
                 />
                 <textarea
                     className="entry-form__textarea"

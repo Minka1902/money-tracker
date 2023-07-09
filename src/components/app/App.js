@@ -20,7 +20,7 @@ import PopupAddCard from "../popup/PopupAddCard";
 import PopupCvv from "../popup/PopupCvv";
 import PopupConfirm from "../popup/PopupConfirm";
 import PopupSignUp from "../popup/PopupSignUp";
-import Footer from '../footer/Footer'
+import Footer from '../footer/Footer';
 import RightClickMenu from "../rightClickMenu/RightClickMenu";
 import photo from '../../images/michaelScharff.jpeg';
 
@@ -82,6 +82,7 @@ function App() {
     setIsEntryPopupOpen(false);
     setIsCvvPopupOpen(false);
     setIsDeleteCard(true);
+    setCurrentEntry(undefined);
     if (window.innerWidth > 520) {
       scroll();
     } else {
@@ -281,6 +282,32 @@ function App() {
       });
   };
 
+  const getEntry = ({ id }) => {
+    cardsApiObj.getEntry(id)
+      .then((entry) => {
+        if (entry) {
+          setCurrentEntry(entry);
+          setIsEntryPopupOpen(true);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  };
+
+  const editEntry = ({ id, entry }) => {
+    if (entry) {
+      cardsApiObj.editEntry(id, entry)
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          closeAllPopups();
+          getEntries(currentEntry.cardId);
+        })
+    }
+  };
+
   const removeEntrySubmit = (cvv) => {
     if (cvv && currentEntry) {
       if (cardIdToWatch) {
@@ -370,6 +397,8 @@ function App() {
         setCards(null);
         setCardIdToWatch(null);
         setEntries(null);
+        setCurrentEntry(undefined);
+        setTotalSpending(0);
       }
     },
     {
@@ -381,6 +410,8 @@ function App() {
         getCards();
         setCardIdToWatch(null);
         setEntries(null);
+        setCurrentEntry(undefined);
+        setTotalSpending(0);
       }
     },
     {
@@ -392,6 +423,8 @@ function App() {
         setCardIdToWatch(null);
         setCards(null);
         setEntries(null);
+        setCurrentEntry(undefined);
+        setTotalSpending(0);
       }
     },
   ];
@@ -400,13 +433,16 @@ function App() {
     { buttonText: 'delete card', buttonClicked: setConfirmPopupOpen, filter: 'flip-card' },
     { buttonText: 'sign out', buttonClicked: handleLogout, filter: 'header' },
     { buttonText: 'add card', buttonClicked: setAddCardOpen, filter: 'my_cards' },
-    { buttonText: 'delete entry', buttonClicked: setCvvPopupOpen, filter: 'entry-card' },
     { buttonText: 'add entry', buttonClicked: setIsEntryPopupOpen, filter: 'entry-card' },
+    { buttonText: 'edit entry', buttonClicked: getEntry, filter: 'entry-card' },
+    { buttonText: 'delete entry', buttonClicked: setCvvPopupOpen, filter: 'entry-card' },
   ];
 
-  const people = [{ name: 'michael scharff', title: 'Fullstack dev, UX UI', image: photo, social: { instagram: 'https://www.instagram.com', linkedin: 'https://www.linkedin.com/in/michael-scharff-1525b6235/', github: 'https://github.com/Minka1902' } },
-  { name: 'amit glat', title: `HR Manager, Designer`, image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
-  { name: 'nathan scharff', title: 'Owner, CEO', image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } }];
+  const people = [
+    { name: 'michael scharff', title: 'Fullstack dev, UX UI', image: photo, social: { instagram: 'https://www.instagram.com', linkedin: 'https://www.linkedin.com/in/michael-scharff-1525b6235/', github: 'https://github.com/Minka1902' } },
+    { name: 'amit glat', title: `HR Manager, Designer`, image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } },
+    { name: 'nathan scharff', title: 'Owner, CEO', image: photo, social: { instagram: () => { console.log('instagram') }, linkedin: () => console.log('linkedin'), github: () => console.log('github') } }
+  ];
 
   // ???????????????????????????????????????????????????
   // !!!!!!!!!!!!!     GRAPH handling     !!!!!!!!!!!!!!
@@ -416,7 +452,7 @@ function App() {
     const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
     const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
 
-    const summary = { lastWeek: {}, lastMonth: {}, today: {} };
+    const summary = { lastMonth: {}, lastWeek: {}, today: {} };
 
     for (let i = 0; i < data.length; i++) {
       const transactionDate = new Date(data[i].time);
@@ -531,6 +567,9 @@ function App() {
                 <div className="add-button__container">
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
                 </div>
+                <div className="add-button__container_regular-expense">
+                  <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' />
+                </div>
                 <h1 className="section__title">Here you can see the cards entries.</h1>
                 <h3>Total spending on this card: {totalSpending} NIS</h3>
                 <div className="card-and-chart__container">
@@ -540,7 +579,7 @@ function App() {
                     }) : renderSecondaryObjects()}
                   </div>
                   {entries ?
-                    <Charts.BarChart chartData={chartData ? chartData : null} label='Spent' chartClass="chart__container" title={{ text: 'Your most expenses go here' }} subtitle={false} />
+                    <Charts.BarChart chartData={chartData ? chartData : null} label='Spent' chartClass="chart__container" title={{ text: 'Your biggest expenses are shown here' }} subtitle={false} />
                     : <></>
                   }
                 </div>
@@ -568,7 +607,7 @@ function App() {
                   <ButtonAdd onClick={determinePopupOpen} buttonText='Add new' title='Log in to add a new card.' />
                 </div>
                 <p>Meet our team</p>
-                <div className="card__entries">
+                <div className="the-team">
                   {people.map((person, index) => {
                     return <CardPerson person={person} key={index} />
                   })}
@@ -613,9 +652,10 @@ function App() {
           />
 
           <PopupAddEntry
-            onSubmit={addEntrySubmit}
+            onSubmit={currentEntry === undefined ? addEntrySubmit : editEntry}
             isOpen={isEntryPopupOpen}
             onClose={closeAllPopups}
+            isEdit={currentEntry === undefined ? false : true}
           />
 
           <PopupAddCard

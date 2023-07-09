@@ -32,7 +32,11 @@ class cardsApi {
 
     createEntry = (entry) => this._fetch({ method: "POST", url: '/entries/add', data: entry });
 
-    getEntries = (cardId) => this._fetch({ method: "GET", url: `/entries/get/${cardId}` });
+    getEntries = (cardId) => this._fetch({ method: "GET", url: `/cards/get-entries/${cardId}` });
+
+    getEntry = (entryId) => this._fetch({ method: "GET", url: `/entries/get/${entryId}` });
+
+    editEntry = (entryId, entry) => this._fetch({ method: "PUT", url: `/entries/edit/${entryId}`, data: entry });
 
     deleteEntry = (id, entry) => this._fetch({ method: "DELETE", url: `/entries/delete/${id}`, data: entry });
 }

@@ -13,14 +13,18 @@
     text-transform: capitalize;
 }
 
+body {
+    overflow: hidden;
+}
+
 section {
     width: 100%;
     background-color: rgb(246, 251, 255);
     padding: 64px 0 10px 0;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
+    height: clamp(400px, calc(100vh - 64px), 100vh);
 }
 
 .cards {
@@ -31,7 +35,7 @@ section {
     grid-row-gap: 10px;
     grid-column-gap: 10px;
     justify-items: center;
-    margin: auto;
+    margin: 0 auto;
     padding-top: 5px;
 }
 
@@ -47,6 +51,8 @@ section {
     flex-direction: row;
     width: 100%;
     justify-content: space-around;
+    height: 500px;
+    overflow: hidden;
 }
 
 .chart__container {
@@ -59,10 +65,28 @@ section {
 }
 
 .card__entries {
-    width: clamp(240px, 100%, 490px);
+    width: clamp(260px, 100%, 510px);
     display: grid;
     grid-template-columns: 240px 240px;
-    grid-template-rows: auto;
+    grid-auto-rows: 153px;
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
+.card__entries .entry-card {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+.the-team {
+    max-width: 990px;
+    display: grid;
+    grid-template-columns: 210px 210px 210px;
+    grid-auto-rows: auto;
     grid-row-gap: 10px;
     grid-column-gap: 10px;
 }
@@ -76,6 +100,16 @@ section {
     transition: .3s;
 }
 
+.add-button__container_regular-expense {
+    position: fixed;
+    top: 74px;
+    left: 10px;
+    z-index: 1;
+    opacity: 0.7;
+    transition: .3s;
+}
+
+.add-button__container_regular-expense:hover,
 .add-button__container:hover {
     opacity: 1;
 }
@@ -108,10 +142,9 @@ section {
 }
 
 @media screen and (max-width: 703.5px) {
+    .add-button__container_regular-expense,
     .add-button__container {
-        position: fixed;
         top: 59px;
-        right: 5px;
     }
 
     .section__title {
@@ -123,6 +156,10 @@ section {
     .cards {
         grid-template-columns: 240px 240px;
     }
+
+    section {
+        height: calc(100vh - 186px);
+    }
 }
 
 @media screen and (min-width: 704px) and (max-width: 1149.5px) {
@@ -130,10 +167,9 @@ section {
         margin-top: 10px;
     }
 
+    .add-button__container_regular-expense,
     .add-button__container {
-        position: fixed;
         top: 73px;
-        right: 10px;
     }
 }
 
@@ -143,9 +179,14 @@ section {
         align-items: center;
     }
 
+    .the-team {
+        grid-template-columns: 240px 240px;
+
+    }
+
     .chart__container {
-        height: 70%;
-        width: 70%;
+        height: 50%;
+        width: 50%;
     }
 
     .cards {
@@ -170,5 +211,10 @@ section {
         position: fixed;
         top: 87px;
         right: 10px;
+    }
+
+    .add-button__container_regular-expense,
+    .add-button__container {
+        top: 87px;
     }
 }
