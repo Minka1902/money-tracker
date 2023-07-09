@@ -2,6 +2,16 @@ import React from "react";
 import * as Buttons from '../buttons/Buttons'
 import CurrentEntryContext from "../../contexts/CurrentEntryContext";
 
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+
 export function CreditCardForm({ onSubmit, isOpen, displayCvv = true }) {
     const [name, setName] = React.useState('');
     const [cardNumber, setCardNumber] = React.useState('');
@@ -87,7 +97,7 @@ export function EntryForm({ onSubmit, isOpen, isEdit }) {
     const [amount, setAmount] = React.useState('');
     const [spentAt, setSpentAt] = React.useState('');
     const [currency, setCurrency] = React.useState('NIS');
-    const [date, setDate] = React.useState(today.toLocaleString('en-GB'));
+    const [date, setDate] = React.useState(formatDate(today));
     const [comment, setComment] = React.useState('');
 
     const handleSubmit = (event) => {
@@ -105,7 +115,7 @@ export function EntryForm({ onSubmit, isOpen, isEdit }) {
             setComment('');
             setCurrency('NIS');
             setSpentAt('');
-            setDate(new Date());
+            setDate(formatDate(today));
             setAmount('');
         } else {
             if (isEdit) {
@@ -113,7 +123,7 @@ export function EntryForm({ onSubmit, isOpen, isEdit }) {
                     setComment(currentEntry.comment === 'No comment.' ? '' : currentEntry.comment);
                     setCurrency(currentEntry.currency);
                     setSpentAt(currentEntry.spentAt);
-                    setDate(currentEntry.time.toLocaleString('is-IS'));
+                    setDate(formatDate(new Date(currentEntry.time)));
                     setAmount(currentEntry.amount);
                 }
             }
@@ -138,6 +148,7 @@ export function EntryForm({ onSubmit, isOpen, isEdit }) {
                     value={spentAt}
                     onChange={(e) => setSpentAt(e.target.value)}
                     required={isEdit ? true : false}
+                    autoComplete="on"
                 />
                 <input
                     type="datetime-local"
