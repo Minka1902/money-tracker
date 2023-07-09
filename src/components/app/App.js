@@ -449,10 +449,10 @@ function App() {
   // ???????????????????????????????????????????????????
   const calculateSpendingSummary = (data) => {
     const today = new Date();
-    const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const lastYear = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
     const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
 
-    const summary = { lastMonth: {}, lastWeek: {}, today: {} };
+    const summary = { lastMonth: {}, lastYear: {}, today: {} };
 
     for (let i = 0; i < data.length; i++) {
       const transactionDate = new Date(data[i].time);
@@ -468,14 +468,14 @@ function App() {
         }
       }
 
-      if (transactionDate >= lastWeek && transactionDate <= today) {
+      if (transactionDate >= lastYear && transactionDate <= today) {
         const spentAt = data[i].spentAt.toLowerCase();
         const amount = data[i].amount;
 
-        if (!summary.lastWeek[spentAt]) {
-          summary.lastWeek[spentAt] = { amount };
+        if (!summary.lastYear[spentAt]) {
+          summary.lastYear[spentAt] = { amount };
         } else {
-          summary.lastWeek[spentAt].amount += amount;
+          summary.lastYear[spentAt].amount += amount;
         }
       }
 
@@ -492,7 +492,7 @@ function App() {
     }
 
     setTotalSpending(amountSummary(summary.lastMonth));
-    const tenBiggest = processEntries(summary.lastMonth);
+    const tenBiggest = processEntries(summary.lastYear);
     setChartData(tenBiggest);
 
     return summary;
