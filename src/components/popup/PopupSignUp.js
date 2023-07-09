@@ -15,7 +15,7 @@ export default function PopupSignUp(props) {
   const [isUsernameCorrect, setIsUsernameCorrect] = React.useState(true);
   const [isTypePassword, setIsTypePassword] = React.useState(true);
 
-  // ! Reseting the popup when closing
+  // ! Resetting the popup when closing
   React.useEffect(() => {
     setIsEmailCorrect(true);
     setIsPasswordCorrect(true);
@@ -25,6 +25,11 @@ export default function PopupSignUp(props) {
     setUsername('');
     setIsValid(false);
     setShouldAddSSign(false);
+
+    if (isOpen) {
+      const emailInput = document.getElementById('signup-email-input');
+      emailInput.focus();
+    }
   }, [isOpen]);
 
   // ! Validating the email input

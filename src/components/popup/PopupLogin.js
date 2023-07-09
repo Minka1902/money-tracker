@@ -35,6 +35,11 @@ export default function PopupLogin(props) {
     setIsValid(false);
     setShouldAddSSign(false);
     setIsTypePassword(true);
+
+    if (isOpen) {
+      const emailInput = document.getElementById('login-email-input');
+      emailInput.focus();
+    }
   }, [isOpen]);
 
   // ! Validating the email input

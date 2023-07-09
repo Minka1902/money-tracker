@@ -117,15 +117,17 @@ export function EntryForm({ onSubmit, isOpen, isEdit }) {
             setSpentAt('');
             setDate(formatDate(today));
             setAmount('');
+
+            const amountInput = document.getElementById('add-entry-amount');
+            amountInput.focus();
         } else {
             if (isEdit) {
-                if (currentEntry) {
-                    setComment(currentEntry.comment === 'No comment.' ? '' : currentEntry.comment);
-                    setCurrency(currentEntry.currency);
-                    setSpentAt(currentEntry.spentAt);
-                    setDate(formatDate(new Date(currentEntry.time)));
-                    setAmount(currentEntry.amount);
-                }
+                setComment(currentEntry.comment === 'No comment.' ? '' : currentEntry.comment);
+                setCurrency(currentEntry.currency);
+                setSpentAt(currentEntry.spentAt);
+                setDate(formatDate(new Date(currentEntry.time)));
+                setAmount(currentEntry.amount);
+
             }
         }
     }, [isOpen]);
@@ -136,6 +138,7 @@ export function EntryForm({ onSubmit, isOpen, isEdit }) {
                 <input
                     type="number"
                     className="entry-form__input"
+                    id="add-entry-amount"
                     placeholder="How much did you spend?"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
@@ -144,6 +147,7 @@ export function EntryForm({ onSubmit, isOpen, isEdit }) {
                 <input
                     type="text"
                     className="entry-form__input"
+                    id="add-entry-place"
                     placeholder="Where did you spend it?"
                     value={spentAt}
                     onChange={(e) => setSpentAt(e.target.value)}
@@ -153,6 +157,7 @@ export function EntryForm({ onSubmit, isOpen, isEdit }) {
                 <input
                     type="datetime-local"
                     className="entry-form__input"
+                    id="add-entry-date"
                     placeholder="1/1/2000 12:00"
                     value={(date || '').toString().substring(0, 16)}
                     onChange={(e) => setDate(e.target.value)}
@@ -161,6 +166,7 @@ export function EntryForm({ onSubmit, isOpen, isEdit }) {
                 <input
                     type="search"
                     className="entry-form__input"
+                    id="add-entry-currency"
                     placeholder="Currency"
                     value={currency}
                     onChange={(e) => setCurrency(e.target.value)}
@@ -168,6 +174,7 @@ export function EntryForm({ onSubmit, isOpen, isEdit }) {
                 />
                 <textarea
                     className="entry-form__textarea"
+                    id="add-entry-comment"
                     placeholder="If you want to add a comment, do it here."
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}

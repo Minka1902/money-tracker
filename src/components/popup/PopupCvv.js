@@ -28,6 +28,11 @@ export default function PopupCvv(props) {
 
     React.useEffect(() => {
         setCvv('');
+
+        if (isOpen) {
+            const cvvInput = document.getElementById('confirm-cvv-input');
+            cvvInput.focus();
+        }
     }, [isOpen]);
 
     return (
