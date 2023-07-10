@@ -2,20 +2,20 @@ import React from 'react';
 
 export function SvgFacebook({ color = '#286bc2', isColored = true }) {
     return (
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 24 24">
             <path fill={isColored ? color : 'currentColor'} fillRule="evenodd" d="M22.5 12.063c0-5.799-4.702-10.5-10.5-10.5s-10.5 4.7-10.5 10.5c0 5.24 3.84 9.584 8.86 10.373v-7.337H7.692v-3.037h2.666V9.75c0-2.63 1.568-4.085 3.966-4.085 1.15 0 2.351.205 2.351.205v2.584h-1.324c-1.304 0-1.712.81-1.712 1.64v1.97h2.912l-.465 3.036H13.64v7.337c5.02-.788 8.859-5.131 8.859-10.373Z" clipRule="evenodd"></path>
         </svg>
     );
 };
 
-export function SvgWIFI({ color = '#fff', isDot, is4, isColored }) {
+export function SvgWIFI({ color = '#000', isDot = true, is4 = false }) {
     return (
-        <svg fill={isColored ? color : 'currentColor'} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" viewBox="0 0 24 24">
-            <path fill={isColored ? color : 'currentColor'} d="M15.582 14.557a5.39 5.39 0 0 0-10.162 0"></path>
-            <path fill={isColored ? color : 'currentColor'} d="M18.444 11.7a9.434 9.434 0 0 0-15.887 0"></path>
-            <path fill={isColored ? color : 'currentColor'} d="M20.987 8.535a13.5 13.5 0 0 0-20.973 0"></path>
-            {is4 ? <path fill={isColored ? color : 'currentColor'} d="M22.987 4.535a12.5 5.5 0 0 0-25.973 0"></path> : <></>}
-            {isDot ? <path fill={isColored ? color : 'currentColor'} stroke="none" d="M10.3 17.8a1 1 0 1 1 0-2 1.5 1.5 0 0 1 0 3Z"></path> : <></>}
+        <svg stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" viewBox="0 0 24 24">
+            <path fill='transparent' d="M15.582 14.557a5.39 5.39 0 0 0-10.162 0"></path>
+            <path fill='transparent' d="M18.444 11.7a9.434 9.434 0 0 0-15.887 0"></path>
+            <path fill='transparent' d="M20.987 8.535a13.5 13.5 0 0 0-20.973 0"></path>
+            {is4 ? <path fill='transparent' d="M22.987 4.535a12.5 5.5 0 0 0-25.973 0"></path> : <></>}
+            {isDot ? <path fill={color} strokeLinecap="round" strokeWidth="0.5" d="M10.3 17.8a1 1 0 1 1 0-2 1.5 1.5 0 0 1 0 3Z"></path> : <></>}
         </svg>
     );
 };
@@ -38,10 +38,10 @@ export function SvgDoubleCheck({ color = '#00B1FF', isColored = true }) {
     );
 };
 
-export function SvgEdit({ color }) {
+export function SvgEdit({ color = '#000' }) {
     return (
-        <svg fill={color} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" viewBox="0 0 24 24">
-            <path d="M18 10.5v8.625A1.875 1.875 0 0 1 16.125 21H4.875A1.875 1.875 0 0 1 3 19.125V7.875A1.875 1.875 0 0 1 4.875 6h7.85"></path>
+        <svg stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" viewBox="0 0 24 24">
+            <path fill='transparent' d="M18 10.5v8.625A1.875 1.875 0 0 1 16.125 21H4.875A1.875 1.875 0 0 1 3 19.125V7.875A1.875 1.875 0 0 1 4.875 6h7.85"></path>
             <path fill={color} stroke="none" d="M21.56 2.496a.754.754 0 0 0-1.09-.026l-.579.577a.375.375 0 0 0 0 .53l.532.53a.374.374 0 0 0 .531 0l.565-.562a.762.762 0 0 0 .04-1.049Z"></path>
             <path fill={color} stroke="none" d="m18.72 4.217-8.463 8.447a.42.42 0 0 0-.108.184l-.391 1.166a.183.183 0 0 0 .227.228l1.165-.392a.422.422 0 0 0 .184-.108l8.447-8.463a.422.422 0 0 0 0-.593l-.466-.47a.422.422 0 0 0-.596 0Z"></path>
         </svg>
@@ -99,21 +99,21 @@ export function SvgLinkedIn({ color = '#0A66C2', isColored = true }) {
     );
 };
 
-export function SvgLogin({ color }) {
+export function SvgLogin({ color = '#000', lineWidth = '1.5' }) {
     return (
-        <svg fill={color} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" viewBox="0 0 24 24">
-            <path fill={color} d="M9 8.25V6.375A1.875 1.875 0 0 1 10.875 4.5h7.5a1.875 1.875 0 0 1 1.875 1.875v11.25a1.875 1.875 0 0 1-1.875 1.875H11.25c-1.036 0-2.25-.84-2.25-1.875V15.75"></path>
-            <path fill={color} d="M13.5 15.75 17.25 12 13.5 8.25"></path>
-            <path fill={color} d="M3.75 12H16.5"></path>
+        <svg stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth={lineWidth} viewBox="0 0 24 24">
+            <path fill='transparent' d="M9 8.25V6.375A1.875 1.875 0 0 1 10.875 4.5h7.5a1.875 1.875 0 0 1 1.875 1.875v11.25a1.875 1.875 0 0 1-1.875 1.875H11.25c-1.036 0-2.25-.84-2.25-1.875V15.75"></path>
+            <path fill='transparent' d="M13.5 15.75 17.25 12 13.5 8.25"></path>
+            <path d="M3.75 12H16.5"></path>
         </svg>
     );
 };
 
-export function SvgLogout({ color }) {
+export function SvgLogout({ color, lineWidth = '1.5' }) {
     return (
-        <svg fill={color} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" viewBox="0 0 24 24">
-            <path d="M14.25 15.75v1.875a1.875 1.875 0 0 1-1.875 1.875h-7.5A1.875 1.875 0 0 1 3 17.625V6.375A1.875 1.875 0 0 1 4.875 4.5H12c1.036 0 2.25.84 2.25 1.875V8.25"></path>
-            <path d="M17.25 15.75 21 12l-3.75-3.75"></path>
+        <svg fill={color} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={lineWidth} viewBox="0 0 24 24">
+            <path fill='transparent' d="M14.25 15.75v1.875a1.875 1.875 0 0 1-1.875 1.875h-7.5A1.875 1.875 0 0 1 3 17.625V6.375A1.875 1.875 0 0 1 4.875 4.5H12c1.036 0 2.25.84 2.25 1.875V8.25"></path>
+            <path fill='transparent' d="M17.25 15.75 21 12l-3.75-3.75"></path>
             <path d="M8.25 12h12"></path>
         </svg>
     );
@@ -150,48 +150,48 @@ export function SvgReddit({ color = '#FF4500', isColored = true }) {
     );
 };
 
-export function SvgReload({ color }) {
+export function SvgReload({ color = '#000', lineWidth = '2', isColored = true }) {
     return (
-        <svg fill={color} stroke="currentColor" strokeLinecap="round" strokeWidth="1" viewBox="0 0 24 24">
-            <path d="m18.75 6.938-.99-1.152A8.973 8.973 0 0 0 11.25 3c-4.969 0-9 4.031-9 9s4.031 9 9 9a9.004 9.004 0 0 0 8.488-6"></path>
-            <path fill={color} stroke="none" d="M21.75 4.565v5.183a.75.75 0 0 1-.75.75h-5.184a.75.75 0 0 1-.53-1.28l5.184-5.184a.75.75 0 0 1 1.28.53Z"></path>
+        <svg stroke={isColored ? color : 'currentColor'} strokeLinecap="round" strokeWidth={lineWidth} viewBox="0 0 24 24">
+            <path fill='transparent' d="m18.75 6.938-.99-1.152A8.973 8.973 0 0 0 11.25 3c-4.969 0-9 4.031-9 9s4.031 9 9 9a9.004 9.004 0 0 0 8.488-6"></path>
+            <path fill={isColored ? color : 'currentColor'} stroke="none" d="M21.75 4.565v5.183a.75.75 0 0 1-.75.75h-5.184a.75.75 0 0 1-.53-1.28l5.184-5.184a.75.75 0 0 1 1.28.53Z"></path>
         </svg>
     );
 };
 
-export function SvgSend({ color }) {
+export function SvgSend({ color = '#000', isColored = false }) {
     return (
-        <svg fill={color} viewBox="0 0 24 24">
+        <svg fill={isColored ? color : 'currentColor'} viewBox="0 0 24 24">
             <path d="M.75 21.75 23.25 12 .75 2.25v7.5l15 2.25-15 2.25v7.5Z"></path>
         </svg>
     );
 };
 
-export function SvgSnapchat({ color = '#F7F400', isColored = true }) {
+export function SvgSnapchat({ color = '#F7F400', backgroundColor = '#000', isColored = true }) {
     return (
-        <svg fill={color} stroke="#000" strokeWidth="0.3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path fill={color} d="M23.25 16.276a8.92 8.92 0 0 1-1.537-.25c-1.279-.31-2.57-1.137-3.193-2.457-.324-.686-.124-.872.556-1.125.665-.247 1.397-.362 1.728-1.078.276-.598.053-1.301-.488-1.664-.737-.493-1.423-.01-2.186.097.175-2.187.406-4.151-1.062-5.987C15.85 2.29 13.938 1.5 12.014 1.5c-1.925 0-3.838.79-5.054 2.312-1.47 1.84-1.237 3.806-1.063 5.997-.765-.106-1.444-.6-2.185-.103a1.34 1.34 0 0 0-.255 2.016c.541.62 1.483.445 2.036.966.304.285.164.59-.016.944-.679 1.331-1.84 2.144-3.274 2.417-.187.035-1.046.134-1.453.17 0 .436.024.787.076 1.02.138.611.578 1.105 1.11 1.41.525.3 1.664.302 1.955.727.14.21.082.576.25.815.17.242.429.406.72.457.872.17 1.75-.337 2.645-.099.696.186 1.243.744 1.84 1.125.727.462 1.516.77 2.383.82 1.786.104 2.809-.886 4.246-1.707.914-.522 1.788-.18 2.76-.125.942.053 1.102-.434 1.388-1.167.031-.073.055-.15.072-.227a.499.499 0 0 0 .107-.069c.094-.074.495-.11.598-.134.482-.114.954-.241 1.367-.525.53-.364.828-.867.918-1.53a4.39 4.39 0 0 0 .065-.735ZM9.75 6c.414 0 .75.503.75 1.125s-.336 1.125-.75 1.125S9 7.747 9 7.125 9.336 6 9.75 6Zm4.857 3.642c-.715.703-1.64 1.092-2.607 1.092A3.675 3.675 0 0 1 9.39 9.64a.375.375 0 1 1 .532-.53A2.928 2.928 0 0 0 12 9.984a2.96 2.96 0 0 0 2.08-.876.375.375 0 1 1 .527.534ZM14.25 8.25c-.414 0-.75-.504-.75-1.125S13.836 6 14.25 6s.75.504.75 1.125-.336 1.125-.75 1.125Z"></path>
+        <svg stroke={backgroundColor} strokeWidth="0.3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path fill={isColored ? color : 'currentColor'} d="M23.25 16.276a8.92 8.92 0 0 1-1.537-.25c-1.279-.31-2.57-1.137-3.193-2.457-.324-.686-.124-.872.556-1.125.665-.247 1.397-.362 1.728-1.078.276-.598.053-1.301-.488-1.664-.737-.493-1.423-.01-2.186.097.175-2.187.406-4.151-1.062-5.987C15.85 2.29 13.938 1.5 12.014 1.5c-1.925 0-3.838.79-5.054 2.312-1.47 1.84-1.237 3.806-1.063 5.997-.765-.106-1.444-.6-2.185-.103a1.34 1.34 0 0 0-.255 2.016c.541.62 1.483.445 2.036.966.304.285.164.59-.016.944-.679 1.331-1.84 2.144-3.274 2.417-.187.035-1.046.134-1.453.17 0 .436.024.787.076 1.02.138.611.578 1.105 1.11 1.41.525.3 1.664.302 1.955.727.14.21.082.576.25.815.17.242.429.406.72.457.872.17 1.75-.337 2.645-.099.696.186 1.243.744 1.84 1.125.727.462 1.516.77 2.383.82 1.786.104 2.809-.886 4.246-1.707.914-.522 1.788-.18 2.76-.125.942.053 1.102-.434 1.388-1.167.031-.073.055-.15.072-.227a.499.499 0 0 0 .107-.069c.094-.074.495-.11.598-.134.482-.114.954-.241 1.367-.525.53-.364.828-.867.918-1.53a4.39 4.39 0 0 0 .065-.735ZM9.75 6c.414 0 .75.503.75 1.125s-.336 1.125-.75 1.125S9 7.747 9 7.125 9.336 6 9.75 6Zm4.857 3.642c-.715.703-1.64 1.092-2.607 1.092A3.675 3.675 0 0 1 9.39 9.64a.375.375 0 1 1 .532-.53A2.928 2.928 0 0 0 12 9.984a2.96 2.96 0 0 0 2.08-.876.375.375 0 1 1 .527.534ZM14.25 8.25c-.414 0-.75-.504-.75-1.125S13.836 6 14.25 6s.75.504.75 1.125-.336 1.125-.75 1.125Z"></path>
         </svg>
     );
 };
 
-export function SvgTrash({ color }) {
+export function SvgTrash({ color, backgroundColor }) {
     return (
-        <svg fill={color} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" viewBox="0 0 24 24">
-            <path d="m5.25 5.25.938 15c.044.867.675 1.5 1.5 1.5h8.625c.828 0 1.447-.633 1.5-1.5l.937-15"></path>
-            <path d="M3.75 5.25h16.5"></path>
-            <path d="M9 5.25V3.375a1.122 1.122 0 0 1 1.125-1.125h3.75A1.121 1.121 0 0 1 15 3.375V5.25"></path>
-            <path d="M12 8.25v10.5"></path>
-            <path d="M8.625 8.25 9 18.75"></path>
-            <path d="M15.375 8.25 15 18.75"></path>
+        <svg fill={backgroundColor} stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" viewBox="0 0 24 24">
+            <path fill={backgroundColor} d="m5.25 5.25.938 15c.044.867.675 1.5 1.5 1.5h8.625c.828 0 1.447-.633 1.5-1.5l.937-15"></path>
+            <path fill={backgroundColor} d="M3.75 5.25h16.5"></path>
+            <path fill={backgroundColor} d="M9 5.25V3.375a1.122 1.122 0 0 1 1.125-1.125h3.75A1.121 1.121 0 0 1 15 3.375V5.25"></path>
+            <path fill={backgroundColor} d="M12 8.25v10.5"></path>
+            <path fill={backgroundColor} d="M8.625 8.25 9 18.75"></path>
+            <path fill={backgroundColor} d="M15.375 8.25 15 18.75"></path>
         </svg>
     );
 };
 
-export function SvgTrashBig({ color }) {
+export function SvgTrashBig({ color = '#000' }) {
     return (
-        <svg fill={color} viewBox="0 0 24 24">
-            <path d="M20.979 4.5H15.75V2.25A.75.75 0 0 0 15 1.5H9a.75.75 0 0 0-.75.75V4.5H3.021L3 6.375h1.547l.942 14.719A1.5 1.5 0 0 0 6.984 22.5h10.032a1.5 1.5 0 0 0 1.496-1.404l.941-14.721H21L20.979 4.5ZM8.25 19.5l-.422-12h1.547l.422 12H8.25Zm4.5 0h-1.5v-12h1.5v12Zm1.125-15h-3.75V3.187A.188.188 0 0 1 10.313 3h3.374a.188.188 0 0 1 .188.188V4.5Zm1.875 15h-1.547l.422-12h1.547l-.422 12Z"></path>
+        <svg viewBox="0 0 24 24">
+            <path fill={color} d="M20.979 4.5H15.75V2.25A.75.75 0 0 0 15 1.5H9a.75.75 0 0 0-.75.75V4.5H3.021L3 6.375h1.547l.942 14.719A1.5 1.5 0 0 0 6.984 22.5h10.032a1.5 1.5 0 0 0 1.496-1.404l.941-14.721H21L20.979 4.5ZM8.25 19.5l-.422-12h1.547l.422 12H8.25Zm4.5 0h-1.5v-12h1.5v12Zm1.125-15h-3.75V3.187A.188.188 0 0 1 10.313 3h3.374a.188.188 0 0 1 .188.188V4.5Zm1.875 15h-1.547l.422-12h1.547l-.422 12Z"></path>
         </svg>
     );
 };
@@ -231,8 +231,8 @@ export function SvgCSS({ color = '#254BDD', isColored = true }) {
 export function SvgNodeJS({ color = '#3C823B', isColored = true }) {
     return (
         <svg viewBox="0 0 24 24">
-            <path fill='currentColor' d="m20.145 6.097-7.286-4.37a1.734 1.734 0 0 0-1.718 0l-7.286 4.37A1.79 1.79 0 0 0 3 7.633v8.727a1.794 1.794 0 0 0 .855 1.537l1.91 1.141.011.006c.965.494 1.334.494 1.762.494 1.507 0 2.443-.975 2.443-2.545V8.532a.399.399 0 0 0-.395-.403H8.537a.399.399 0 0 0-.394.403v8.461a.703.703 0 0 1-.321.613c-.277.168-.679.133-1.132-.101l-1.83-1.102a.052.052 0 0 1-.023-.043V7.756a.062.062 0 0 1 .027-.05l7.118-4.359a.039.039 0 0 1 .034 0l7.122 4.36a.063.063 0 0 1 .026.052v8.6a.062.062 0 0 1-.022.048l-7.127 4.249a.057.057 0 0 1-.038 0l-1.82-1.081a.365.365 0 0 0-.367-.02l-.016.01c-.503.298-.638.375-1.104.545-.075.027-.254.093-.27.27-.015.177.155.303.306.39l2.433 1.494c.259.155.555.238.857.238h.027c.295-.005.583-.087.836-.238l7.286-4.365a1.798 1.798 0 0 0 .855-1.54V7.634a1.79 1.79 0 0 0-.855-1.536Z"></path>
-            <path fill={isColored ? color : 'currentColor'} d="M14.432 14.91c-1.748 0-2.12-.488-2.231-1.276a.395.395 0 0 0-.386-.343h-.928a.396.396 0 0 0-.387.402c0 .683.24 2.914 3.934 2.914 1.143 0 2.093-.267 2.748-.773.655-.506 1.006-1.242 1.006-2.118 0-1.76-1.149-2.243-3.41-2.558-2.3-.32-2.3-.482-2.3-.838 0-.257 0-.857 1.662-.857 1.183 0 1.816.15 2.019.938a.392.392 0 0 0 .378.312h.931a.386.386 0 0 0 .289-.134.417.417 0 0 0 .1-.302c-.121-1.666-1.34-2.511-3.715-2.511-2.16 0-3.448.972-3.448 2.601 0 1.786 1.336 2.291 3.342 2.5 2.344.242 2.344.596 2.344.908.001.487-.201 1.136-1.948 1.136Z"></path>
+            <path fill='#000' d="m20.145 6.097-7.286-4.37a1.734 1.734 0 0 0-1.718 0l-7.286 4.37A1.79 1.79 0 0 0 3 7.633v8.727a1.794 1.794 0 0 0 .855 1.537l1.91 1.141.011.006c.965.494 1.334.494 1.762.494 1.507 0 2.443-.975 2.443-2.545V8.532a.399.399 0 0 0-.395-.403H8.537a.399.399 0 0 0-.394.403v8.461a.703.703 0 0 1-.321.613c-.277.168-.679.133-1.132-.101l-1.83-1.102a.052.052 0 0 1-.023-.043V7.756a.062.062 0 0 1 .027-.05l7.118-4.359a.039.039 0 0 1 .034 0l7.122 4.36a.063.063 0 0 1 .026.052v8.6a.062.062 0 0 1-.022.048l-7.127 4.249a.057.057 0 0 1-.038 0l-1.82-1.081a.365.365 0 0 0-.367-.02l-.016.01c-.503.298-.638.375-1.104.545-.075.027-.254.093-.27.27-.015.177.155.303.306.39l2.433 1.494c.259.155.555.238.857.238h.027c.295-.005.583-.087.836-.238l7.286-4.365a1.798 1.798 0 0 0 .855-1.54V7.634a1.79 1.79 0 0 0-.855-1.536Z"></path>
+            <path fill={isColored ? color : '#000'} d="M14.432 14.91c-1.748 0-2.12-.488-2.231-1.276a.395.395 0 0 0-.386-.343h-.928a.396.396 0 0 0-.387.402c0 .683.24 2.914 3.934 2.914 1.143 0 2.093-.267 2.748-.773.655-.506 1.006-1.242 1.006-2.118 0-1.76-1.149-2.243-3.41-2.558-2.3-.32-2.3-.482-2.3-.838 0-.257 0-.857 1.662-.857 1.183 0 1.816.15 2.019.938a.392.392 0 0 0 .378.312h.931a.386.386 0 0 0 .289-.134.417.417 0 0 0 .1-.302c-.121-1.666-1.34-2.511-3.715-2.511-2.16 0-3.448.972-3.448 2.601 0 1.786 1.336 2.291 3.342 2.5 2.344.242 2.344.596 2.344.908.001.487-.201 1.136-1.948 1.136Z"></path>
         </svg>
     );
 };
@@ -361,7 +361,7 @@ export function SvgApple({ color = '#666', isColored = true }) {
 
 export function SvgWindows({ isColored = true }) {
     return (
-        <svg width="0" height="0" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="0" viewBox="0 0 24 24">
+        <svg stroke="currentColor" strokeLinejoin="round" strokeWidth="0" viewBox="0 0 24 24">
             <path fill={isColored ? '#F25022' : 'currentColor'} d="m3.375 5.531 6.469-.862v6.038H3.375V5.53Z"></path>
             <path fill={isColored ? '#7FBA00' : 'currentColor'} d="m12.431 4.422 8.194-1.047v7.331h-8.194V4.422Z"></path>
             <path fill={isColored ? '#FFB901' : 'currentColor'} d="m12.431 13.725 8.194.191v6.709l-8.194-1.342v-5.558Z"></path>

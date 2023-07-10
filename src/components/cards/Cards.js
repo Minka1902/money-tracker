@@ -100,7 +100,7 @@ export function CreditCard({ card = defCard, onClick, isFlipping }) {
                         </svg>
                         <div className='credit__chip'></div>
                         <div className='credit__wifi'>
-                            <Svg.SvgWIFI color={'white'} is4={true} />
+                            <Svg.SvgWIFI color='white' is4={false} />
                         </div>
                         <p className="credit__number">{formatCreditCardNumber(card.cardNumber, true, 8)}</p>
                         <p className="credit__valid_thru">VALID THRU</p>
